@@ -1,6 +1,5 @@
-DROP table userCourses;
-CREATE table userCourses(
-    CONSTRAINT fk_userId FOREIGN KEY (userId) REFERENCES userDetails(userId),
-    CONSTRAINT fk_courseId FOREIGN KEY (courseId) REFERENCES courses(courseId),
-    PRIMARY KEY (userId, courseId )
+DROP TABLE IF EXISTS courses;
+CREATE TABLE courses(
+	course_id VARCHAR(50) PRIMARY KEY,
+	course_name VARCHAR(50) NOT NULL
 );
