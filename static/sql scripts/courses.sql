@@ -1,5 +1,0 @@
-DROP TABLE IF EXISTS courses;
-CREATE TABLE courses(
-	course_id VARCHAR(50) PRIMARY KEY,
-	course_name VARCHAR(50) NOT NULL
-);
