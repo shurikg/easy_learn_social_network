@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS degree;
+CREATE TABLE degree(
+	degree_id VARCHAR(50) PRIMARY KEY,
+	degree_name VARCHAR(50) NOT NULL
+);
