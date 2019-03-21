@@ -1,8 +1,7 @@
-DROP  table  users;
-CREATE table users(
-    userName VARCHAR(50) PRIMARY KEY,
-    password  VARCHAR(50) NOT NULL,
-    firstName VARCHAR(50) NOT NULL,
-    lastName VARCHAR(50) NOT NULL,
-    email VARCHAR(50) NOT NULL
+DROP table userDetails;
+CREATE table userDetails(
+    userId VARCHAR(9) PRIMARY KEY,
+   collegeName VARCHAR(50) NOT NULL,
+    yearOfStudy  Number(1) NOT NULL,
+    aboutMe VARCHAR(50)
 );
