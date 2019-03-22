@@ -18,7 +18,7 @@ class Profile(models.Model):
 
 
 class Course(models.Model):
-    course_id = models.CharField(max_length=10, primary_key=True, auto_created=True)
+    course_id = models.AutoField(primary_key=True)
     course_name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -26,7 +26,7 @@ class Course(models.Model):
 
 
 class Degree(models.Model):
-    degree_id = models.CharField(max_length=10, primary_key=True, auto_created=True)
+    degree_id = models.AutoField(primary_key=True)
     degree_name = models.CharField(max_length=50)
 
     def __str__(self):
