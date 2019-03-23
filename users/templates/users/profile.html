@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<title>Profile</title>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div clas="well">
+    <legend class="border-bottom mb-4">Profile</legend>
+        <p>Username: {{ user }}</p>
+        <p>First name: {{ user.first_name }}</p>
+        <p>Last name: {{ user.last_name }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>gender: {{ profile.gender }}</p>
+        <p>birth date: {{ profile.birth_date }}</p>
+        <p>college name: {{ profile.college_name }}</p>
+        <p>year of study: {{ profile.year_of_study }}</p>
+        <p>about me: {{ profile.about_me }}</p>
+        <a href="{% url 'accounts:edit_profile' %}" class="btn btn-default" >Edit profile</a>
+
+<!--</div>-->
+    <!--{% if user.userprofile.image %}-->
+    <!--{% endif %}-->
+<!--</div>-->
+
+{% endblock %}
+
