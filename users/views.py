@@ -1,7 +1,7 @@
 from django.core import serializers
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm, NewUserProfileForm, NewUserDegreeForm, NewUserCourseForm
+from .forms import UserRegisterForm, NewUserProfileForm, NewUserDegreeForm, NewUserCourseForm, LoginForm
 from formtools.wizard.views import SessionWizardView
 from django.contrib.auth.models import User
 from .models import Profile, UserDegrees, UserCourses, Course, Degree
@@ -75,6 +75,28 @@ class RegisterFormWizard(SessionWizardView):
         user_course.save()
 
         return render(self.request, 'users/test.html')
+
+
+# def login_page(request):
+#     if request.method == 'POST':
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             username = form.cleaned_data.get('username')
+#             return render(request, 'users/profile.html', {"user": username})
+#         else:
+#             messages.error(request, 'Invalid user name or password!')
+#     else:
+#         form = LoginForm()
+#     return render(request, 'users/login.html', {"form": form})
+
+
+
+def profile(request):
+    return render(request, 'users/profile.html')
+
+
+def home_page(request):
+    return render(request, 'users/home.html')
 
 
 # def test(request):
