@@ -14,7 +14,7 @@ class Profile(models.Model):
     about_me = models.TextField(max_length=250, null=True, blank=True, default='')
 
     def __str__(self):
-        return self.user.first_name
+        return str(self.user)
 
 
 class Course(models.Model):
