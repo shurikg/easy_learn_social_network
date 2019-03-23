@@ -45,7 +45,7 @@ def add_profile_detail(request):
 
 
 class RegisterFormWizard(SessionWizardView):
-    template_name = "users/wiz.html"
+    template_name = "users/register_wizard.html"
     form_list = [UserRegisterForm, NewUserProfileForm, NewUserDegreeForm, NewUserCourseForm]
     # form_list = [UserDegreeForm]
 
