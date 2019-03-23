@@ -1,19 +1,37 @@
-{% block body %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>profile</title>
-    <style>
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Profile</title>
+<style>
         .imageProfile {
         border: 1px solid black;
         }
     </style>
-</head>
-<body>
-    <h5>{{user}}, Welcome to your profile!</h5>
-    <div class="imageProfile">
-        <img src="https://i.stack.imgur.com/l60Hf.png" alt="Paris" style="width:13%">
+{% endblock %}
+
+{% block body %}
+   <div class="imageProfile">
+    <img src="https://i.stack.imgur.com/l60Hf.png" alt="Paris" style="width:13%">
     </div>
-</body>
-</html>
+<div class="container">
+    <div class="well">
+    <legend class="border-bottom mb-4">Profile</legend>
+        <p>Username: {{ user }}</p>
+        <p>First name: {{ user.first_name }}</p>
+        <p>Last name: {{ user.last_name }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>gender: {{ profile.gender }}</p>
+        <p>birth date: {{ profile.birth_date }}</p>
+        <p>college name: {{ profile.college_name }}</p>
+        <p>year of study: {{ profile.year_of_study }}</p>
+        <p>about me: {{ profile.about_me }}</p>
+        <a href="{% url 'accounts:edit_profile' %}" class="btn btn-default" >Edit profile</a>
+    </div>
+</div>
+
+<!--</div>-->
+    <!--{% if user.userprofile.image %}-->
+    <!--{% endif %}-->
+<!--</div>-->
+
 {% endblock %}

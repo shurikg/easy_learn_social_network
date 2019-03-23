@@ -5,6 +5,16 @@ from .forms import UserRegisterForm, NewUserProfileForm, NewUserDegreeForm, NewU
 from formtools.wizard.views import SessionWizardView
 from django.contrib.auth.models import User
 from .models import Profile, UserDegrees, UserCourses, Course, Degree
+from django.urls import reverse
+from django.contrib.auth import authenticate, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from .forms import (
+    EditProfileForm,
+    PasswordAuthenticationForm,
+    EditPersonalInfoForm,
+    EditMoreInfoForm
+)
 
 
 def register(request):
@@ -113,3 +123,131 @@ def home_page(request):
 #     x = serializers.serialize('json', x)
 #     print(x)
 #     return render(request, 'users/test.html')
+
+@login_required
+def view_profile(request):
+    user_obj = request.user
+    profile_obj = Profile.objects.get(user=user_obj)
+    args = {'user': user_obj, 'profile': profile_obj}
+    return render(request, 'users/profile.html', args)
+
+
+@login_required
+def edit_personal_info(request):
+    profile_obj = Profile.objects.get(user=request.user)
+    if request.method == 'POST':
+        u_form = EditPersonalInfoForm(request.POST, instance=profile_obj)
+        p_form = EditProfileForm(request.POST, instance=request.user)
+        chk_pass = PasswordAuthenticationForm(request, data=request.POST)
+        if u_form.is_valid() and p_form.is_valid():
+            if chk_pass.is_valid():
+                username = chk_pass.cleaned_data.get('username')
+                password = chk_pass.cleaned_data.get('password')
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    # profile = u_form.save(commit=False)
+                    # profile.user = user
+                    # profile.save()
+                    # birthday = u_form.cleaned_data.get('birth_date')
+                    # gender = u_form.cleaned_data.get('gender')
+
+                    # user = Profile.objects.get(user_id=1)
+                    # user.birth_date = birthday  # change field
+                    # user.gender = gender  # change field
+                    # user.save()  # this will update only
+                    # p_form.save()
+                    # u_form.save()
+
+                    p_form.save()
+                    u_form.save()
+
+                    messages.success(request, f'Your account has been updated!')
+                    return redirect(reverse('users:view_profile'))
+            else:
+                messages.error(request, f'Invalid password!')
+        else:
+            messages.error(request, f'Invalid fields, your account has not been updated!')
+
+    else:
+        u_form = EditPersonalInfoForm(instance=profile_obj)
+        p_form = EditProfileForm(instance=request.user)
+        chk_pass = PasswordAuthenticationForm()
+    context = {
+        'u_form': u_form,
+        'p_form': p_form,
+        'chk_pass': chk_pass
+    }
+
+    return render(request, 'users/edit_personal_info.html', context)
+
+@login_required
+def edit_more_info(request):
+    profile_obj = Profile.objects.get(user=request.user)
+    if request.method == 'POST':
+        form = EditMoreInfoForm(request.POST, instance=profile_obj)
+
+        if form.is_valid():
+            # profile = form.save(commit=False)
+            # profile.user = request.user
+            # profile.save()
+
+            # id = form.cleaned_data.get('id')
+            # collageName = form.cleaned_data.get('collageName')
+            # yearOfStudy = form.cleaned_data.get('yearOfStudy')
+            # aboutMe = form.cleaned_data.get('aboutMe')
+
+            # user = Profile.objects.get(id=request.user.id)
+            # user.id = id  # change field
+            # user.collageName = collageName  # change field
+            # user.yearOfStudy = yearOfStudy  # change field
+            # user.aboutMe = aboutMe  # change field
+
+            # user.save()  # this will update only
+            form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('users:view_profile')
+        else:
+            messages.error(request, f'Invalid fields, your account has not been updated!')
+
+    else:
+        form = EditMoreInfoForm(instance=profile_obj)
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'users/edit_more_info.html', context)
+
+
+@login_required
+def edit_profile(request):
+    messages.info(request, 'what would you like to edit?')
+    return render(request, 'users/edit_profile.html')
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            messages.success(request, f'Password has been updated for {form.user}!')
+            return redirect(reverse('users:view_profile'))
+        else:
+            messages.error(request, f'Password has not been updated for {form.user}!')
+            return redirect(reverse('users:change_password'))
+
+    else:
+        form = PasswordChangeForm(user=request.user)
+
+        args = {'form': form}
+        return render(request, 'users/change_password.html', args)
+
+
+def home(request):
+    numbers = [1, 2, 3, 4, 5]
+    name = 'Shlomi Tofahi'
+
+    args = {'myName': name, 'numbers': numbers}
+    return render(request, 'users/home.html', args)
