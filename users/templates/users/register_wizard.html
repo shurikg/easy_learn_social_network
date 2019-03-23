@@ -19,15 +19,15 @@
                 {{ wizard.form|crispy }}
             {% endif %}
         </fieldset>
-        {% if wizard.steps.prev %}
-            <button  class="btn btn-outline-info" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">
-                {% trans "first step" %}
-            </button>
-            <button class="btn btn-outline-info" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">
-                {% trans "prev step" %}
-            </button>
-        {% endif %}
-        <input class="btn btn-outline-info" type="submit" value="{% trans "submit" %}" />
+        <!--{% if wizard.steps.prev %}-->
+            <!--<button  class="btn btn-outline-info" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">-->
+                <!--{% trans "first step" %}-->
+            <!--</button>-->
+            <!--<button class="btn btn-outline-info" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">-->
+                <!--{% trans "prev step" %}-->
+            <!--</button>-->
+        <!--{% endif %}-->
+        <input class="btn btn-outline-info" type="submit" value="submit" />
         </form>
         <div class="border-top pt-3">
             <small class="text-muted">
@@ -35,7 +35,6 @@
             </small>
         </div>
 </div>
-
 
 
 
