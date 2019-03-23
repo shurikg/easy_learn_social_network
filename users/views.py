@@ -58,42 +58,36 @@ class RegisterFormWizard(SessionWizardView):
 
         profile = forms_dict[NewUserProfileForm].save(commit=False)
         profile.user = user
+        profile.save()
 
         user_degree = forms_dict[NewUserDegreeForm].save(commit=False)
         user_degree.user_id = profile
         form_degree_name = forms_dict[NewUserDegreeForm].cleaned_data.get('degree')
         degree = Degree.objects.get(degree_name=form_degree_name)
         user_degree.degree_id = degree
+        user_degree.save()
 
         user_course = forms_dict[NewUserCourseForm].save(commit=False)
         user_course.user_id = profile
         form_course_name = forms_dict[NewUserCourseForm].cleaned_data.get('course')
         course = Course.objects.get(course_name=form_course_name)
         user_course.course_id = course
-
-        print(user.id, user.username, user.first_name, user.last_name, user.email)
-        print(profile.user, profile.gender, profile.about_me, profile.birth_date, profile.college_name, profile.year_of_study)
-        print(user_degree.user_id, user_degree.degree_id)
-        print(user_course.user_id, user_course.course_id)
-
-        profile.save()
-        user_degree.save()
         user_course.save()
 
         return render(self.request, 'users/test.html')
 
 
-def test(request):
-    x = Degree.objects.values()
-    x = [(entry['degree_id'], entry['degree_name']) for entry in x]
-
-    # x = Degree.objects.values()
-    # x = [(entry['degree_id'], entry['degree_name']) for entry in x]
-    # x = Degree.objects.all()
-    # x = serializers.serialize('json', x)
-    # print(x)
-
-    # x = Degree.objects.all()
-    # x = serializers.serialize('json', x)
-    print(x)
-    return render(request, 'users/test.html')
+# def test(request):
+#     x = Degree.objects.values()
+#     x = [(entry['degree_id'], entry['degree_name']) for entry in x]
+#
+#     x = Degree.objects.values()
+#     x = [(entry['degree_id'], entry['degree_name']) for entry in x]
+#     x = Degree.objects.all()
+#     x = serializers.serialize('json', x)
+#     print(x)
+#
+#     x = Degree.objects.all()
+#     x = serializers.serialize('json', x)
+#     print(x)
+#     return render(request, 'users/test.html')
