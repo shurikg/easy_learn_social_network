@@ -14,7 +14,7 @@ class Profile(models.Model):
     about_me = models.TextField(max_length=250, null=True, blank=True, default='')
 
     def __str__(self):
-        return self.user
+        return self.user.first_name
 
 
 class Course(models.Model):
@@ -38,7 +38,7 @@ class UserCourses(models.Model):
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '{0}, {1}'.format(self.user_id, self.course_id)
+        return '{0}, {1}'.format(str(self.user_id), str(self.course_id))
 
     class Meta:
         unique_together = ('user_id', 'course_id',)
@@ -49,7 +49,7 @@ class UserDegrees(models.Model):
     degree_id = models.ForeignKey(Degree, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '{0}, {1}'.format(self.user_id, self.degree_id)
+        return '{0}, {1}'.format(str(self.user_id), str(self.degree_id))
 
     class Meta:
         unique_together = ('user_id', 'degree_id',)
