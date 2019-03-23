@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from users.models import Profile, UserCourses, UserDegrees
 
@@ -47,3 +47,45 @@ class NewUserCourseForm(forms.ModelForm):
     class Meta:
         model = UserCourses
         fields = {'course'}
+
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+        )
+
+
+class EditPersonalInfoForm(forms.ModelForm):
+    GENDER_CHOICES = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other'),
+    )
+    birth_date = forms.DateField(help_text='Enter date in format mm/dd/yyyy.')
+    gender = forms.ChoiceField(help_text='Select your gender', choices=GENDER_CHOICES)
+
+    class Meta:
+        model = Profile
+        fields = ('gender', 'birth_date',)
+
+
+class EditMoreInfoForm(forms.ModelForm):
+    college_name = forms.CharField(max_length=50, help_text='Enter your collage name.')
+    year_of_study = forms.ChoiceField(choices=[(x, x) for x in range(1, 7)])
+    about_me = forms.CharField(max_length=250, help_text='Tell something about you (max 250 characters).')
+
+    class Meta:
+        model = Profile
+        fields = ('college_name', 'year_of_study', 'about_me',)
+
+
+class PasswordAuthenticationForm(AuthenticationForm):
+    class Meta:
+        model = User
+        fields = (
+            'password'
+        )
