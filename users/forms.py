@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from users.models import Profile, UserCourses, UserDegrees
+from django.contrib.auth.forms import AuthenticationForm, UsernameField
 
 
 class UserRegisterForm(UserCreationForm):
@@ -47,3 +48,17 @@ class NewUserCourseForm(forms.ModelForm):
     class Meta:
         model = UserCourses
         fields = {'course'}
+
+
+class LoginForm(AuthenticationForm):
+    username = UsernameField(max_length=50, widget=forms.TextInput(attrs={'autofocus': True,
+                                                                          'placeholder': 'Enter user name here'}))
+    password = forms.CharField(
+        label="Password",
+        strip=False,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter password here'}),
+    )
+
+    class Meta:
+        model = User
+        fields = {'username', 'password'}
