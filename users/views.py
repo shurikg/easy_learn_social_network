@@ -100,7 +100,6 @@ class RegisterFormWizard(SessionWizardView):
 #     return render(request, 'users/login.html', {"form": form})
 
 
-
 def profile(request):
     return render(request, 'users/profile.html')
 
