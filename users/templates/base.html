@@ -35,10 +35,10 @@
                 {% if user.is_authenticated %}
                 <ul class="nav navbar-nav">
                     <li><a href="S">Home</a></li>
-                    <li><a href="{% url 'accounts:view_profile' %}">Profile</a></li>
-                    <li><a href="{% url 'accounts:edit_profile' %}">Edit Profile</a></li>
-                    <li><a href="{% url 'accounts:edit_personal_info' %}">Edit Personal info</a></li>
-                    <li><a href="{% url 'accounts:change_password' %}">Change Password</a></li>
+                    <li><a href="{% url 'users:view_profile' %}">Profile</a></li>
+                    <li><a href="{% url 'users:edit_profile' %}">Edit Profile</a></li>
+                    <li><a href="{% url 'users:edit_personal_info' %}">Edit Personal info</a></li>
+                    <li><a href="{% url 'users:change_password' %}">Change Password</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="">Log out</a></li>

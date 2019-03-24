@@ -17,41 +17,19 @@ from .forms import (
 )
 
 
-def register(request):
-    if request.method == 'POST':
-        registration_form = UserRegisterForm(request.POST)
-        if registration_form.is_valid():
-            registration_form.save()
-            username = registration_form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}!')
-            return redirect('users.view.add_profile_detail')
-        else:
-            messages.error(request, 'Please correct the error below.')
-    else:
-        registration_form = UserRegisterForm()
-    return render(request, 'users/register.html', {'registration_form': registration_form, })
-
-
-def add_profile_detail(request):
-    return render(request, 'users/add_user_detail.html')
-    # if request.method == 'POST':
-    #     registration_form = UserRegisterForm(request.POST)
-    #     personal_data_form = UserProfileForm(request.POST)
-    #     if registration_form.is_valid() and personal_data_form.is_valid():
-    #         registration_form.save()
-    #         personal_data_form.save()
-    #         username = registration_form.cleaned_data.get('username')
-    #         messages.success(request, f'Account created for {username}!')
-    #         return redirect('add_user_detail')
-    #     else:
-    #         messages.error(request, 'Please correct the error below.')
-    # else:  # GET request, at the first time, when the user want to register with an empty form
-    #     registration_form = UserRegisterForm()
-    #     personal_data_form = UserProfileForm()
-    # return render(request, 'users/register.html',
-    #               {'registration_form': registration_form,
-    #                'personal_data_form': personal_data_form
-    #                })
+# def register(request):
+#     if request.method == 'POST':
+#         registration_form = UserRegisterForm(request.POST)
+#         if registration_form.is_valid():
+#             registration_form.save()
+#             username = registration_form.cleaned_data.get('username')
+#             messages.success(request, f'Account created for {username}!')
+#             return redirect('users.view.add_profile_detail')
+#         else:
+#             messages.error(request, 'Please correct the error below.')
+#     else:
+#         registration_form = UserRegisterForm()
+#     return render(request, 'users/register.html', {'registration_form': registration_form, })
 
 
 class RegisterFormWizard(SessionWizardView):
@@ -84,7 +62,7 @@ class RegisterFormWizard(SessionWizardView):
         user_course.course_id = course
         user_course.save()
 
-        return render(self.request, 'users/test.html')
+        return redirect('users:home_page')  # TODO: check
 
 
 # def login_page(request):
@@ -98,10 +76,6 @@ class RegisterFormWizard(SessionWizardView):
 #     else:
 #         form = LoginForm()
 #     return render(request, 'users/login.html', {"form": form})
-
-
-def profile(request):
-    return render(request, 'users/profile.html')
 
 
 def home_page(request):
@@ -161,7 +135,7 @@ def edit_personal_info(request):
                     u_form.save()
 
                     messages.success(request, f'Your account has been updated!')
-                    return redirect(reverse('users:view_profile'))
+                    return redirect('users:home_page')  # TODO: check
             else:
                 messages.error(request, f'Invalid password!')
         else:
@@ -243,11 +217,3 @@ def change_password(request):
 
         args = {'form': form}
         return render(request, 'users/change_password.html', args)
-
-
-def home(request):
-    numbers = [1, 2, 3, 4, 5]
-    name = 'Shlomi Tofahi'
-
-    args = {'myName': name, 'numbers': numbers}
-    return render(request, 'users/home.html', args)

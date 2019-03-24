@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.urls import path, include
 from django.contrib import admin
-from django.conf.urls import url
+from users import views as users_views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('users.urls')),
-    path('register/', include('users.urls')),
-    url(r'^user/', include(('users.urls', 'users'), namespace='accounts')),
+    path('', users_views.home_page, name='home'),  # TODO: move home view to main app
+    path('register/', users_views.RegisterFormWizard.as_view(), name='register-wizard'),
+    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('user/', include(('users.urls', 'users'), namespace='users')),
 ]
