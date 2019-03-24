@@ -179,6 +179,7 @@ def edit_personal_info(request):
 
     return render(request, 'users/edit_personal_info.html', context)
 
+
 @login_required
 def edit_more_info(request):
     profile_obj = Profile.objects.get(user=request.user)
