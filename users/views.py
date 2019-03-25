@@ -62,7 +62,7 @@ class RegisterFormWizard(SessionWizardView):
         user_course.course_id = course
         user_course.save()
 
-        return redirect('users:home_page')  # TODO: check
+        return redirect(reverse('users:home_page'))
 
 
 # def login_page(request):
@@ -135,7 +135,7 @@ def edit_personal_info(request):
                     u_form.save()
 
                     messages.success(request, f'Your account has been updated!')
-                    return redirect('users:home_page')  # TODO: check
+                    return redirect(reverse('users:view_profile'))
             else:
                 messages.error(request, f'Invalid password!')
         else:
