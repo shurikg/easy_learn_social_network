@@ -4,7 +4,7 @@ pipeline {
     stage('Git') {
       // Get some code from a GitHub repository
       steps{
-          git 'https://github.com/markrity/python-simple-project-example-with-tests.git'
+          git 'https://github.com/jonbir3/easy_learn_social_network.git'
       }
    }
    stage('Requirements'){
