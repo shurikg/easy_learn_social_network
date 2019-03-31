@@ -1,5 +1,5 @@
 pipeline {
-    agent { docker { image 'python:3-alpine' } }
+    agent { docker { image 'django' } }
     stages {
         stage('Git') {
             steps{
@@ -18,7 +18,7 @@ pipeline {
         stage('Run Tests'){
             steps{
                 // echo 'Testing User app...'
-                sh "python manage.py test users"
+                sh "python3 manage.py test users"
             }
         }
         stage('Results') {
