@@ -1,0 +1,7 @@
+Django
+django-crispy-forms
+django-formtools
+pytest
+pytest-django
+pytest-cov
+mixer
