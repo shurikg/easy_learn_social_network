@@ -1,5 +1,5 @@
 pipeline {
-    agent { docker { image 'django' } }
+    agent { docker { image 'python:3-alpine' } }
     stages {
         stage('Git') {
             steps{
