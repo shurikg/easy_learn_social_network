@@ -18,13 +18,13 @@ pipeline {
         stage('Run Tests'){
             steps{
                 // echo 'Testing User app...'
-                sh "python3 manage.py test users"
+                sh "python manage.py test users"
             }
         }
         stage('Results') {
             steps{
-                // echo 'Printing test results...'
-                junit '**/nosetests.xml'
+                echo 'Printing test results...'
+                // junit '**/nosetests.xml'
             }
         }
     }
