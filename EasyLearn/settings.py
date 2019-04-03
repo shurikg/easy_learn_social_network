@@ -1,1 +1,1 @@
-from EasyLearn import locals
+from EasyLearn.locals import *
