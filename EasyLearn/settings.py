@@ -1,0 +1,1 @@
+from EasyLearn import locals
