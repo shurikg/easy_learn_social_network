@@ -53,6 +53,9 @@ class UserDegrees(models.Model):
 
     class Meta:
         unique_together = ('user_id', 'degree_id',)
+
+
+
 #
 # @receiver(post_save, sender=User)
 # def create_user_profile(sender, instance, created, **kwargs):
