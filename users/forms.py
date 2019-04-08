@@ -1,7 +1,9 @@
+from typing import Tuple
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from users.models import Profile, UserCourses, UserDegrees
+from users.models import Profile, UserCourses, UserDegrees, Privacy
 from django.contrib.auth.forms import AuthenticationForm, UsernameField
 
 
@@ -63,13 +65,14 @@ class LoginForm(AuthenticationForm):
         model = User
         fields = {'username', 'password'}
 
+
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = (
-            'email',
             'first_name',
             'last_name',
+            'email',
         )
 
 
@@ -103,3 +106,71 @@ class PasswordAuthenticationForm(AuthenticationForm):
         fields = (
             'password'
         )
+
+
+class EditPrivacyForm(forms.ModelForm):
+    class Meta:
+        model = Privacy
+        fields = (
+            'privacy_first_name',
+            'privacy_last_name',
+            'privacy_email',
+            'privacy_birth_date',
+            'privacy_gender',
+            'privacy_college_name',
+            'privacy_year_of_study',
+            'privacy_about_me',
+        )
+        # class ShowSelectedUserForm(forms.ModelForm):
+        #     class Meta:
+        #         model = User
+        #         widgets = {'any_field': HiddenInput(), }
+        #         fields = (
+        #             'privacy_first_name',
+        #             'privacy_last_name',
+        #             'privacy_email',
+        #             'privacy_birth_date',
+        #             'privacy_gender',
+        #             'privacy_college_name',
+        #             'privacy_year_of_study',
+        #             'privacy_about_me',
+        #         )
+
+
+class ExtraProfileForm(forms.ModelForm):
+
+    def __init__(self, privacy_obj, *args, **kwargs):
+        super(ExtraProfileForm, self).__init__(*args, **kwargs)
+        self.privacy_obj = privacy_obj
+
+        if self.privacy_obj.privacy_gender:
+            self.fields['gender'] = forms.CharField()
+        if self.privacy_obj.privacy_birth_date:
+            self.fields['birth_date'] = forms.CharField()
+        if self.privacy_obj.privacy_college_name:
+            self.fields['college_name'] = forms.CharField()
+        if self.privacy_obj.privacy_year_of_study:
+            self.fields['year_of_study'] = forms.CharField()
+        if self.privacy_obj.privacy_about_me:
+            self.fields['about_me'] = forms.CharField()
+
+    class Meta:
+        model = Profile
+        fields = ()
+
+
+class ProfileForm(forms.ModelForm):
+    def __init__(self, privacy_obj, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        self.privacy_obj = privacy_obj
+
+        if self.privacy_obj.privacy_first_name:
+            self.fields['first_name'] = forms.CharField()
+        if self.privacy_obj.privacy_last_name:
+            self.fields['last_name'] = forms.CharField()
+        if self.privacy_obj.privacy_email:
+            self.fields['email'] = forms.CharField()
+                 
+    class Meta:
+        model = User
+        fields = ()
