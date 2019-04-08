@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+<div class="content-section">
+    <form method="GET" action="{% url 'users:search' %}">
+        <input name="q" value="{{request.GET.q}}" placeholder="search..">
+        <button class="btn btn-outline-info" type="submit">Search</button>
+    </form>
+    {% for u in users%}
+        {% if u != user%}
+            </a><br><br><a href="{% url 'users:show_users_all' %}?user_name={{ u.id }}" >{{u.first_name}} {{u.last_name}}
+         {% endif %}
+        {% endfor %}
+    {% endblock %}
+</div>
