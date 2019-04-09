@@ -43,6 +43,23 @@ class TestViews(TestCase):
             privacy_about_me=True
         )
 
+        self.course = Course.objects.create(
+            course_id='1',
+            course_name='text_course'
+        )
+        self.degree = Degree.objects.create(
+            degree_id='1',
+            degree_name='text_degree'
+        )
+        self.userCourses = UserCourses.objects.create(
+            user_id=self.profile,
+            course_id=self.course
+        )
+        self.userDegrees = UserDegrees.objects.create(
+            user_id=self.profile,
+            degree_id=self.degree
+        )
+
     def test_test_view(self):
         assert 1 == 1
 
@@ -64,3 +81,11 @@ class TestViews(TestCase):
     def test_profile_user_matching(self):
         self.assertEqual(self.profile.user.username, 'testuser')
         self.assertEqual(self.profile.user, self.user)
+
+    def test_profile_data_matching(self):
+        self.assertNotEqual(self.course.course_id, '2')
+        self.assertNotEqual(self.degree.degree_id, '2')
+        self.assertEqual(self.userCourses.user_id, self.profile)
+        self.assertEqual(self.userCourses.course_id, self.course)
+        self.assertEqual(self.userDegrees.user_id, self.profile)
+        self.assertEqual(self.userDegrees.degree_id, self.degree)
