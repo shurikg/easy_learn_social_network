@@ -55,6 +55,16 @@ class UserDegrees(models.Model):
         unique_together = ('user_id', 'degree_id',)
 
 
+class Privacy(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    privacy_first_name = models.BooleanField(default=True)
+    privacy_last_name = models.BooleanField(default=True)
+    privacy_email = models.BooleanField(default=True)
+    privacy_birth_date = models.BooleanField(default=True)
+    privacy_gender = models.BooleanField(default=True)
+    privacy_college_name = models.BooleanField(default=True)
+    privacy_year_of_study = models.BooleanField(default=True)
+    privacy_about_me = models.BooleanField(default=True)
 
 #
 # @receiver(post_save, sender=User)
