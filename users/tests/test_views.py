@@ -10,6 +10,7 @@ class TestViews(TestCase):
         self.client = Client()
 
         self.view_profile_url = reverse('users:view_profile')
+        self.edit_profile_url = reverse('users:edit_profile')
 
         # create user
         self.username = 'testuser'
@@ -38,3 +39,8 @@ class TestViews(TestCase):
         response = self.client.post(self.view_profile_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'users/profile.html')
+
+    def test_edit_profile_view(self):
+        response = self.client.post(self.edit_profile_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'users/edit_profile.html')
