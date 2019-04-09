@@ -1,0 +1,33 @@
+<!--{% extends 'base.html' %}-->
+
+{% block head %}
+<title>Profile</title>
+<style>
+        .imageProfile {
+        border: 1px solid black;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+   <div class="imageProfile">
+    <img src="https://i.stack.imgur.com/l60Hf.png" alt="Paris" style="width:13%">
+    </div>
+<div class="container">
+    <div class="well">
+    <legend class="border-bottom mb-4">Profile</legend>
+        {% for field in profile_form %}
+            {{ field.label }}: {{ field.value }}<br><br>
+        {% endfor %}
+        {% for field in extra_form %}
+            {{ field.label }}: {{ field.value }}<br><br>
+        {% endfor %}
+    </div>
+</div>
+
+<!--</div>-->
+    <!--{% if user.userprofile.image %}-->
+    <!--{% endif %}-->
+<!--</div>-->
+
+{% endblock %}
