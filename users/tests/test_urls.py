@@ -11,3 +11,7 @@ class TestUrls(SimpleTestCase):
     def test_view_profile_url_is_resolved(self):
         url = reverse('users:view_profile')
         self.assertEqual(resolve(url).func, view_profile)
+
+    def test_edit_profile_url_is_resolved(self):
+        url = reverse('users:edit_profile')
+        self.assertEqual(resolve(url).func, edit_profile)
