@@ -93,7 +93,7 @@ class EditPersonalInfoForm(forms.ModelForm):
 class EditMoreInfoForm(forms.ModelForm):
     college_name = forms.CharField(max_length=50, help_text='Enter your collage name.')
     year_of_study = forms.ChoiceField(choices=[(x, x) for x in range(1, 7)])
-    about_me = forms.CharField(max_length=250, help_text='Tell something about you (max 250 characters).')
+    about_me = forms.CharField(max_length=250, help_text='Tell something about you (max 250 characters).', widget=forms.Textarea)
 
     class Meta:
         model = Profile
@@ -109,7 +109,17 @@ class PasswordAuthenticationForm(AuthenticationForm):
 
 
 class EditPrivacyForm(forms.ModelForm):
+    privacy_first_name = forms.BooleanField(label='first name', required=False)
+    privacy_last_name = forms.BooleanField(label='last name', required=False)
+    privacy_email = forms.BooleanField(label='email', required=False)
+    privacy_birth_date = forms.BooleanField(label='birth day', required=False)
+    privacy_gender = forms.BooleanField(label='gender', required=False)
+    privacy_college_name = forms.BooleanField(label='college name', required=False)
+    privacy_year_of_study = forms.BooleanField(label='year of study', required=False)
+    privacy_about_me = forms.BooleanField(label='about me', required=False)
+
     class Meta:
+
         model = Privacy
         fields = (
             'privacy_first_name',
@@ -121,20 +131,6 @@ class EditPrivacyForm(forms.ModelForm):
             'privacy_year_of_study',
             'privacy_about_me',
         )
-        # class ShowSelectedUserForm(forms.ModelForm):
-        #     class Meta:
-        #         model = User
-        #         widgets = {'any_field': HiddenInput(), }
-        #         fields = (
-        #             'privacy_first_name',
-        #             'privacy_last_name',
-        #             'privacy_email',
-        #             'privacy_birth_date',
-        #             'privacy_gender',
-        #             'privacy_college_name',
-        #             'privacy_year_of_study',
-        #             'privacy_about_me',
-        #         )
 
 
 class ExtraProfileForm(forms.ModelForm):
