@@ -12,6 +12,7 @@ class TestViews(TestCase):
         self.view_profile_url = reverse('users:view_profile')
         self.edit_profile_url = reverse('users:edit_profile')
         self.edit_privacy_url = reverse('users:edit_privacy')
+        self.search_users_url = reverse('users:search')
 
         # create user
         self.username = 'testuser'
@@ -77,6 +78,11 @@ class TestViews(TestCase):
         response = self.client.get(self.edit_privacy_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'users/edit_privacy.html')
+
+    def test_search_users(self):
+        response = self.client.get(self.search_users_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'users/search_users.html')
 
     def test_profile_user_matching(self):
         self.assertEqual(self.profile.user.username, 'testuser')
