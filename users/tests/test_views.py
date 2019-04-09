@@ -60,3 +60,7 @@ class TestViews(TestCase):
         response = self.client.get(self.edit_privacy_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'users/edit_privacy.html')
+
+    def test_profile_user_matching(self):
+        self.assertEqual(self.profile.user.username, 'testuser')
+        self.assertEqual(self.profile.user, self.user)
