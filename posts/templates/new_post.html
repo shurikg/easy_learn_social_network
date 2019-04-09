@@ -1,0 +1,13 @@
+{% block body %}
+{% load crispy_forms_tags %}
+
+<div class="container">
+    <title>create new post</title>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input class="btn btn-outline-info" type="submit" value="Add Post" />
+    </form>
+    <button>Add file</button>
+</div>
+{% endblock %}
