@@ -8,7 +8,7 @@
     </form>
     {% for u in users%}
         {% if u != user%}
-           <br><br><a href="{% url 'users:show_users_all' %}?user_name={{ u.id }}" >{{u.first_name}} {{u.last_name}} </a>
+           <br><br><a href="{% url 'users:selected_user' %}?user_id={{ u.id }}" >{{u.first_name}} {{u.last_name}} </a>
          {% endif %}
         {% endfor %}
     {% endblock %}
