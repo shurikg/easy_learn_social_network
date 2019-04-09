@@ -1,19 +1,23 @@
 from django.core import serializers
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm, NewUserProfileForm, NewUserDegreeForm, NewUserCourseForm, LoginForm
+from .forms import UserRegisterForm, NewUserProfileForm, NewUserDegreeForm, NewUserCourseForm, LoginForm, ProfileForm
 from formtools.wizard.views import SessionWizardView
 from django.contrib.auth.models import User
-from .models import Profile, UserDegrees, UserCourses, Course, Degree
+from .models import Profile, UserDegrees, UserCourses, Course, Degree, Privacy
 from django.urls import reverse
 from django.contrib.auth import authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import User
+from django.db.models import Q
 from .forms import (
     EditProfileForm,
     PasswordAuthenticationForm,
     EditPersonalInfoForm,
-    EditMoreInfoForm
+    EditMoreInfoForm,
+    ExtraProfileForm,
+    EditPrivacyForm
 )
 
 
@@ -217,3 +221,79 @@ def change_password(request):
 
         args = {'form': form}
         return render(request, 'users/change_password.html', args)
+
+
+def show_users(request):
+    users = User.objects.all()
+    args = {'users': users}
+
+    return render(request, 'users/search_users.html', args)
+
+
+def show_selected_user(request):
+    user_id = request.GET.get('user_name')
+    user = User.objects.get(id=user_id)
+
+    profile_obj = Profile.objects.get(user=user)
+    privacy_obj = Privacy.objects.get(user=user)
+
+    extra_form = ExtraProfileForm(instance=profile_obj, privacy_obj=privacy_obj)
+    profile_form = ProfileForm(instance=request.user, privacy_obj=privacy_obj)
+
+    context = {
+        'extra_form': extra_form,
+        'profile_form': profile_form,
+    }
+    return render(request, 'users/show_selected_user.html', context)
+
+
+def search_result(request):
+    query = request.GET.get('q')
+    if query:
+        users = User.objects.filter(Q(first_name=query) | Q(last_name=query))
+    else:
+        users = User.objects.all()
+    args = {'users': users}
+    return render(request, 'users/search_users.html', args)
+
+
+def edit_privacy(request):
+    privacy_obj = Privacy.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = EditPrivacyForm(request.POST, instance=privacy_obj)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('users:view_profile')
+        else:
+            messages.error(request, f'Invalid fields, your account has not been updated!')
+
+    else:
+        form = EditPrivacyForm(instance=privacy_obj)
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'users/edit_privacy.html', context)
+
+
+# @login_required
+# def test1(request):
+#     #user_id = request.GET.get('user_name')
+#     #user = User.objects.get(id=user_id)
+#
+#     profile_obj = Profile.objects.get(user=request.user)
+#     privacy_obj = Privacy.objects.get(user=request.user)
+#
+#     #profile_obj = Profile.objects.get(user=request.user)
+#     extra_form = ExtraProfileForm(instance=profile_obj, profile_obj=profile_obj, privacy_obj=privacy_obj)
+#     profile_form = EditProfileForm(instance=request.user)
+#
+#     context = {
+#         'extra_form': extra_form,
+#         'profile_form': profile_form,
+#     }
+#
+#     return render(request, 'users/test1.html', context)
