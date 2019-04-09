@@ -1,6 +1,7 @@
+{% extends "posts/base.html" %}
 {% block content %}
     {% for post in posts %}
-        <article class="media content-section">
+        <article class="content-section" >
           <div class="media-body">
             <div class="article-metadata">
               <a class="mr-2" href="#">{{ post.author }}</a>
@@ -10,7 +11,6 @@
                 <h3>{{ post.category }}</h3>
                 <p class="article-content">{{ post.body }}</p>
             </div>
-            <
           </div>
 
         </article>

@@ -1,5 +1,6 @@
-{% block body %}
+{% extends "posts/base.html" %}
 {% load crispy_forms_tags %}
+{% block content %}
 
 <div class="container">
     <title>create new post</title>
@@ -8,6 +9,6 @@
         {{ form|crispy }}
         <input class="btn btn-outline-info" type="submit" value="Add Post" />
     </form>
-    <button>Add file</button>
+    <input class="btn btn-outline-info" value="Add file" />
 </div>
-{% endblock %}
+{% endblock content %}

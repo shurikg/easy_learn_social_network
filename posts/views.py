@@ -4,16 +4,16 @@ from .models import Post
 from django.views.generic import ListView
 
 
-def home_posts(request):
-    context = {
-        'posts': Post.objects.all()
-    }
-    return render(request, 'home_posts.html', context)
+# def home_posts(request):
+#     context = {
+#         'posts': Post.objects.all()
+#     }
+#     return render(request, 'posts/home_posts.html', context)
 
 
 class PostListView(ListView):
     model = Post
-    template_name = 'home_posts.html'  # <app>/<model>_<viewtype>.html
+    template_name = 'posts/home_posts.html'  # <app>/<model>_<viewtype>.html
     context_object_name = 'posts'
     ordering = ['-date']
 
@@ -27,7 +27,7 @@ def create_new_post(request):
             post.save()
             return redirect('posts:home')
     form = NewPost
-    return render(request, 'new_post.html', {"form": form})
+    return render(request, 'posts/new_post.html', {"form": form})
 
 
 
