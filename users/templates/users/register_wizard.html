@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends "posts/base.html" %}
 {% load i18n %}
 {% load crispy_forms_tags %}
-{% block body %}
+{% block content %}
 <div class="content-section">
     <form method="POST">
         {% csrf_token %}
@@ -35,4 +35,4 @@
             </small>
         </div>
 </div>
-{% endblock %}
+{% endblock content %}
