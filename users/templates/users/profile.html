@@ -1,5 +1,5 @@
-<!--{% extends 'base.html' %}-->
-
+{% extends "posts/base.html" %}
+{% block content %}
 {% block head %}
 <title>Profile</title>
 <style>
@@ -28,10 +28,5 @@
         <a href="{% url 'users:edit_profile' %}" class="btn btn-default" >Edit profile</a>
     </div>
 </div>
-
-<!--</div>-->
-    <!--{% if user.userprofile.image %}-->
-    <!--{% endif %}-->
-<!--</div>-->
-
 {% endblock %}
+{% endblock content %}
