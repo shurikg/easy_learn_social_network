@@ -16,5 +16,7 @@ class Comments(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField(max_length=5000)
     postId = models.ForeignKey(Post, on_delete=models.CASCADE)
+    publish_date = models.DateTimeField(auto_now_add=True)
 
-
+    def __str__(self):
+        return '{0}-{1}'.format(self.postId.category, str(self.author.username))

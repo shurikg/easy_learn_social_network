@@ -14,4 +14,18 @@
       </div>
     </article>
     <a class="btn btn-outline-info mb-4" href="#">Add Comment</a>
+
+    <div class="main-comment-section">
+        {{ comments.count }} Comment{{ comments|pluralize }}
+        {% for comment in comments %}
+            <blockquote class="blockquote">
+                <p class="mb-0">{{ comment.comment }}</p>
+                <footer class="blockquote-footer">
+                    By <a class="mr-2" href="{% url 'users:selected_user' %}?user_id={{ comment.author.id }}">{{ comment.author|capfirst }}</a>,
+                    {{ comment.publish_date|date:"d F Y, h:m" }}
+                </footer>
+            </blockquote>
+        {% endfor %}
+    </div>
+
 {% endblock content %}
