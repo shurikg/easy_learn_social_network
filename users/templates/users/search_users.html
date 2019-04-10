@@ -1,6 +1,6 @@
-{% extends 'base.html' %}
+{% extends "posts/base.html" %}
 {% load crispy_forms_tags %}
-{% block body %}
+{% block content %}
 <div class="content-section">
     <form method="GET" action="{% url 'users:search' %}">
         <input name="q" value="{{request.GET.q}}" placeholder="search.."/>
@@ -11,5 +11,5 @@
            <br><br><a href="{% url 'users:selected_user' %}?user_id={{ u.id }}" >{{u.first_name}} {{u.last_name}} </a>
          {% endif %}
         {% endfor %}
-    {% endblock %}
 </div>
+{% endblock content %}
