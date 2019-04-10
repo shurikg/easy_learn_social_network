@@ -16,6 +16,7 @@ class PostListView(ListView):
     template_name = 'posts/Feed.html'  # <app>/<model>_<viewtype>.html
     context_object_name = 'posts'
     ordering = ['-date']
+    paginate_by = 5
 
 
 def create_new_post(request):
