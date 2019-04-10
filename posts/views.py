@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import NewPost
 from .models import Post
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 
 # def home_posts(request):
@@ -13,9 +13,15 @@ from django.views.generic import ListView
 
 class PostListView(ListView):
     model = Post
-    template_name = 'posts/home_posts.html'  # <app>/<model>_<viewtype>.html
+    template_name = 'posts/Feed.html'  # <app>/<model>_<viewtype>.html
     context_object_name = 'posts'
     ordering = ['-date']
+    paginate_by = 5
+
+
+class PostDetailView(DetailView):
+    model = Post
+    context_object_name = 'post'
 
 
 def create_new_post(request):

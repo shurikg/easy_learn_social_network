@@ -1,0 +1,17 @@
+{% extends "posts/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <article class="content-section" >
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="{% url 'users:selected_user' %}?user_id={{ post.author.id }}">{{ post.author }}</a>
+          <small class="text-muted">{{ post.date|date:"F d, Y" }}</small>
+        </div>
+        <div>
+            <h3>{{ post.category }}</h3>
+            <p class="article-content">{{ post.body }}</p>
+        </div>
+      </div>
+    </article>
+    <a class="btn btn-outline-info mb-4" href="#">Add Comment</a>
+{% endblock content %}
