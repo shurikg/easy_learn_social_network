@@ -13,7 +13,7 @@ from django.views.generic import ListView
 
 class PostListView(ListView):
     model = Post
-    template_name = 'posts/home_posts.html'  # <app>/<model>_<viewtype>.html
+    template_name = 'posts/Feed.html'  # <app>/<model>_<viewtype>.html
     context_object_name = 'posts'
     ordering = ['-date']
 
