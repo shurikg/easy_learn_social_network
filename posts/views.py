@@ -1,19 +1,22 @@
 from django.shortcuts import render, redirect
-from .forms import NewPost
+from .forms import NewPost, Comment
 from .models import Post
 from django.views.generic import ListView
+from users.models import Profile
 
 
-# def home_posts(request):
-#     context = {
-#         'posts': Post.objects.all()
-#     }
-#     return render(request, 'posts/home_posts.html', context)
+def home_posts(request):
+    other_posts = Post.objects.filter(category="other")
+    user = Profile.objects.get(user=request.user)
+    context = {
+        'posts': Post.objects.all(), 'study_posts': Post.objects.filter(category="other")
+    }
+    return render(request, 'posts/Feed.html', context)
 
 
 class PostListView(ListView):
     model = Post
-    template_name = 'posts/home_posts.html'  # <app>/<model>_<viewtype>.html
+    template_name = 'posts/Feed.html'  # <app>/<model>_<viewtype>.html
     context_object_name = 'posts'
     ordering = ['-date']
 
@@ -28,9 +31,3 @@ def create_new_post(request):
             return redirect('posts:home')
     form = NewPost
     return render(request, 'posts/new_post.html', {"form": form})
-
-
-
-
-# class PostDetailView(DetailView):
-#     model = Post
