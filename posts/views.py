@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
+from .models import Post, Comments
+from django.views.generic import ListView, DetailView
 from .forms import NewPost, Comment
-from .models import Post
-from django.views.generic import ListView
 from users.models import Profile
 
 
@@ -19,6 +19,19 @@ class PostListView(ListView):
     template_name = 'posts/Feed.html'  # <app>/<model>_<viewtype>.html
     context_object_name = 'posts'
     ordering = ['-date']
+    paginate_by = 5
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'posts/post_detail.html'
+    context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super(PostDetailView, self).get_context_data(**kwargs)
+        # context['comments'] = self.object.comment_set.all()
+        context['comments'] = Comments.objects.filter(postId_id=self.object).order_by('-publish_date')
+        return context
 
 
 def create_new_post(request):

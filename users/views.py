@@ -238,7 +238,7 @@ def show_selected_user(request):
     privacy_obj = Privacy.objects.get(user=user)
 
     extra_form = ExtraProfileForm(instance=profile_obj, privacy_obj=privacy_obj)
-    profile_form = ProfileForm(instance=request.user, privacy_obj=privacy_obj)
+    profile_form = ProfileForm(instance=user, privacy_obj=privacy_obj)
 
     context = {
         'extra_form': extra_form,

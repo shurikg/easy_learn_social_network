@@ -12,6 +12,7 @@ class Profile(models.Model):
     college_name = models.CharField(max_length=50)
     year_of_study = models.PositiveIntegerField(validators=[MaxValueValidator(10)])
     about_me = models.TextField(max_length=250, null=True, blank=True, default='')
+    friends = models.ManyToManyField('Profile', blank=True)
 
     def __str__(self):
         return str(self.user)
