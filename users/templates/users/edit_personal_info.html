@@ -1,7 +1,6 @@
-
-{% extends 'base.html' %}
+{% extends "posts/base.html" %}
 {% load crispy_forms_tags %}
-{% block body %}
+{% block content %}
     <div class="content-section">
         <form method="POST">
             {% csrf_token %}
@@ -109,4 +108,4 @@ body {font-family: Arial, Helvetica, sans-serif;}
   color: white;
 }
 </style>
-{% endblock body %}
+{% endblock content %}

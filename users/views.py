@@ -243,14 +243,14 @@ def show_users(request):
 
 '''
 def show_selected_user(request):
-    user_id = request.GET.get('user_name')
+    user_id = request.GET.get('user_id')
     user = User.objects.get(id=user_id)
 
     profile_obj = Profile.objects.get(user=user)
     privacy_obj = Privacy.objects.get(user=user)
 
     extra_form = ExtraProfileForm(instance=profile_obj, privacy_obj=privacy_obj)
-    profile_form = ProfileForm(instance=request.user, privacy_obj=privacy_obj)
+    profile_form = ProfileForm(instance=user, privacy_obj=privacy_obj)
 
     context = {
         'extra_form': extra_form,

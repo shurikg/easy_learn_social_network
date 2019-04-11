@@ -1,5 +1,6 @@
-<!--{% extends 'base.html' %}-->
-
+{% extends "posts/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
 {% block head %}
 <title>Profile</title>
 <style>
@@ -38,3 +39,4 @@
 <!--</div>-->
 
 {% endblock %}
+{% endblock content %}
