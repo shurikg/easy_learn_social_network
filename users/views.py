@@ -1,12 +1,14 @@
+#from django.contrib.gis.gdal.prototypes.srs import from_user_input
 from django.core import serializers
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import UserRegisterForm, NewUserProfileForm, NewUserDegreeForm, NewUserCourseForm, LoginForm, ProfileForm
 from formtools.wizard.views import SessionWizardView
 from django.contrib.auth.models import User
-from .models import Profile, UserDegrees, UserCourses, Course, Degree, Privacy
+from .models import Profile, UserDegrees, UserCourses, Course, Degree, Privacy, FriendRequest
 from django.urls import reverse
-from django.contrib.auth import authenticate, update_session_auth_hash
+from django.contrib.auth import authenticate, update_session_auth_hash, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
@@ -20,6 +22,7 @@ from .forms import (
     EditPrivacyForm
 )
 
+User = get_user_model()
 
 # def register(request):
 #     if request.method == 'POST':
@@ -101,11 +104,21 @@ def home_page(request):
 #     print(x)
 #     return render(request, 'users/test.html')
 
+'''
 @login_required
 def view_profile(request):
     user_obj = request.user
     profile_obj = Profile.objects.get(user=user_obj)
     args = {'user': user_obj, 'profile': profile_obj}
+    return render(request, 'users/profile.html', args)
+'''
+
+
+def view_profile(request):
+    user_obj = request.user
+    profile_obj = Profile.objects.get(user=user_obj)
+    friend_requests_obj = FriendRequest.objects.filter(from_user=request.user)
+    args = {'user': user_obj, 'profile': profile_obj, 'friend_requests': friend_requests_obj}
     return render(request, 'users/profile.html', args)
 
 
@@ -226,10 +239,9 @@ def change_password(request):
 def show_users(request):
     users = User.objects.all()
     args = {'users': users}
-
     return render(request, 'users/search_users.html', args)
 
-
+'''
 def show_selected_user(request):
     user_id = request.GET.get('user_name')
     user = User.objects.get(id=user_id)
@@ -245,6 +257,37 @@ def show_selected_user(request):
         'profile_form': profile_form,
     }
     return render(request, 'users/show_selected_user.html', context)
+'''
+
+
+def show_selected_user(request, slug):
+    user_id = request.GET.get('user_name')
+    user = User.objects.get(id=user_id)
+
+    profile_obj = Profile.objects.get(user=user)
+    privacy_obj = Privacy.objects.get(user=user)
+
+    extra_form = ExtraProfileForm(instance=profile_obj, privacy_obj=privacy_obj)
+    profile_form = ProfileForm(instance=request.user, privacy_obj=privacy_obj)
+
+    other_profile = Profile.objects.filter(slug=slug).first()
+    u = other_profile.user
+    sent_friend_request = FriendRequest.objects.filter(from_user=other_profile.user)
+
+    button_status = 'none'
+    if other_profile not in request.user.profile.friends.all():
+        button_status = 'not_friend'
+        if len(FriendRequest.objects.filter(from_user = request.user).filter(to_user=other_profile.user)) == 1:
+            button_status = 'friend_request_sent'
+
+    context = {
+        'extra_form': extra_form,
+        'profile_form': profile_form,
+        'u': u,
+        'sent_friend_request': sent_friend_request,
+        'button_status': button_status
+    }
+    return render(request, 'users/show_selected_user.html/{}'.format(request.user.profile.slug), context)
 
 
 def search_result(request):
@@ -275,7 +318,6 @@ def edit_privacy(request):
     context = {
         'form': form,
     }
-
     return render(request, 'users/edit_privacy.html', context)
 
 
@@ -297,3 +339,39 @@ def edit_privacy(request):
 #     }
 #
 #     return render(request, 'users/test1.html', context)
+
+def send_friend_request(request, id):
+    if request.user.is_authenticated():
+        user = get_object_or_404(User, id=id)
+        frequest, created = FriendRequest.objects.get_or_create(
+            from_user=request.user,
+            to_user=user)
+        return HttpResponseRedirect('/users/{}'.format(request.user.profile.slug))
+
+
+def cancel_friend_request(request, id):
+    if request.user.is_authenticated():
+        user = get_object_or_404(User, id=id)
+        frequest = FriendRequest.objects.filter(
+            from_user=request.user,
+            to_user=user).first()
+        frequest.delete()
+    return HttpResponseRedirect('/users/{}'.format(request.user.profile.slug))
+
+
+def accept_friend_request(request, id):
+    from_user = get_object_or_404(User, id=id)
+    frequest = FriendRequest.objects.filter(from_user=from_user, to_user=request.user).first()
+    user1 = frequest.to_user
+    user2 = from_user
+    user1.profile.friends.add(user2.profile)
+    user2.profile.friends.add(user1.profile)
+    frequest.delete()
+    return HttpResponseRedirect('/users/{}'.format(request.user.profile.slug))
+    
+    
+def delete_friend_request(request, id):
+    from_user = get_object_or_404(User, id=id)
+    frequest = FriendRequest.objects.filter(from_user=from_user, to_user=request.user).first()
+    frequest.delete()
+    return HttpResponseRedirect('/users/{}'.format(request.user.profile.slug))
