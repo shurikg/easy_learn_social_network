@@ -15,15 +15,11 @@ class Profile(models.Model):
     year_of_study = models.PositiveIntegerField(validators=[MaxValueValidator(10)])
     about_me = models.TextField(max_length=250, null=True, blank=True, default='')
     friends = models.ManyToManyField("profile", blank=True)
-    slug = models.SlugField(default='')
 
     def __str__(self):
         return str(self.user)
 
-    def get_absolute_url(self):
-        return "/users/{}".format(self.slug)
-
-
+'''
 def post_save_user_model_receiver(sender, instance, created, *args, **kwargs):
     if created:
         try:
@@ -33,6 +29,7 @@ def post_save_user_model_receiver(sender, instance, created, *args, **kwargs):
 
 
 post_save.connect(post_save_user_model_receiver, sender=User)
+'''
 
 
 class Course(models.Model):
@@ -83,6 +80,9 @@ class Privacy(models.Model):
     privacy_college_name = models.BooleanField(default=True)
     privacy_year_of_study = models.BooleanField(default=True)
     privacy_about_me = models.BooleanField(default=True)
+
+    def __str__(self):
+        return "privacy {}".format(self.user.username)
 
 
 class FriendRequest(models.Model):
