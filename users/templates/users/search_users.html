@@ -9,7 +9,7 @@
     </form>
     {% for u in users%}
         {% if u != user%}
-    <p><a href="{% url 'users:selected_user' %}?user_id={{ u.id }}" class="btn btn-default">{{u.first_name}} {{u.last_name}} </a></p>
+            <p><a class='btn btn-default' href="/user/show-users/selected-user/{{ u.id }}">{{u.first_name}} {{u.last_name}}</a></p>
          {% endif %}
         {% endfor %}
 </div>
