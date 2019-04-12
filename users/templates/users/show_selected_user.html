@@ -28,9 +28,9 @@
 
 <div>
     {% if button_status == 'not_friend' %}
-            <small><a class='btn btn-primary' href="/users/friend-request/send/{{ u.id }}">Add Friend</a></small>
+            <small><a class='btn btn-primary' href="/user/friend-request/send/{{ user.id }}">Add Friend</a></small>
     {% elif button_status == 'friend_request_sent' %}
-            <small><a class="btn btn-warning" href="/users/friend-request/cancel/{{ u.id }}">Cancel Request</a></small>
+            <small><a class="btn btn-warning" href="/user/friend-request/cancel/{{ user.id }}">Cancel Request</a></small>
     {% endif %}
 </div>
 <!--</div>-->
