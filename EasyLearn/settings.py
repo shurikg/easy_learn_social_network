@@ -130,6 +130,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
 
-LOGIN_REDIRECT_URL = '/user/profile/'
+LOGIN_REDIRECT_URL = '/post/feed/'
 
 LOGOUT_REDIRECT_URL = '/'
