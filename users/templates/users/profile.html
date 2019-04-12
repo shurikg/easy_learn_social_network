@@ -1,5 +1,4 @@
 {% extends "posts/base.html" %}
-{% block content %}
 {% block head %}
 <title>Profile</title>
 <style>
@@ -9,7 +8,9 @@
     </style>
 {% endblock %}
 
-{% block body %}
+{% block content %}
+    <div class="content-section">
+
    <div class="imageProfile">
     <img src="https://i.stack.imgur.com/l60Hf.png" alt="Paris" style="width:13%">
     </div>
@@ -36,11 +37,11 @@
 			<small><a class='btn btn-warning' href="/user/friend-request/delete/{{ r_request.from_user.id }}">Ignore</a></small>
 		{% endfor %}
 </div>
+</div>
 
 <!--</div>-->
     <!--{% if user.userprofile.image %}-->
     <!--{% endif %}-->
 <!--</div>-->
 
-{% endblock %}
 {% endblock content %}
