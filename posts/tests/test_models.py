@@ -19,7 +19,7 @@ class TestModels(TestCase):
 
         # create post
         self.post1 = Post.objects.create(
-            category='Other',
+            category='other',
             body='test1',
             author=self.user
         )
@@ -36,8 +36,14 @@ class TestModels(TestCase):
             author=self.user
         )
 
+        self.comment2 = Comments.objects.create(
+            comment='comment2',
+            postId=self.post2,
+            author=self.user
+        )
+
     def test_post_Other_exist(self):
-        self.assertEqual(self.post1.category, 'Other')
+        self.assertEqual(self.post1.category, 'other')
         self.assertEqual(self.post1.body, 'test1')
 
     def test_post_Study_exist(self):
@@ -45,9 +51,13 @@ class TestModels(TestCase):
         self.assertEqual(self.post2.body, 'test2')
 
     def test_post_not_exist(self):
-        self.assertNotEqual(self.post1.category, 'Other1')
+        self.assertNotEqual(self.post1.category, 'other1')
         self.assertNotEqual(self.post1.body, 'test11')
 
     def test_comment_exist(self):
         self.assertEqual(self.comment1.comment, 'comment1')
 
+    def test_get_only_post_comment(self):
+        comments = Comments.objects.filter(postId=self.post1)
+        for comment in comments:
+            self.assertEqual(comment.postId.id, self.post1.id)
