@@ -17,14 +17,19 @@
     </div>
 <div class="container">
     <div class="well">
-
     <legend class="border-bottom mb-4">Profile</legend>
-        {% for field in profile_form %}
-            {{ field.label }}: {{ field.value }}<br><br>
-        {% endfor %}
-        {% for field in extra_form %}
-            {{ field.label }}: {{ field.value }}<br><br>
-        {% endfor %}
+        <p>Username: {{ user }}</p>
+        {% if button_status == 'friends' %}
+            {% for field in profile_form %}
+                {{ field.label }}: {{ field.value }}<br><br>
+            {% endfor %}
+            {% for field in extra_form %}
+                {{ field.label }}: {{ field.value }}<br><br>
+            {% endfor %}
+        {% else %}
+            <p>First name: {{ user.first_name }}</p>
+            <p>Last name: {{ user.last_name }}</p>
+        {% endif %}
     </div>
 </div>
 
