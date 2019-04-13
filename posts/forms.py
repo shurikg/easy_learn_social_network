@@ -22,7 +22,9 @@ class NewPost(forms.ModelForm):
 
 
 class Comment(forms.ModelForm):
-    comment = forms.CharField(max_length=5000, widget=forms.TextInput(attrs={'placeholder': 'write comment...'}))
+    comment = forms.CharField(max_length=250,
+                              widget=forms.TextInput(attrs={'placeholder': 'write comment...'}),
+                              help_text='Please write your comment (maximum 250 characters)')
 
     class Meta:
         model = Comments
