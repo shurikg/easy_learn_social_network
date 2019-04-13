@@ -27,3 +27,8 @@ class TestModels(TestCase):
     def test_post_is_assigned_slug_on_creation(self):
         self.assertEqual(self.post1.category, 'Other')
         self.assertEqual(self.post1.body, 'test1')
+
+    def test_post_not_exits(self):
+        self.assertNotEqual(self.post1.category, 'Other1')
+        self.assertNotEqual(self.post1.body, 'test11')
+
