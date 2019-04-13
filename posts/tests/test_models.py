@@ -24,11 +24,21 @@ class TestModels(TestCase):
             author=self.user
         )
 
-    def test_post_is_assigned_slug_on_creation(self):
+        self.post2 = Post.objects.create(
+            category='OOP',
+            body='test2',
+            author=self.user
+        )
+
+    def test_post_Other_exist(self):
         self.assertEqual(self.post1.category, 'Other')
         self.assertEqual(self.post1.body, 'test1')
 
-    def test_post_not_exits(self):
+    def test_post_Study_exist(self):
+        self.assertEqual(self.post2.category, 'OOP')
+        self.assertEqual(self.post2.body, 'test2')
+
+    def test_post_not_exist(self):
         self.assertNotEqual(self.post1.category, 'Other1')
         self.assertNotEqual(self.post1.body, 'test11')
 
