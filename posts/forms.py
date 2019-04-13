@@ -2,10 +2,12 @@ from django import forms
 from posts.models import Post, Comments
 from users.models import Course
 
+OTHER_CATEGORY = 'other'
+
 
 class NewPost(forms.ModelForm):
     CATEGORY_CHOICES = (
-        ('other', 'Other'),
+        (OTHER_CATEGORY, 'Other'),
     )
     COURSES = tuple(map(lambda course_name: (course_name, course_name), Course.objects.only('course_name')))
     category_list = CATEGORY_CHOICES + COURSES
