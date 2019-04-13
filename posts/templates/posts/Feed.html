@@ -33,3 +33,7 @@
         {% endif %}
     {% endif %}
 {% endblock content %}
+
+{% block sidebar %}
+    <a href="{% url 'posts:newPost' %}" class="btn btn-outline-info">Create Post</a>
+{% endblock %}
