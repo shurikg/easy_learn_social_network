@@ -133,3 +133,5 @@ MESSAGE_TAGS = {
 LOGIN_REDIRECT_URL = '/post/feed/'
 
 LOGOUT_REDIRECT_URL = '/'
+
+LOGIN_URL = '/login/'
