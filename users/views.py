@@ -114,6 +114,7 @@ def view_profile(request):
 '''
 
 
+@login_required
 def view_profile(request):
     user_obj = request.user
     profile_obj = Profile.objects.get(user=user_obj)
@@ -237,6 +238,7 @@ def change_password(request):
         return render(request, 'users/change_password.html', args)
 
 
+@login_required
 def show_users(request):
     users = User.objects.all()
     args = {'users': users}
@@ -261,6 +263,7 @@ def show_selected_user(request):
 '''
 
 
+@login_required
 def show_selected_user(request, id):
     user = get_object_or_404(User, id=id)
 
@@ -321,6 +324,7 @@ def show_selected_user(request, slug):
 '''
 
 
+@login_required
 def search_result(request):
     query = request.GET.get('q')
     if query:
@@ -331,6 +335,7 @@ def search_result(request):
     return render(request, 'users/search_users.html', args)
 
 
+@login_required
 def edit_privacy(request):
     privacy_obj = Privacy.objects.get(user=request.user)
 
@@ -371,6 +376,8 @@ def edit_privacy(request):
 #
 #     return render(request, 'users/test1.html', context)
 
+
+@login_required
 def send_friend_request(request, id):
     #if request.user.is_authenticated():
     user = get_object_or_404(User, id=id)
@@ -379,6 +386,8 @@ def send_friend_request(request, id):
         to_user=user)
     return redirect('users:selected_user', id)
 
+
+@login_required
 def cancel_friend_request(request, id):
     #if request.user.is_authenticated():
     user = get_object_or_404(User, id=id)
@@ -389,6 +398,7 @@ def cancel_friend_request(request, id):
     return redirect('users:selected_user', id)
 
 
+@login_required
 def accept_friend_request(request, id):
     from_user = get_object_or_404(User, id=id)
     frequest = FriendRequest.objects.filter(from_user=from_user, to_user=request.user).first()
@@ -400,6 +410,7 @@ def accept_friend_request(request, id):
     return HttpResponseRedirect('/user/profile/')
 
 
+@login_required
 def delete_friend_request(request, id):
     from_user = get_object_or_404(User, id=id)
     frequest = FriendRequest.objects.filter(from_user=from_user, to_user=request.user).first()
@@ -407,6 +418,7 @@ def delete_friend_request(request, id):
     return HttpResponseRedirect('/user/profile/')
 
 
+@login_required
 def list_of_friends(request, user_id):
     user_obj = get_object_or_404(User, id=user_id)
     profile_obj = Profile.objects.get(user=user_obj)

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Post, Comments
 from django.views.generic import ListView, DetailView
@@ -14,6 +15,7 @@ from users.models import Profile
 #     return render(request, 'posts/Feed.html', context)
 
 
+@login_required
 class PostListView(ListView):
     model = Post
     template_name = 'posts/Feed.html'  # <app>/<model>_<viewtype>.html
@@ -22,6 +24,7 @@ class PostListView(ListView):
     paginate_by = 5
 
 
+@login_required
 class PostDetailView(DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
@@ -34,6 +37,7 @@ class PostDetailView(DetailView):
         return context
 
 
+@login_required
 def create_new_post(request):
     if request.method == 'POST':
         form = NewPost(request.POST)
