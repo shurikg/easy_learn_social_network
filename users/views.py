@@ -71,7 +71,6 @@ class RegisterFormWizard(SessionWizardView):
 
         return redirect(reverse('users:home_page'))
 
-
 # def login_page(request):
 #     if request.method == 'POST':
 #         form = LoginForm(request.POST)
@@ -272,18 +271,18 @@ def show_selected_user(request, id):
 
     sent_friend_request = FriendRequest.objects.filter(from_user=user)
 
-    button_status = 'none'
+    friend_status = 'friends'
     if profile_obj not in request.user.profile.friends.all():
-        button_status = 'not_friend'
+        friend_status = 'not_friend'
         if len(FriendRequest.objects.filter(from_user=request.user).filter(to_user=user)) == 1:
-            button_status = 'friend_request_sent'
+            friend_status = 'friend_request_sent'
 
     context = {
         'extra_form': extra_form,
         'profile_form': profile_form,
         'user': user,
         'sent_friend_request': sent_friend_request,
-        'button_status': button_status
+        'button_status': friend_status
     }
     return render(request, 'users/show_selected_user.html', context)
 
