@@ -2,8 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Post, Comments
 from django.views.generic import ListView, DetailView
-from .forms import NewPost, Comment
-from users.models import Profile
+from .forms import NewPost, Comment, OTHER_CATEGORY
+from users.models import Profile, UserCourses
+from django.contrib.auth.models import User
 
 
 # def home_posts(request):
@@ -21,6 +22,19 @@ class PostListView(ListView):
     context_object_name = 'posts'
     ordering = ['-date']
     paginate_by = 5
+
+    def get_queryset(self):
+        profile_obj = Profile.objects.get(user=self.request.user)
+        friends_list = tuple(friend.user.username for friend in profile_obj.friends.all())
+        all_posts = Post.objects.all()
+        user_courses = tuple(course.course_id.course_name for course in UserCourses.objects.filter(user_id=profile_obj))
+        posts_to_show = []
+        for post in all_posts:
+            if post.category == OTHER_CATEGORY and post.author.username in (friends_list + (self.request.user.username,)):
+                posts_to_show.append(post)
+            elif post.category in user_courses:
+                posts_to_show.append(post)
+        return posts_to_show
 
 
 class PostDetailView(DetailView):
