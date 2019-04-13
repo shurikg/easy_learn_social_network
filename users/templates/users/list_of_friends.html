@@ -1,0 +1,26 @@
+{% extends "posts/base.html" %}
+{% block navbar %}
+    <h4> Friends list of {{ user.first_name }} {{ user.last_name }} </h4>
+{% endblock navbar %}
+
+{% block sidebar %}
+    <a class='btn btn-secondary' onclick="window.close()">Close</a>
+{% endblock sidebar %}
+
+{% block content %}
+    {% for friend in friends_list %}
+        <a class='btn btn-link' onclick="close_and_redirect_parent('/user/show-users/selected-user/{{ friend.user.id }}')">
+            {{ friend.user.first_name }} {{ friend.user.last_name }}
+        </a>
+        <br><br>
+    {% endfor %}
+
+    <script language="javascript" type="text/javascript">
+
+        function close_and_redirect_parent(url) {
+            window.opener.location.href = url;
+            window.close();
+        }
+    </script>
+
+{% endblock content %}
