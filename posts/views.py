@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Post, Comments
@@ -41,11 +42,32 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
     context_object_name = 'post'
+    form_class = Comment
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data()
+        return super(PostDetailView, self).render_to_response(context)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        comment_form = self.form_class(request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.author = self.request.user
+            new_comment.postId = self.object
+            new_comment.save()
+            self.form_class = Comment
+        else:
+            messages.error(request, f'Some error occurred while posting your comment.')
+            self.form_class = comment_form
+        context = self.get_context_data()
+        return super(PostDetailView, self).render_to_response(context)
 
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
-        # context['comments'] = self.object.comment_set.all()
         context['comments'] = Comments.objects.filter(postId_id=self.object).order_by('-publish_date')
+        context['comment_form'] = self.form_class
         return context
 
 
@@ -60,3 +82,4 @@ def create_new_post(request):
             return redirect('posts:feed')
     form = NewPost
     return render(request, 'posts/new_post.html', {"form": form})
+
