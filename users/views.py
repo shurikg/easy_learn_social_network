@@ -404,3 +404,12 @@ def delete_friend_request(request, id):
     frequest = FriendRequest.objects.filter(from_user=from_user, to_user=request.user).first()
     frequest.delete()
     return HttpResponseRedirect('/user/profile/')
+
+
+def list_of_friends(request, user_id):
+    user_obj = get_object_or_404(User, id=user_id)
+    profile_obj = Profile.objects.get(user=user_obj)
+    friends_list = profile_obj.friends.all()
+    context = {'user': user_obj,
+               'friends_list': friends_list}
+    return render(request, 'users/list_of_friends.html', context)
