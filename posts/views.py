@@ -41,6 +41,6 @@ def create_new_post(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            return redirect('posts:home')
+            return redirect('posts:feed')
     form = NewPost
     return render(request, 'posts/new_post.html', {"form": form})
