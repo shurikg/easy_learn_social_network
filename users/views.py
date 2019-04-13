@@ -411,7 +411,7 @@ def list_of_friends(request, user_id):
     user_obj = get_object_or_404(User, id=user_id)
     profile_obj = Profile.objects.get(user=user_obj)
     friends_list = profile_obj.friends.all()
-    paginator = Paginator(friends_list, 1)  # Show 10 contacts per page
+    paginator = Paginator(friends_list, 10)  # Show 10 contacts per page
     page = request.GET.get('page')
     paginator_friends_list = paginator.get_page(page)
     context = {'user': user_obj,
