@@ -5,13 +5,13 @@ from .forms import NewPost, Comment
 from users.models import Profile
 
 
-def home_posts(request):
-    other_posts = Post.objects.filter(category="other")
-    user = Profile.objects.get(user=request.user)
-    context = {
-        'posts': Post.objects.all(), 'study_posts': Post.objects.filter(category="other")
-    }
-    return render(request, 'posts/Feed.html', context)
+# def home_posts(request):
+#     other_posts = Post.objects.filter(category="other")
+#     user = Profile.objects.get(user=request.user)
+#     context = {
+#         'posts': Post.objects.all(), 'study_posts': Post.objects.filter(category="other")
+#     }
+#     return render(request, 'posts/Feed.html', context)
 
 
 class PostListView(ListView):
