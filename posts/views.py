@@ -15,7 +15,6 @@ from users.models import Profile
 #     return render(request, 'posts/Feed.html', context)
 
 
-@login_required
 class PostListView(ListView):
     model = Post
     template_name = 'posts/Feed.html'  # <app>/<model>_<viewtype>.html
@@ -24,7 +23,6 @@ class PostListView(ListView):
     paginate_by = 5
 
 
-@login_required
 class PostDetailView(DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
