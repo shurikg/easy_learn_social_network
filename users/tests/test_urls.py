@@ -32,4 +32,9 @@ class TestUrls(TestCase):
         url = reverse('users:list_of_friends', args=(user_id,))
         self.assertEqual(resolve(url).func, list_of_friends)
 
+    def test_show_selected_user_url_is_is_resolved(self):
+        user_id = self.user.id
+        url = reverse('users:selected_user', args=(user_id,))
+        self.assertEqual(resolve(url).func, show_selected_user)
+
 
