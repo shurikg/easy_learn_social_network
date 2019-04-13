@@ -13,7 +13,12 @@
         </div>
       </div>
     </article>
-    <a class="btn btn-outline-info mb-4" href="#">Add Comment</a>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form|crispy }}
+        <input class="btn btn-outline-info mb-4" type="submit" value="Add Comment" />
+    </form>
 
     <div class="main-comment-section">
         {{ comments.count }} Comment{{ comments|pluralize }}
