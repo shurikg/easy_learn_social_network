@@ -1,5 +1,5 @@
 from django.test import TestCase
-from posts.models import Post
+from posts.models import Post, Comments
 from django.contrib.auth.models import User
 
 
@@ -30,6 +30,12 @@ class TestModels(TestCase):
             author=self.user
         )
 
+        self.comment1 = Comments.objects.create(
+            comment='comment1',
+            postId=self.post1,
+            author=self.user
+        )
+
     def test_post_Other_exist(self):
         self.assertEqual(self.post1.category, 'Other')
         self.assertEqual(self.post1.body, 'test1')
@@ -41,4 +47,7 @@ class TestModels(TestCase):
     def test_post_not_exist(self):
         self.assertNotEqual(self.post1.category, 'Other1')
         self.assertNotEqual(self.post1.body, 'test11')
+
+    def test_comment_exist(self):
+        self.assertEqual(self.comment1.comment, 'comment1')
 
