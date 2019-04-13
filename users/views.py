@@ -70,7 +70,11 @@ class RegisterFormWizard(SessionWizardView):
         user_course.course_id = course
         user_course.save()
 
-        return redirect(reverse('users:home_page'))
+        privacy = Privacy()
+        privacy.save()
+
+        messages.success(self.request, f'Registration successful!')
+        return redirect(reverse('home'))
 
 # def login_page(request):
 #     if request.method == 'POST':
