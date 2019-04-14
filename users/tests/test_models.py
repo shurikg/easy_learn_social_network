@@ -45,3 +45,5 @@ class TestModels(TestCase):
     def test_to_user_friend_request_slug_on_creation(self):
         self.assertEqual(self.friend_request.to_user, self.user)
 
+    def test_from_user_friend_request_slug_on_creation(self):
+        self.assertEqual(self.friend_request.from_user, self.user)
