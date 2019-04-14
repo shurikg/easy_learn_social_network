@@ -29,6 +29,7 @@ class TestModels(TestCase):
     def test_some_test(self):
         assert 1 == 1
 
+    # test creation profile
     def test_profile_is_assigned_slug_on_creation(self):
         self.assertEqual(self.profile.birth_date, '1999-1-1')
         self.assertEqual(self.profile.gender, 'male')
