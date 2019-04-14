@@ -44,11 +44,6 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
     form_class = Comment
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        context = self.get_context_data()
-        return super(PostDetailView, self).render_to_response(context)
-
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         comment_form = self.form_class(request.POST)
@@ -61,6 +56,11 @@ class PostDetailView(DetailView):
         else:
             messages.error(request, f'Some error occurred while posting your comment.')
             self.form_class = comment_form
+        context = self.get_context_data()
+        return super(PostDetailView, self).render_to_response(context)
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
         context = self.get_context_data()
         return super(PostDetailView, self).render_to_response(context)
 
