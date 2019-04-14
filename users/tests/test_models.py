@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from users.models import Profile
+from users.models import Profile,FriendRequest
 
 
 class TestModels(TestCase):
@@ -26,6 +26,11 @@ class TestModels(TestCase):
             about_me='some text'
         )
 
+        self.friend_request = FriendRequest.objects.create(
+            from_user=self.user,
+            to_user=self.user
+        )
+
     def test_some_test(self):
         assert 1 == 1
 
@@ -36,3 +41,7 @@ class TestModels(TestCase):
         self.assertEqual(self.profile.college_name, 'SCE')
         self.assertEqual(self.profile.year_of_study, '3')
         self.assertEqual(self.profile.about_me, 'some text')
+
+    def test_to_user_friend_request_slug_on_creation(self):
+        self.assertEqual(self.friend_request.to_user, self.user)
+
