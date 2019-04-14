@@ -37,4 +37,8 @@ class TestUrls(TestCase):
         url = reverse('users:selected_user', args=(user_id,))
         self.assertEqual(resolve(url).func, show_selected_user)
 
+    def test_accept_friend_request_is_resolved(self):
+        user_id = self.user.id
+        url = reverse('users:accept_friend_request', args=(user_id,))
+        self.assertEqual(resolve(url).func, accept_friend_request)
 
