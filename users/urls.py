@@ -15,7 +15,7 @@ urlpatterns = [
     #url(r'^(?P<slug>[\w-]+)/$', views.show_selected_user),
     path('show-users/results/', views.search_result, name='search'),
     url(r'^friend-request/send/(?P<id>[\w-]+)/$', views.send_friend_request),
-    url(r'^friend-request/cancel/(?P<id>[\w-]+)/$', views.cancel_friend_request),
+    url(r'^friend-request/cancel/(?P<id>[\w-]+)/$', views.cancel_friend_request,name='cancel_friend_request'),
     url(r'^friend-request/accept/(?P<id>[\w-]+)/$', views.accept_friend_request, name='accept_friend_request'),
     url(r'^friend-request/delete/(?P<id>[\w-]+)/$', views.delete_friend_request, name='delete_friend_request'),
     path('friends/<int:user_id>', views.list_of_friends, name='list_of_friends'),
