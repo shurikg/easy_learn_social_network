@@ -28,4 +28,4 @@ class Comment(forms.ModelForm):
 
     class Meta:
         model = Comments
-        fields = ('comment',)
+        fields = ('comment', )
