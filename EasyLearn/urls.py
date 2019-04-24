@@ -16,7 +16,6 @@ Including another URLconf
 from django.urls import path, include
 from django.contrib import admin
 from users import views as users_views
-from posts import views as posts_views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
