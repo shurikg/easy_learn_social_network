@@ -3,28 +3,37 @@ pipeline {
     stages {
         stage('Git') {
             steps{
-                // echo 'Getting the code from GitHub...'
                 git 'https://github.com/jonbir3/easy_learn_social_network.git'
             }
         }
         stage('Requirements'){
             steps{
                 withEnv(["HOME=${env.WORKSPACE}"]) {
-                    // echo 'Installing Requirements...'
                     sh 'pip3 install --user -r requirements.txt'
                 }
             }
         }
         stage('Run Tests'){
             steps{
-                // echo 'Testing User app...'
-                sh "python3 manage.py test users"
+                withEnv(["HOME=${env.WORKSPACE}"]) {
+                    withCredentials([string(credentialsId: 'SECRET_KEY', variable: 'EASY_LEARN_PROJECT_SK')]) {
+                        echo 'Testing...'
+                        sh """
+                            python3 manage.py makemigrations users
+                            python3 manage.py makemigrations posts
+                            python3 manage.py migrate
+                            python3 manage.py jenkins
+                        """
+					}
+
+                }
             }
+
         }
         stage('Results') {
             steps{
-                echo 'Printing test results...'
-                // junit '**/nosetests.xml'
+                echo 'Printing users test results...'
+                junit 'reports/junit.xml'
             }
         }
     }
