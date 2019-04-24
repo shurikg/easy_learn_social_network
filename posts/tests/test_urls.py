@@ -7,8 +7,10 @@ from users.models import Course
 class TestUrls(TestCase):
 
     def setUp(self):
-        self.oop_course = Course(1, 'OOP')
-        self.oop_course.save()
+        self.course = Course.objects.create(
+            course_id='1',
+            course_name='OOP'
+        )
 
     def test_view_create_new_post_url_is_resolved(self):
         url = reverse('posts:newPost')
