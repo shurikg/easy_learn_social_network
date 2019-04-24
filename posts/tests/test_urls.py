@@ -8,7 +8,7 @@ class TestUrls(TestCase):
 
     def setUp(self):
         self.course = Course.objects.create(
-            course_id='1',
+            course_id=1,
             course_name='OOP'
         )
 
