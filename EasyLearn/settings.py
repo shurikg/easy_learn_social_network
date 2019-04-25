@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'posts.apps.PostsConfig',
     'private_messages.apps.PrivateMessagesConfig',
+    'files.apps.FilesConfig',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
