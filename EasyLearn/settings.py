@@ -136,3 +136,8 @@ LOGIN_REDIRECT_URL = '/post/feed/'
 LOGOUT_REDIRECT_URL = '/'
 
 LOGIN_URL = '/login/'
+
+PROJECT_APPS = [
+    'users',
+    'posts'
+]
