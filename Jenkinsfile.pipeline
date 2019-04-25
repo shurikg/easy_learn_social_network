@@ -33,8 +33,10 @@ pipeline {
         stage('Results') {
             steps{
                 echo 'Printing users test results...'
-                junit 'reports/junit.xml'
-                junit 'reports/coverage.xml'
+                junit """
+                    reports/junit.xml
+                    reports/coverage.xml
+                """
             }
         }
     }
