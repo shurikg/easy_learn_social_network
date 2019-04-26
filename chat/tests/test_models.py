@@ -44,3 +44,7 @@ class TestModels(TestCase):
         message_date = str(self.message.sent_at.date())
         date_now = str(datetime.datetime.now().date())
         self.assertEqual(message_date, date_now)
+
+    def test_sender_and_recipient(self):
+        self.assertEqual(self.message.sender, self.sender)
+        self.assertEqual(self.message.recipient, self.recipient)
