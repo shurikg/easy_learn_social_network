@@ -141,7 +141,8 @@ LOGIN_URL = '/login/'
 
 PROJECT_APPS = [
     'users',
-    'posts'
+    'posts',
+    'chat',
 ]
 
 JENKINS_TASKS = (
