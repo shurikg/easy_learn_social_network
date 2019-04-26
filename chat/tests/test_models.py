@@ -48,3 +48,6 @@ class TestModels(TestCase):
     def test_sender_and_recipient(self):
         self.assertEqual(self.message.sender, self.sender)
         self.assertEqual(self.message.recipient, self.recipient)
+
+    def test_body(self):
+        self.assertEqual(self.message.body, 'test body')
