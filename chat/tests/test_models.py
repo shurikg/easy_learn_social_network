@@ -1,6 +1,7 @@
 from django.test import TestCase
 from chat.models import Message
 from django.contrib.auth.models import User
+import datetime
 
 
 class TestModels(TestCase):
@@ -38,3 +39,8 @@ class TestModels(TestCase):
     def test_save_message(self):
         message = Message.objects.get(subject='test subject')
         self.assertIsNotNone(message)
+
+    def test_sent_at_date(self):
+        message_date = str(self.message.sent_at.date())
+        date_now = str(datetime.datetime.now().date())
+        self.assertEqual(message_date, date_now)
