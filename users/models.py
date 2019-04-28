@@ -92,7 +92,7 @@ class FriendRequest(models.Model):
 
 
 class Rules(models.Model):
-    text_rules = models.TextField(max_length=50000)
+    text_rules = models.TextField(max_length=50000, default="Undefined")
 
     def __str__(self):
         return '{0}'.format(str(self.text_rules))
