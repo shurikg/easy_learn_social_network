@@ -433,3 +433,8 @@ def list_of_friends(request, user_id):
     context = {'user': user_obj,
                'friends_list': paginator_friends_list}
     return render(request, 'users/list_of_friends.html', context)
+
+
+def web_rules(request):
+    return render(request, 'Rules.html')
+
