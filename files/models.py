@@ -9,6 +9,7 @@ class File(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     create_at = models.DateTimeField()
     upload_at = models.DateTimeField(auto_now_add=True)
+    file_size = models.DecimalField(decimal_places=2)
 
     def __str__(self):
         return self.file_name
