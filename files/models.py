@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from users.models import Course
+from users.models import Course, Degree
 
 
 class File(models.Model):
@@ -12,6 +12,7 @@ class File(models.Model):
     upload_at = models.DateTimeField(auto_now_add=True)
     file_size = models.DecimalField(decimal_places=2)
     category = models.ForeignKey(Course, on_delete=models.CASCADE)
+    related_degrees = models.ManyToManyField(Degree, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.file_name
