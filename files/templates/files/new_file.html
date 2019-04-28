@@ -1,0 +1,13 @@
+{% extends "posts/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container">
+    <title>file</title>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input class="btn btn-outline-info" type="submit" value="Add File" />
+    </form>
+</div>
+{% endblock content %}
