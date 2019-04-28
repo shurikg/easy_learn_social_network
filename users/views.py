@@ -6,7 +6,7 @@ from django.contrib import messages
 from .forms import UserRegisterForm, NewUserProfileForm, NewUserDegreeForm, NewUserCourseForm, LoginForm, ProfileForm
 from formtools.wizard.views import SessionWizardView
 from django.contrib.auth.models import User
-from .models import Profile, UserDegrees, UserCourses, Course, Degree, Privacy, FriendRequest
+from .models import Profile, UserDegrees, UserCourses, Course, Degree, Privacy, FriendRequest, Rules
 from django.urls import reverse
 from django.contrib.auth import authenticate, update_session_auth_hash, get_user_model
 from django.contrib.auth.decorators import login_required
@@ -436,5 +436,8 @@ def list_of_friends(request, user_id):
 
 
 def web_rules(request):
-    return render(request, 'Rules.html')
+    context = {
+     'rules_text': Rules.objects.get(id=1)
+    }
+    return render(request, 'Rules.html', context)
 
