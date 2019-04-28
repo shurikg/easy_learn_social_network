@@ -28,6 +28,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('user/', include(('users.urls', 'users'), namespace='users')),
     path('post/', include(('posts.urls', 'posts'), namespace='posts')),
+    path('file/', include(('files.urls', 'files'), namespace='files')),
 ]
 
 if settings.DEBUG:
