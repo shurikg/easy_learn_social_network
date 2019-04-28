@@ -56,3 +56,7 @@ class TestUrls(TestCase):
         user_id = self.user.id
         url = reverse('users:send_friend_request', args=(user_id,))
         self.assertEqual(resolve(url).func, send_friend_request)
+
+    def test_view_web_rules_url_is_resolved(self):
+        url = reverse('users:rules')
+        self.assertEqual(resolve(url).func, web_rules)
