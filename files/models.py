@@ -10,9 +10,9 @@ class File(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     create_at = models.DateTimeField()
     upload_at = models.DateTimeField(auto_now_add=True)
-    file_size = models.DecimalField(decimal_places=2)
+    file_size = models.DecimalField(max_digits=27, decimal_places=2)
     category = models.ForeignKey(Course, on_delete=models.CASCADE)
-    related_degrees = models.ManyToManyField(Degree, on_delete=models.CASCADE)
+    related_degrees = models.ManyToManyField(Degree)
 
     def __str__(self):
         return self.file_name
