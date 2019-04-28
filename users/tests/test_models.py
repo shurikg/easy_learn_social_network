@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from users.models import Profile,FriendRequest
+from users.models import Profile, FriendRequest, Rules
 
 
 class TestModels(TestCase):
@@ -31,8 +31,16 @@ class TestModels(TestCase):
             to_user=self.user
         )
 
+        # create rules
+        self.rules = Rules.objects.create(
+            text_rules='test'
+        )
+
     def test_some_test(self):
         assert 1 == 1
+
+    def test_rules_is_assigned_slug_on_creation(self):
+        self.assertEqual(self.rules.text_rules, 'test')
 
     # test creation profile
     def test_profile_is_assigned_slug_on_creation(self):
