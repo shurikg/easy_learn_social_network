@@ -89,13 +89,11 @@ class FriendRequest(models.Model):
 
     def __str__(self):
         return "From {}, To {}".format(self.from_user.username, self.to_user.username)
-#
-# @receiver(post_save, sender=User)
-# def create_user_profile(sender, instance, created, **kwargs):
-#     if created:
-#         Profile.objects.create(user=instance)
-#
-#
-# @receiver(post_save, sender=User)
-# def save_user_profile(sender, instance, **kwargs):
-#     instance.profile.save()
+
+
+class Rules(models.Model):
+    text_rules = models.TextField(max_length=50000, default="Undefined")
+
+    def __str__(self):
+        return '{0}'.format(str(self.text_rules))
+

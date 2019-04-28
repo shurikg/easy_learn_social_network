@@ -9,4 +9,4 @@ admin.site.register(UserDegrees)
 admin.site.register(UserCourses)
 admin.site.register(Privacy)
 admin.site.register(FriendRequest)
-
+admin.site.register(Rules)
