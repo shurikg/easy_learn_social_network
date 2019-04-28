@@ -1,8 +1,13 @@
+
 {% extends 'files/layout.html' %}
 
 {% block title %} All Orders {% endblock %}
 
 {% block body %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+    </form>
                 <section>
                     <div class="section-body">
                         <!-- BEGIN DATATABLE 2 -->
@@ -22,26 +27,23 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Name</th>
-                                                        <th>Phone</th>
-                                                        <th>Address</th>
-                                                        <th>Delivery Date</th>
-                                                        <th>Product</th>
-                                                        <th>Payment Option</th>
-                                                        <th>Amount</th>
-                                                        <th>Status</th>
+                                                        <th>category</th>
+                                                        <th>Owner</th>
+                                                        <th>create date</th>
+                                                        <th>upload Date</th>
+                                                        <th>size</th>
                                                         <th width="150px">Buttons</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {% for order in orders %}
+                                                    {% for file in files %}
                                                         <tr class="gradeX">
-                                                            <td>{{ order.name }}</td>
-                                                            <td>{{ order.phone }}</td>
-                                                            <td>{{ order.address }}</td>
-                                                            <td>{{ order.delivery_date }}</td>
-                                                            <td>{{ order.product_id }}</td>
-                                                            <td>{{ order.payment_option }}</td>
-                                                            <td>{{ order.amount }}</td>
+                                                            <td>{{ file.name }}</td>
+                                                            <td>{{ file.category }}</td>
+                                                            <td>{{ file.owner }}</td>
+                                                            <td>{{ file.create_at }}</td>
+                                                            <td>{{ file.upload_at }}</td>
+                                                            <td>{{ file.file_size }}</td>
                                                             <td><span class="badge" style="background: #0aa89e"> {{ order.order_status }}</span></td>
                                                             <td>
                                                                 <a href="{% url 'edit' order.id %}" class="btn ink-reaction btn-floating-action btn-warning"><i class="md md-edit"></i> </a>
