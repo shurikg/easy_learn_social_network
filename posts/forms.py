@@ -22,7 +22,7 @@ class NewPost(forms.ModelForm):
     body = forms.CharField(max_length=5000, widget=forms.Textarea)
 
     class Meta:
-        model = Post
+        model = Course
         fields = ('category', 'body',)
 
 
