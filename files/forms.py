@@ -1,23 +1,26 @@
 from django import forms
-from posts.models import Post, Comments
-from users.models import Course
-
-OTHER_CATEGORY = 'other'
+from files.models import File
+from users.models import Course, Degree
 
 
-class SelectCategoryForm(forms.ModelForm):
-    CATEGORY_CHOICES = (
-        (OTHER_CATEGORY, 'Other'),
-    )
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
+class CreateNewFile(forms.ModelForm):
     COURSES = ()
+    DEGREES = ()
     try:
         COURSES = tuple(map(lambda course_name: (course_name, course_name), Course.objects.only('course_name')))
+        DEGREES = tuple(map(lambda degree: (degree, degree), Degree.objects.only('degree_name')))
     except Exception as e:
         print(e)
-    category_list = CATEGORY_CHOICES + COURSES
 
-    category = forms.ChoiceField(choices=category_list,required=False)
+    category = forms.ChoiceField(choices=COURSES)
+    related_degrees = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=DEGREES)
+    create_at = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}))
+    file_url = forms.FileField(label='File')
 
     class Meta:
-        model = Post
-        fields = ('category',)
+        model = File
+        fields = ('category', 'related_degrees', 'create_at', 'file_url',)
