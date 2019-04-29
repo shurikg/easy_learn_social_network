@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+
+from files.models import File
 from .models import Post, Comments
 from django.views.generic import ListView, DetailView
 from .forms import NewPost, Comment, OTHER_CATEGORY
@@ -83,3 +85,13 @@ def create_new_post(request):
     form = NewPost
     return render(request, 'posts/new_post.html', {"form": form})
 
+def download_file(request, file_id):
+    print(file_id)
+    file = File.objects.get(id=file_id)
+    #files = File.objects.all()
+
+    #file = File.objects.all()
+
+    #file = File.objects.filter(category=category)
+    args = {'file': file, }
+    return render(request, 'files/download_file.html', args)
