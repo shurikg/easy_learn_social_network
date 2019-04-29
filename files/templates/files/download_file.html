@@ -1,0 +1,12 @@
+{% extends "posts/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="content-section">
+            <fieldset class="form-group mw-25">
+                <legend class="border-bottom mb-4">File Details</legend>
+                    <a href="{{ file.file_url.url }}" target="_blank" class="glyphicon-download-alt">Download file</a>
+            </fieldset>
+
+    </div>
+{% endblock content %}
