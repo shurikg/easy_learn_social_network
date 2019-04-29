@@ -38,6 +38,7 @@ def add_new_file(request):
 def download_file(request, file_id):
     print(file_id)
     file = File.objects.get(id=file_id)
+
     #files = File.objects.all()
 
     #file = File.objects.all()
