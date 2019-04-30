@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+
 from users.models import Course, Degree
 import os
 
@@ -21,3 +23,8 @@ class File(models.Model):
     def get_file_extension(self):
         name, extension = os.path.splitext(self.file_url.name)
         return str(extension)
+
+    def save(self, **kwargs):
+        if not self.id:
+            self.create_at = timezone.now()
+        super(File, self).save(**kwargs)
