@@ -35,14 +35,9 @@ def add_new_file(request):
     form = CreateNewFile
     return render(request, 'files/new_file.html', {"form": form})
 
+
 def download_file(request, file_id):
-    print(file_id)
     file = File.objects.get(id=file_id)
-
-    #files = File.objects.all()
-
-    #file = File.objects.all()
-
-    #file = File.objects.filter(category=category)
     args = {'file': file, }
     return render(request, 'files/download_file.html', args)
+
