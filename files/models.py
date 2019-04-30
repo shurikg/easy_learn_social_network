@@ -28,3 +28,5 @@ class File(models.Model):
         if not self.id:
             self.create_at = timezone.now()
         super(File, self).save(**kwargs)
+        self.file_name = '' + str(self.id) + '.' + self.file_type
+        print(self.file_name)
