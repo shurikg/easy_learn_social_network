@@ -22,7 +22,7 @@ class File(models.Model):
 
     def get_file_extension(self):
         name, extension = os.path.splitext(self.file_url.name)
-        return str(extension)
+        return str(extension)[1:]  # remove the '.'
 
     def save(self, **kwargs):
         if not self.id:
