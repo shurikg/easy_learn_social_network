@@ -7,6 +7,7 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
+        <input class="btn btn-outline-info" type="submit" value="Submit" />
     </form>
 </div>
 {% endblock content %}
