@@ -21,14 +21,6 @@ def show_files(request):
 
 @login_required
 def add_new_file(request):
-    if request.method == 'POST':
-        form = CreateNewFile(request.POST)
-        if form.is_valid():
-            file = form.save(commit=False)
-            file.owner = request.user
-            print('DONE!!!!!!')
-            file.save()
-            return redirect('files:add-file')
     form = CreateNewFile
     return render(request, 'files/new_file.html', {"form": form})
 
