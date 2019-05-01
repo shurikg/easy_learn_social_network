@@ -5,6 +5,13 @@
 <div class="container">
     <title>file</title>
     <form method="POST" enctype="multipart/form-data">
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <p class="alert alert-danger"> {{ error }} </p>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
         {% csrf_token %}
         {{ form|crispy }}
         <input class="btn btn-outline-info" type="submit" value="Submit" />
