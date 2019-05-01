@@ -22,5 +22,5 @@ class CreateNewFile(forms.ModelForm):
     file_url = forms.FileField(label='File')
 
     class Meta:
-        model = File
+        model = Course
         fields = ('category', 'related_degrees', 'create_at', 'file_url',)

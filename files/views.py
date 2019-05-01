@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from files.forms import CreateNewFile
 
 # Create your views here.
+from files.models import File
 from users.views import User
 
 
@@ -30,3 +31,10 @@ def add_new_file(request):
             return redirect('files:add-file')
     form = CreateNewFile
     return render(request, 'files/new_file.html', {"form": form})
+
+
+def download_file(request, file_id):
+    file = File.objects.get(id=file_id)
+    args = {'file': file, }
+    return render(request, 'files/download_file.html', args)
+
