@@ -4,10 +4,9 @@
 
 <div class="container">
     <title>file</title>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
-        <input class="btn btn-outline-info" type="submit" value="Add File" />
     </form>
 </div>
 {% endblock content %}
