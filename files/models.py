@@ -32,6 +32,7 @@ class File(models.Model):
             self.create_at = timezone.now()
         super(File, self).save(**kwargs)
         initial_path = self.file_url.path
+        self.file_type = self.get_file_extension()
         self.file_name = '' + str(self.id) + '.' + str(self.file_type)
         new_path = settings.MEDIA_ROOT + '/' + UPLOAD_TO_DIR + self.file_name
         os.rename(initial_path, new_path)
