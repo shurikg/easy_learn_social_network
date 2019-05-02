@@ -1,11 +1,18 @@
 {% extends "posts/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-
+    <style>
+        header > h5 { display: inline-block; }
+        header span { margin-left: 50px; }
+    </style>
     <div class="content-section">
             <fieldset class="form-group mw-25">
                 <legend class="border-bottom mb-4">File Details</legend>
+                {% if file %}
+                    <header><h5>File name:</h5> <span>{{ file.file_name }}</span></header>
+                    <header><h5>Category:</h5> <span>{{ file.category }}</span></header>
                     <a href="{{ file.file_url.url }}" target="_blank" class="glyphicon-download-alt">Download file</a>
+                {% endif %}
             </fieldset>
     </div>
 {% endblock content %}
