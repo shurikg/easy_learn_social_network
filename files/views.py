@@ -28,7 +28,8 @@ def add_new_file(request):
             file.owner = request.user
             file.save()
             return redirect('files:add_file')
-    form = CreateNewFile
+    else:
+        form = CreateNewFile
     return render(request, 'files/new_file.html', {"form": form})
 
 

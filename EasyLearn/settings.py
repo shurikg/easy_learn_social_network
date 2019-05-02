@@ -143,6 +143,7 @@ PROJECT_APPS = [
     'users',
     'posts',
     'chat',
+    'files',
 ]
 
 JENKINS_TASKS = (
