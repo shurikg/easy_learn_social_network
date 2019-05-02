@@ -83,6 +83,7 @@ def create_new_post(request):
             if 'add_file' in request.POST:
                 file_form = CreateNewFileForm
                 return render(request, 'posts/new_post.html', {"post_form": post_form, "file_form": file_form})
+            return redirect('posts:feed')
     post_form = NewPostForm
     # if 'add_file' in request.POST:
     #     file_form = CreateNewFileForm
