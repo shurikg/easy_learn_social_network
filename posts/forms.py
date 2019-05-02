@@ -5,7 +5,7 @@ from users.models import Course
 OTHER_CATEGORY = 'other'
 
 
-class NewPost(forms.ModelForm):
+class NewPostForm(forms.ModelForm):
     category_rules = 'By selecting the "Other" option, only your friends can view the post. ' \
                      'Otherwise the post will be set to public.'
 
