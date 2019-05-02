@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 
 from files.models import File
 from users.models import Course, Degree
+from users.views import User
 
 
 class DateInput(forms.DateInput):
@@ -36,9 +37,11 @@ class CreateNewFileForm(forms.ModelForm):
 OTHER_CATEGORY = 'other'
 
 
-class categoryForm(forms.ModelForm):
-    category = forms.ModelChoiceField(queryset=Course.objects.all(),required=False)
+class filterFilesForm(forms.ModelForm):
+    category = forms.ModelChoiceField(queryset=Course.objects.all(), required=False)
+    degree = forms.ModelChoiceField(queryset=Degree.objects.all(), required=False)
+    user = forms.ModelChoiceField(queryset=User.objects.all(), required=False)
 
     class Meta:
         model = File
-        fields = ('category',)
+        fields = ('category', 'degree', 'user')
