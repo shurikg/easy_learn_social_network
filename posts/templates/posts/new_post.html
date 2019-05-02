@@ -8,7 +8,7 @@
         {% csrf_token %}
         {{ form|crispy }}
         <div>
-            <a href="{% url 'posts:newPost' %}" class="btn btn-outline-info">add file</a>
+            <a href="{% url 'posts:newPost' %}" name="add_file" class="btn btn-outline-info">add file</a>
         </div>
         <br>
         <div>
