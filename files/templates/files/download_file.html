@@ -15,6 +15,10 @@
                             <td>{{ file.category }}</td>
                         </tr>
                         <tr>
+                            <td><h5>Uploaded by:</h5></td>
+                            <td><a class="mr-2" href="/user/show-users/selected-user/{{ file.owner.id }}">{{ file.owner }}</a></td>
+                        </tr>
+                        <tr>
                             <td><h5>Created at:</h5></td>
                             <td>{{ file.create_at }}</td>
                         </tr>
