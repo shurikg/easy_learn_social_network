@@ -8,12 +8,12 @@
         {% csrf_token %}
         {{ form|crispy }}
         <div>
-            <a href="{% url 'posts:newPost' %}" name="add_file" class="btn btn-outline-info">add file</a>
-        </div>
-        <br>
-        <div>
             <input class="btn btn-outline-info" type="submit" value="Add Post" />
         </div>
     </form>
 </div>
 {% endblock content %}
+
+{% block sidebar %}
+    <a href="{% url 'posts:newPost' %}" name="add_file" class="btn btn-outline-info">add file</a>
+{% endblock %}
