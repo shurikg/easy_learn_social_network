@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Post, Comments
 from django.views.generic import ListView, DetailView
-from .forms import NewPost, Comment, OTHER_CATEGORY
+from .forms import NewPostForm, Comment, OTHER_CATEGORY
 from users.models import Profile, UserCourses
 from django.contrib.auth.models import User
 
@@ -74,12 +74,17 @@ class PostDetailView(DetailView):
 @login_required
 def create_new_post(request):
     if request.method == 'POST':
-        form = NewPost(request.POST)
+        form = NewPostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
+            # if 'add_file' in request.POST:
+            #     #file_form =
+            #     return redirect('files:add_file')
             return redirect('posts:feed')
-    form = NewPost
-    return render(request, 'posts/new_post.html', {"form": form})
+    # if 'add_file' in request.POST:
+    #     return redirect('files:add_file')
+    post_form = NewPostForm
+    return render(request, 'posts/new_post.html', {"post_form": post_form})
 

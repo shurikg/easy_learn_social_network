@@ -12,7 +12,7 @@ class DateInput(forms.DateInput):
 EXTENSIONS_WHITELIST = ('pdf', 'docx', 'doc', 'jpg', 'png', 'jpeg', 'txt', 'zip', 'rar')
 
 
-class CreateNewFile(forms.ModelForm):
+class CreateNewFileForm(forms.ModelForm):
     category = forms.ModelChoiceField(queryset=Course.objects.all())
     related_degrees = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                                      queryset=Degree.objects.all(),
