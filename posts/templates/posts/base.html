@@ -33,7 +33,7 @@
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                   {% if user.is_authenticated %}
-                    <a class="nav-item nav-link" href="{% url 'files:show_files' %}">files</a>
+                    <a class="nav-item nav-link" href="{% url 'files:show_files' %}">Search files</a>
                     <a class="nav-item nav-link" href="{% url 'users:search' %}">Find Friends</a>
                     <a class="nav-item nav-link" href="{% url 'posts:feed' %}">Feed</a>
                     <a class="nav-item nav-link" href="{% url 'users:view_profile' %}">Profile</a>
@@ -49,6 +49,7 @@
         </header>
     {% endblock navbar %}
     {% block main %}
+    {% block content1 %}{% endblock %}
     <main role="main" class="container">
         <div class="row">
             <div class="col-md-8">
