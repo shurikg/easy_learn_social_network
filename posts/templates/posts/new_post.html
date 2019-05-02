@@ -7,7 +7,13 @@
     <form method="POST">
         {% csrf_token %}
         {{ form|crispy }}
-        <input class="btn btn-outline-info" type="submit" value="Add Post" />
+        <div>
+            <a href="{% url 'posts:newPost' %}" class="btn btn-outline-info">add file</a>
+        </div>
+        <br>
+        <div>
+            <input class="btn btn-outline-info" type="submit" value="Add Post" />
+        </div>
     </form>
 </div>
 {% endblock content %}
