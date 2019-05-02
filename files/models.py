@@ -36,6 +36,12 @@ class File(models.Model):
         else:
             return '{0:.2f} MB'.format(size_in_bytes / (1024**2))
 
+    def get_str_of_related_degrees(self):
+        output = ''
+        for degree in self.related_degrees.all():
+            output += degree.degree_name + ', '
+        return output[:-2]
+
     def save(self, **kwargs):
         if not self.id:
             self.create_at = timezone.now()
