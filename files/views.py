@@ -27,6 +27,7 @@ def add_new_file(request):
             file = form.save(commit=False)
             file.owner = request.user
             file.save()
+            form.save_m2m()
             return redirect('files:add_file')
     else:
         form = CreateNewFile
