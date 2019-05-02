@@ -12,7 +12,7 @@ from users.views import User
 def show_files(request):
     files = File.objects.all()
     form = categoryForm(request.POST)
-    args = {'files1': files, 'form': form}
+    args = {'files': files, 'form': form}
     return render(request, 'files/show_files.html', args)
 
 
