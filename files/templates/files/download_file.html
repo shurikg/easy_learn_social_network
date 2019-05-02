@@ -18,6 +18,10 @@
                             <td><h5>Created at:</h5></td>
                             <td>{{ file.create_at }}</td>
                         </tr>
+                        <tr>
+                            <td><h5>File size:</h5></td>
+                            <td>{{ file.file_size }}</td>
+                        </tr>
                     </table>
                     <a href="{{ file.file_url.url }}" target="_blank" class="glyphicon-download-alt">Download file</a>
                 {% endif %}
