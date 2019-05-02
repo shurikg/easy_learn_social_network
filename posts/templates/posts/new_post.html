@@ -2,20 +2,22 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-{% if post_form %}
 <div class="container">
     <title>create new post</title>
     <form method="POST">
         {% csrf_token %}
         {{ post_form|crispy }}
         <div>
+            <input class="btn btn-outline-info" name="add_file" type="submit" value="add file" />
+            {% if file_form %}
+                {% csrf_token %}
+                {{ file_form|crispy }}
+            {% endif %}
+        </div>
+        <br>
+        <div>
             <input class="btn btn-outline-info" type="submit" value="Add Post" />
         </div>
     </form>
 </div>
-{% endif %}
 {% endblock content %}
-
-{% block sidebar %}
-    <a href="{% url 'posts:newPost' %}" name="add_file" class="btn btn-outline-info">add file</a>
-{% endblock %}
