@@ -8,16 +8,15 @@
         {% csrf_token %}
         {{ post_form|crispy }}
         <div>
+            <input class="btn btn-outline-info" name="add_file" type="submit" value="add file" />
+            {% if file_form %}
+                {% csrf_token %}
+                {{ file_form|crispy }}
+            {% endif %}
+        </div>
+        <div>
             <input class="btn btn-outline-info" type="submit" value="Add Post" />
         </div>
     </form>
 </div>
 {% endblock content %}
-
-{% block sidebar %}
-    <input class="btn btn-outline-info" name="add_file" type="submit" value="add file" />
-    {% if file_form %}
-        {% csrf_token %}
-        {{ file_form|crispy }}
-    {% endif %}
-{% endblock %}
