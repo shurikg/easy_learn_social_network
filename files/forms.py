@@ -31,3 +31,24 @@ class CreateNewFile(forms.ModelForm):
                 self.add_error('file_url', 'The file extension is not allowed.')
                 # raise ValidationError('The file extension is not allowed.')
         return file
+
+
+OTHER_CATEGORY = 'other'
+
+
+class categoryForm(forms.ModelForm):
+    CATEGORY_CHOICES = (
+        (OTHER_CATEGORY, 'Other'),
+    )
+    COURSES = ()
+    try:
+        COURSES = tuple(map(lambda course_name: (course_name, course_name), Course.objects.only('course_name')))
+    except Exception as e:
+        print(e)
+    category_list = CATEGORY_CHOICES + COURSES
+
+    category = forms.ChoiceField(choices=category_list)
+
+    class Meta:
+        model = File
+        fields = ('category',)

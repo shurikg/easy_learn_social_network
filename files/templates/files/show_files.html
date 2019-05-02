@@ -5,10 +5,12 @@
 {% block title %} All Files {% endblock %}
 
 {% block body %}
+
     <form method="POST">
         {% csrf_token %}
         {{ form|crispy }}
     </form>
+
                 <section>
                     <div class="section-body">
                         <!-- BEGIN DATATABLE 2 -->
@@ -33,7 +35,6 @@
                                                         <th>create date</th>
                                                         <th>upload Date</th>
                                                         <th>size</th>
-                                                        <th>size</th>
                                                         <th width="150px">Buttons</th>
                                                     </tr>
                                                 </thead>
@@ -55,8 +56,8 @@
                                                 </tbody>
                                             </table>
                                         </div><!--end .table-responsive -->
-                                    </div>   
-                                </div>       
+                                    </div>
+                                </div>
                             </div><!--end .col -->
                         </div><!--end .row -->
                         <!-- END DATATABLE 2 -->
