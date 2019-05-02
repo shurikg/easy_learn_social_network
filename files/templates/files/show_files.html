@@ -41,14 +41,14 @@
                                                 <tbody>
                                                     {% for file in files %}
                                                         <tr class="gradeX">
-                                                            <td>{{ file.name }}</td>
+                                                            <td>{{ file.file_name }}</td>
                                                             <td>{{ file.category }}</td>
                                                             <td>{{ file.owner }}</td>
                                                             <td>{{ file.create_at }}</td>
                                                             <td>{{ file.upload_at }}</td>
                                                             <td>{{ file.file_size }}</td>
                                                             <td>
-                                                                <a href="{% url 'files:download_file' file.id %}" class="btn btn-primary btn-sm" target="_blank">Download</a>
+                                                                <a href="{% url 'files:download_file' file.id %}" class="btn btn-primary btn-sm">Download</a>
                                                             </td>
                                                         </tr>
                                                     {% endfor %}
