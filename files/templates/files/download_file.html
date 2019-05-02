@@ -22,6 +22,10 @@
                             <td><h5>File size:</h5></td>
                             <td>{{ file.file_size }}</td>
                         </tr>
+                        <tr>
+                            <td><h5>Uploaded at:</h5></td>
+                            <td>{{ file.upload_at }}</td>
+                        </tr>
                     </table>
                     <a href="{{ file.file_url.url }}" target="_blank" class="glyphicon-download-alt">Download file</a>
                 {% endif %}
