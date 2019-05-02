@@ -2,16 +2,18 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
+{% if post_form %}
 <div class="container">
     <title>create new post</title>
     <form method="POST">
         {% csrf_token %}
-        {{ form|crispy }}
+        {{ post_form|crispy }}
         <div>
             <input class="btn btn-outline-info" type="submit" value="Add Post" />
         </div>
     </form>
 </div>
+{% endif %}
 {% endblock content %}
 
 {% block sidebar %}

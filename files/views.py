@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render, redirect
-from files.forms import CreateNewFile, categoryForm
+from files.forms import CreateNewFileForm, categoryForm
 
 # Create your views here.
 from files.models import File
@@ -19,7 +19,7 @@ def show_files(request):
 @login_required
 def add_new_file(request):
     if request.method == 'POST':
-        form = CreateNewFile(request.POST, request.FILES)
+        form = CreateNewFileForm(request.POST, request.FILES)
         if form.is_valid():
             file = form.save(commit=False)
             file.owner = request.user
@@ -27,7 +27,7 @@ def add_new_file(request):
             form.save_m2m()
             return redirect('files:add_file')
     else:
-        form = CreateNewFile
+        form = CreateNewFileForm
     return render(request, 'files/new_file.html', {"form": form})
 
 
