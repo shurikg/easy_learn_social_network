@@ -21,7 +21,7 @@ class File(models.Model):
     related_degrees = models.ManyToManyField(Degree, blank=True)
 
     def __str__(self):
-        return self.file_name
+        return str(self.file_name)
 
     def get_file_extension(self):
         name, extension = os.path.splitext(self.file_url.name)
@@ -33,7 +33,10 @@ class File(models.Model):
         super(File, self).save(**kwargs)
         initial_path = self.file_url.path
         self.file_type = self.get_file_extension()
-        self.file_name = '' + str(self.id) + '.' + str(self.file_type)
+        owner_username = str(self.owner).replace(' ', '')
+        file_category = str(self.category).replace(' ', '')
+        self.file_name = '' + str(self.id) + '_' + owner_username + '_' + file_category + '.' + str(self.file_type)
         new_path = settings.MEDIA_ROOT + '/' + UPLOAD_TO_DIR + self.file_name
         os.rename(initial_path, new_path)
+        self.file_url.name = os.path.join(UPLOAD_TO_DIR, self.file_name)
         super(File, self).save(**kwargs)
