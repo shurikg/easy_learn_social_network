@@ -6,12 +6,10 @@
 
 {% block body %}
 
-{% block content %}
     <form method="POST">
         {% csrf_token %}
         {{ form|crispy }}
     </form>
- {% endblock content %}
 
                 <section>
                     <div class="section-body">
