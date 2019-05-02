@@ -37,17 +37,7 @@ OTHER_CATEGORY = 'other'
 
 
 class categoryForm(forms.ModelForm):
-    CATEGORY_CHOICES = (
-        (OTHER_CATEGORY, 'Other'),
-    )
-    COURSES = ()
-    try:
-        COURSES = tuple(map(lambda course_name: (course_name, course_name), Course.objects.only('course_name')))
-    except Exception as e:
-        print(e)
-    category_list = CATEGORY_CHOICES + COURSES
-
-    category = forms.ChoiceField(choices=category_list)
+    category = forms.ModelChoiceField(queryset=Course.objects.all(),required=False)
 
     class Meta:
         model = File
