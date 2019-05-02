@@ -16,7 +16,7 @@ class File(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     create_at = models.DateField(null=True)
     upload_at = models.DateTimeField(auto_now_add=True)
-    file_size = models.DecimalField(max_digits=27, decimal_places=2, null=True, blank=True)
+    file_size = models.CharField(max_length=10, null=True, blank=True)
     category = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
     related_degrees = models.ManyToManyField(Degree, blank=True)
 
@@ -27,9 +27,19 @@ class File(models.Model):
         name, extension = os.path.splitext(self.file_url.name)
         return str(extension)[1:]  # remove the '.'
 
+    def get_file_size(self):
+        size_in_bytes = self.file_url.size
+        if 0 < size_in_bytes < 1024:
+            return '{0} B'.format(size_in_bytes)
+        elif 1024 <= size_in_bytes < 1024**2:
+            return '{0:.2f} KB'.format(size_in_bytes / 1024)
+        else:
+            return '{0:.2f} MB'.format(size_in_bytes / (1024**2))
+
     def save(self, **kwargs):
         if not self.id:
             self.create_at = timezone.now()
+        self.file_size = self.get_file_size()
         super(File, self).save(**kwargs)
         initial_path = self.file_url.path
         self.file_type = self.get_file_extension()
