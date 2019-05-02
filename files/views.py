@@ -34,5 +34,6 @@ def add_new_file(request):
 def download_file(request, file_id):
     file = File.objects.get(id=file_id)
     args = {'file': file, }
+    print("id {}".format(file.file_url))
     return render(request, 'files/download_file.html', args)
 
