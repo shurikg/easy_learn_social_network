@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render, redirect
-from files.forms import CreateNewFileForm, categoryForm
+from files.forms import CreateNewFileForm, filterFilesForm
 
 # Create your views here.
 from files.models import File
@@ -11,7 +11,7 @@ from users.views import User
 @login_required
 def show_files(request):
     files = File.objects.all()
-    form = categoryForm(request.POST)
+    form = filterFilesForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
             category_filter = form.cleaned_data.get('category')
