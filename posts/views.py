@@ -5,6 +5,7 @@ from .models import Post, Comments
 from django.views.generic import ListView, DetailView
 from .forms import NewPostForm, Comment, OTHER_CATEGORY
 from users.models import Profile, UserCourses
+from files.forms import CreateNewFileForm
 from django.contrib.auth.models import User
 
 
@@ -74,17 +75,18 @@ class PostDetailView(DetailView):
 @login_required
 def create_new_post(request):
     if request.method == 'POST':
-        form = NewPostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
+        post_form = NewPostForm(request.POST)
+        if post_form.is_valid():
+            post = post_form.save(commit=False)
             post.author = request.user
             post.save()
-            # if 'add_file' in request.POST:
-            #     #file_form =
-            #     return redirect('files:add_file')
+            if 'add_file' in request.POST:
+                file_form = CreateNewFileForm
+                return render(request, 'posts/new_post.html', {"post_form": post_form, "file_form": file_form})
             return redirect('posts:feed')
-    # if 'add_file' in request.POST:
-    #     return redirect('files:add_file')
     post_form = NewPostForm
+    # if 'add_file' in request.POST:
+    #     file_form = CreateNewFileForm
+    #     return render(request, 'posts/new_post.html', {"post_form": post_form, "file_form": file_form})
     return render(request, 'posts/new_post.html', {"post_form": post_form})
 
