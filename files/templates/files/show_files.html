@@ -5,10 +5,14 @@
 {% block title %} All Files {% endblock %}
 
 {% block body %}
-
     <form method="POST">
+
         {% csrf_token %}
         {{ form|crispy }}
+
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">filter</button>
+        </div>
     </form>
 
                 <section>
