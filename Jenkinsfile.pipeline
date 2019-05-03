@@ -43,6 +43,6 @@ pipeline {
         //    failure {
         //        mail bcc: '', body: 'The last build failed, check it!', cc: 'mayhagbi@gmail.com, shlomitofahi@gmail.com', from: '', replyTo: '', subject: 'Jenkins Build Failure', to: 'jonbir2@gmail.com'
         //    }
-        }
+        //}
     }
 }
