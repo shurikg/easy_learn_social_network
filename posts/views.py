@@ -17,6 +17,10 @@ from django.contrib.auth.models import User
 #     }
 #     return render(request, 'posts/Feed.html', context)
 
+FLAGS = {
+    'want_add_file': False
+}
+
 
 class PostListView(ListView):
     model = Post
@@ -74,11 +78,9 @@ class PostDetailView(DetailView):
 
 @login_required
 def create_new_post(request):
-    flag = False
     if request.method == 'POST':
         post_form = NewPostForm(request.POST)
         if 'add_file' in request.POST:
-            flag = True
             file_form = CreateNewFileForm
             return render(request, 'posts/new_post.html', {"post_form": post_form, "file_form": file_form})
         else:    #if 'add_post' in request.POST:
@@ -86,11 +88,11 @@ def create_new_post(request):
                 post = post_form.save(commit=False)
                 post.author = request.user
                 post.save()
-                if flag is True:
-                    file_form = CreateNewFileForm(request.POST, request.FILES)
-                    file = file_form.save(commit=False)
-                    file.owner = request.user
-                    file.save()
+                # if flag is True:
+                #     file_form = CreateNewFileForm(request.POST, request.FILES)
+                #     file = file_form.save(commit=False)
+                #     file.owner = request.user
+                #     file.save()
             return redirect('posts:feed')
     post_form = NewPostForm
     # if 'add_file' in request.POST:
