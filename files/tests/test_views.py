@@ -54,9 +54,12 @@ class TestUrls(TestCase):
         self.file1.related_degrees.add(self.software_eng_degree)
         self.file1.related_degrees.add(self.social_worker_degree)
 
-    def test_download_file_view(self):
-        file_id = self.file1.id
-        response = self.client.post(reverse('files:download_file', args=(file_id,)))
+    def test_category_flow_view(self):
+        category_name = self.category
+        self.assertTrue(category_name, self.file1.category)
+
+    def test_show_files_view(self):
+        response = self.client.post(reverse('files:show_files'))
         self.assertEqual(response.status_code, 200)
 
     def test_show_files_view(self):
