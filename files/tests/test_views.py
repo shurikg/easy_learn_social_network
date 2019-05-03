@@ -2,11 +2,10 @@
 from coverage.annotate import os
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
-from django.urls import reverse, resolve
+from django.urls import reverse
 
 from files.models import File
-from files.views import download_file, show_files
-from users.models import Course, Degree, UserCourses, UserDegrees, Privacy, Profile
+from users.models import Course, Degree
 from users.views import User
 from django.utils import timezone
 
@@ -58,6 +57,10 @@ class TestUrls(TestCase):
     def test_download_file_view(self):
         file_id = self.file1.id
         response = self.client.post(reverse('files:download_file', args=(file_id,)))
+        self.assertEqual(response.status_code, 200)
+
+    def test_show_files_view(self):
+        response = self.client.post(reverse('files:show_files'))
         self.assertEqual(response.status_code, 200)
 
     def tearDown(self):
