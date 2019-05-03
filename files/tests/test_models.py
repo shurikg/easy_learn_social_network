@@ -77,5 +77,8 @@ class TestModels(TestCase):
     def test_owner(self):
         self.assertEqual(self.file1.owner, self.user)
 
+    def test_upload_at(self):
+        self.assertEqual(self.file1.upload_at.date(), timezone.now().date())
+
     def tearDown(self):
         os.remove(self.file1.file_url.path)
