@@ -1,7 +1,6 @@
 from django import forms
 from posts.models import Post, Comments
 from users.models import Course
-from django.core.exceptions import ValidationError
 
 OTHER_CATEGORY = 'other'
 FIELD_NAME_MAPPING = {
