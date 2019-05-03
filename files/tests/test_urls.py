@@ -60,9 +60,17 @@ class TestUrls(TestCase):
         url = reverse('files:download_file', args=(file_id,))
         self.assertEqual(resolve(url).func, download_file)
 
+    def test_file_is_resolved(self):
+        file_id = self.file1.id
+        url = reverse('files:show_files')
+        self.assertNotEqual(resolve(url).func, download_file)
+
     def test_show_file_url_is_resolved(self):
         url = reverse('files:show_files')
         self.assertEqual(resolve(url).func, show_files)
+
+    def test_file_flow(self):
+        self.assertEqual(str(self.file1.category), 'OOP')
 
     def tearDown(self):
         os.remove(self.file1.file_url.path)
