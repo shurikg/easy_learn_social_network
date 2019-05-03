@@ -1,8 +1,12 @@
 from django import forms
 from posts.models import Post, Comments
 from users.models import Course
+from django.core.exceptions import ValidationError
 
 OTHER_CATEGORY = 'other'
+FIELD_NAME_MAPPING = {
+    'category': 'post_type'
+}
 
 
 class NewPostForm(forms.ModelForm):
@@ -19,8 +23,12 @@ class NewPostForm(forms.ModelForm):
                      'Otherwise the post will be set to public.'
 
     category = forms.ChoiceField(help_text=category_rules, choices=category_list)
-
     body = forms.CharField(max_length=5000, widget=forms.Textarea)
+
+    def add_prefix(self, field_name):
+        # look up field name; return original if not found
+        field_name = FIELD_NAME_MAPPING.get(field_name, field_name)
+        return super(NewPostForm, self).add_prefix(field_name)
 
     class Meta:
         model = Post
