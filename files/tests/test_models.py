@@ -3,7 +3,7 @@ import os
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.contrib.auth.models import User
-from files.models import File as File
+from files.models import File
 from users.models import Course, Degree
 from django.utils import timezone
 
@@ -29,14 +29,14 @@ class TestModels(TestCase):
         )
 
         # create degree
-        self.software_eng = Degree.objects.create(
+        self.software_eng_degree = Degree.objects.create(
             degree_id='1',
             degree_name='Software Engineering'
         )
 
-        self.statistic = Degree.objects.create(
+        self.social_worker_degree = Degree.objects.create(
             degree_id='2',
-            degree_name='Statistic'
+            degree_name='Social Worker'
         )
 
         # upload file
@@ -50,8 +50,8 @@ class TestModels(TestCase):
             owner=self.user,
         )
         self.file1.save()
-        self.file1.related_degrees.add(self.software_eng)
-        self.file1.related_degrees.add(self.statistic)
+        self.file1.related_degrees.add(self.software_eng_degree)
+        self.file1.related_degrees.add(self.social_worker_degree)
 
     def test_file_extension(self):
         self.assertEqual(self.file1.file_type, 'pdf')
@@ -62,6 +62,13 @@ class TestModels(TestCase):
 
     def test_file_category(self):
         self.assertEqual(self.file1.category, self.category)
+
+    def test_related_degrees(self):
+        degrees = (self.social_worker_degree.degree_name, self.software_eng_degree.degree_name)
+        for degree in self.file1.related_degrees.all():
+            self.assertTrue(degree.degree_name in degrees)
+        for degree_name in degrees:
+            self.assertTrue(degree_name in (d.degree_name for d in self.file1.related_degrees.all()))
 
     def tearDown(self):
         os.remove(self.file1.file_url.path)
