@@ -60,5 +60,8 @@ class TestModels(TestCase):
         file_id = str(self.file1.id)
         self.assertTrue(self.file1.file_name.startswith(file_id))
 
+    def test_file_category(self):
+        self.assertEqual(self.file1.category, self.category)
+
     def tearDown(self):
         os.remove(self.file1.file_url.path)
