@@ -56,5 +56,9 @@ class TestModels(TestCase):
     def test_file_extension(self):
         self.assertEqual(self.file1.file_type, 'pdf')
 
+    def test_name_start_with_id(self):
+        file_id = str(self.file1.id)
+        self.assertTrue(self.file1.file_name.startswith(file_id))
+
     def tearDown(self):
         os.remove(self.file1.file_url.path)
