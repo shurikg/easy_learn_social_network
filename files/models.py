@@ -4,8 +4,10 @@ from django.utils import timezone
 from EasyLearn import settings
 from users.models import Course, Degree
 import os
+from django.core.exceptions import ValidationError
 
 
+EXTENSIONS_WHITELIST = ('pdf', 'docx', 'doc', 'jpg', 'png', 'jpeg', 'txt', 'zip', 'rar')
 UPLOAD_TO_DIR = 'files/'
 
 
@@ -43,6 +45,9 @@ class File(models.Model):
         return output[:-2]
 
     def save(self, **kwargs):
+        extension = self.get_file_extension()
+        if extension not in EXTENSIONS_WHITELIST:
+            raise ValidationError('The file extension is not allowed')
         if not self.id:
             self.create_at = timezone.now()
         self.file_size = self.get_file_size()
