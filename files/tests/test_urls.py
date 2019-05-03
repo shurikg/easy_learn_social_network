@@ -71,6 +71,9 @@ class TestUrls(TestCase):
 
     def test_file_flow(self):
         self.assertEqual(str(self.file1.category), 'OOP')
+        self.assertEqual(str(self.file1.owner), self.user.username)
+        self.assertEqual(str(self.file1.create_at.date()),  str(timezone.now().date()))
+        self.assertEqual(self.file1.file_url.__str__(),  'files/1_testuser_OOP.pdf')
 
     def tearDown(self):
         os.remove(self.file1.file_url.path)
