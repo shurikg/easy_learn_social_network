@@ -6,7 +6,7 @@ from django.urls import reverse, resolve
 
 from files.models import File
 from files.views import download_file, show_files
-from users.models import Course, Degree, UserCourses, UserDegrees, Privacy, Profile
+from users.models import Course, Degree
 from users.views import User
 from django.utils import timezone
 
@@ -59,6 +59,10 @@ class TestUrls(TestCase):
         file_id = self.file1.id
         url = reverse('files:download_file', args=(file_id,))
         self.assertEqual(resolve(url).func, download_file)
+
+    def test_show_file_url_is_resolved(self):
+        url = reverse('files:show_files')
+        self.assertEqual(resolve(url).func, show_files)
 
     def tearDown(self):
         os.remove(self.file1.file_url.path)
