@@ -1,5 +1,4 @@
 from django import forms
-from django.core.exceptions import ValidationError
 
 from files.models import File, EXTENSIONS_WHITELIST
 from users.models import Course, Degree
@@ -29,9 +28,6 @@ class CreateNewFileForm(forms.ModelForm):
                 self.add_error('file_url', 'The file extension is not allowed.')
                 # raise ValidationError('The file extension is not allowed.')
         return file
-
-
-OTHER_CATEGORY = 'other'
 
 
 class filterFilesForm(forms.ModelForm):
