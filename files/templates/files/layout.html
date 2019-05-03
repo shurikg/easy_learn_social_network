@@ -35,19 +35,10 @@
 	<body class="menubar-pin menubar-hoverable header-fixed "> <!--max sidemenu: menubar-pin -->
 
 		<!-- BEGIN BASE-->
-		<div id="base">
+
+		<div class="col-md-12">
 
 			<!-- BEGIN CONTENT-->
-
-            {% if messages %}
-                {% for message in messages %}
-                    <div {% if message.tags %} class="alert {{ message.tags }} text-center"{% endif %}>
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-
                 {% block body %}
 
                 {% endblock %}
