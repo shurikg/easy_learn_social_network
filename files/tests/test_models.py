@@ -1,15 +1,17 @@
+import os
+
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
-from files.models import File
 from django.contrib.auth.models import User
+from files.models import File
 from users.models import Course, Degree
-import unittest.mock as mock
-from files import models
-from django.db import models as django_models
+from django.utils import timezone
 
 
 class TestModels(TestCase):
 
     def setUp(self):
+
         # create user
         self.username = 'testuser'
         self.email = 'test@test.com'
@@ -20,39 +22,66 @@ class TestModels(TestCase):
         login = self.client.login(username=self.username, password=self.password)
         self.assertEqual(login, True)
 
-        # create course
-        self.course = Course.objects.create(
+        # create category
+        self.category = Course.objects.create(
             course_id='1',
             course_name='OOP'
         )
 
         # create degree
-        self.degree = Degree.objects.create(
+        self.software_eng_degree = Degree.objects.create(
             degree_id='1',
             degree_name='Software Engineering'
         )
 
-        self.file_mock = mock.MagicMock(spec=File)
-        self.file_mock.name = 'test.pdf'
-
-        self.file = File.objects.create(
-            file_name='test_name',
-            file_type='pdf',
-            file_url=File(file_url=self.file_mock),
-            # owner=self.user,
-            # create_at=django_models.DateField(auto_now_add=True),
-            # file_size='10',
-            # category=self.course,
+        self.social_worker_degree = Degree.objects.create(
+            degree_id='2',
+            degree_name='Social Worker'
         )
 
-        # self.file.related_degrees.set(self.degree)
+        # upload file
+        f = SimpleUploadedFile('test.pdf', b'test context')
 
-    def test_file_exist(self):
-        self.assertEqual(self.file.file_name, 'test_name')
-        self.assertEqual(self.file.file_type, 'pdf')
-        self.assertEqual(self.file_url.name, self.file_mock.name)
-        #self.assertEqual(self.file.owner, 'test1')
-        #self.assertEqual(self.file.create_at, '02/05/2019')
-        #self.assertEqual(self.file.file_size, '10')
-        #self.assertEqual(self.file.category, 'test1')
-        #self.assertEqual(self.file.related_degrees, 'test1')
+        # create file model object
+        self.file1 = File(
+            category=self.category,
+            create_at=timezone.now(),
+            file_url=f,
+            owner=self.user,
+        )
+        self.file1.save()
+        self.file1.related_degrees.add(self.software_eng_degree)
+        self.file1.related_degrees.add(self.social_worker_degree)
+
+    def test_file_extension(self):
+        self.assertEqual(self.file1.file_type, 'pdf')
+
+    def test_name_start_with_id(self):
+        file_id = str(self.file1.id)
+        self.assertTrue(self.file1.file_name.startswith(file_id))
+
+    def test_file_category(self):
+        self.assertEqual(self.file1.category, self.category)
+
+    def test_related_degrees(self):
+        degrees = (self.social_worker_degree.degree_name, self.software_eng_degree.degree_name)
+        for degree in self.file1.related_degrees.all():
+            self.assertTrue(degree.degree_name in degrees)
+        for degree_name in degrees:
+            self.assertTrue(degree_name in (d.degree_name for d in self.file1.related_degrees.all()))
+
+    def test_file_name_contains_owner(self):
+        owner_username = self.user.username
+        self.assertTrue(owner_username in self.file1.file_name)
+
+    def test_owner(self):
+        self.assertEqual(self.file1.owner, self.user)
+
+    def test_upload_at(self):
+        self.assertEqual(self.file1.upload_at.date(), timezone.now().date())
+
+    def test_file_size(self):
+        self.assertEqual(self.file1.file_size, '12 B')
+
+    def tearDown(self):
+        os.remove(self.file1.file_url.path)
