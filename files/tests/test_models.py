@@ -70,5 +70,9 @@ class TestModels(TestCase):
         for degree_name in degrees:
             self.assertTrue(degree_name in (d.degree_name for d in self.file1.related_degrees.all()))
 
+    def test_file_name_contains_owner(self):
+        owner_username = self.user.username
+        self.assertTrue(owner_username in self.file1.file_name)
+
     def tearDown(self):
         os.remove(self.file1.file_url.path)
