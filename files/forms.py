@@ -1,16 +1,13 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from files.models import File
+from files.models import File, EXTENSIONS_WHITELIST
 from users.models import Course, Degree
 from users.views import User
 
 
 class DateInput(forms.DateInput):
     input_type = 'date'
-
-
-EXTENSIONS_WHITELIST = ('pdf', 'docx', 'doc', 'jpg', 'png', 'jpeg', 'txt', 'zip', 'rar')
 
 
 class CreateNewFileForm(forms.ModelForm):
