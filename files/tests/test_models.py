@@ -74,5 +74,8 @@ class TestModels(TestCase):
         owner_username = self.user.username
         self.assertTrue(owner_username in self.file1.file_name)
 
+    def test_owner(self):
+        self.assertEqual(self.file1.owner, self.user)
+
     def tearDown(self):
         os.remove(self.file1.file_url.path)
