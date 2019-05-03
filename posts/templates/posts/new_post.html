@@ -8,7 +8,7 @@
         {% csrf_token %}
         {{ post_form|crispy }}
         <div>
-            <input class="btn btn-outline-info" name="add_file" type="submit" value="add file" />
+            <input class="btn btn-link" name="add_file" type="submit" value="add file" />
             {% if file_form %}
                 {% csrf_token %}
                 {{ file_form|crispy }}
@@ -16,7 +16,7 @@
         </div>
         <br>
         <div>
-            <input class="btn btn-outline-info" type="submit" value="Add Post" />
+            <input class="btn btn-outline-info" name="add_post" type="submit" value="Add Post" />
         </div>
     </form>
 </div>
