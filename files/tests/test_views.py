@@ -58,8 +58,9 @@ class TestUrls(TestCase):
         category_name = self.category
         self.assertTrue(category_name, self.file1.category)
 
-    def test_show_files_view(self):
-        response = self.client.post(reverse('files:show_files'))
+    def test_download_file_view(self):
+        file_id = self.file1.id
+        response = self.client.post(reverse('files:download_file', args=(file_id,)))
         self.assertEqual(response.status_code, 200)
 
     def test_show_files_view(self):
