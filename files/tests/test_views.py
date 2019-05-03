@@ -67,6 +67,10 @@ class TestUrls(TestCase):
         response = self.client.post(reverse('files:show_files'))
         self.assertEqual(response.status_code, 200)
 
+    def test_fle_view(self):
+        self.assertEqual(self.software_eng_degree.degree_name , str(self.file1.related_degrees.all()[0]))
+        self.assertEqual(self.social_worker_degree.degree_name , str(self.file1.related_degrees.all()[1]))
+
     def tearDown(self):
         os.remove(self.file1.file_url.path)
 
