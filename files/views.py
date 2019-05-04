@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.shortcuts import render
-from files.forms import CreateNewFile
+from django.shortcuts import render, redirect
+from files.forms import CreateNewFileForm, FilterFilesForm
 
 # Create your views here.
 from files.models import File
@@ -10,29 +10,49 @@ from users.views import User
 
 @login_required
 def show_files(request):
-    query = request.GET.get('q')
-    if query:
-        users = User.objects.filter(Q(first_name=query) | Q(last_name=query))
-    else:
-        users = User.objects.all().order_by('last_name')
-    args = {'users': users}
+    files = File.objects.all()
+    form = FilterFilesForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            category_filter = form.cleaned_data.get('category')
+            degree_filter = form.cleaned_data.get('degree')
+            user_filter = form.cleaned_data.get('user')
+            if category_filter:
+                if degree_filter:
+                    if user_filter:
+                        files = File.objects.filter(category=category_filter, related_degrees=degree_filter, owner=user_filter)
+                    else:
+                        files = File.objects.filter(category=category_filter, related_degrees=degree_filter)
+                elif user_filter:
+                    files = File.objects.filter(category=category_filter, owner=user_filter)
+                else:
+                    files = File.objects.filter(category=category_filter)
+            elif degree_filter:
+                if user_filter:
+                    files = File.objects.filter(related_degrees=degree_filter, owner=user_filter)
+                else:
+                    files = File.objects.filter(related_degrees=degree_filter)
+            elif user_filter:
+                files = File.objects.filter(owner=user_filter)
+            else:
+                files = File.objects.all()
+
+    args = {'files': files, 'form': form}
     return render(request, 'files/show_files.html', args)
 
 
 @login_required
 def add_new_file(request):
-    '''
-        if request.method == 'POST':
-        form = NewPost(request.POST)
+    if request.method == 'POST':
+        form = CreateNewFileForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('posts:feed')
-    :param request:
-    :return:
-    '''
-    form = CreateNewFile
+            file = form.save(commit=False)
+            file.owner = request.user
+            file.save()
+            form.save_m2m()
+            return redirect('files:show_files')
+    else:
+        form = CreateNewFileForm
     return render(request, 'files/new_file.html', {"form": form})
 
 

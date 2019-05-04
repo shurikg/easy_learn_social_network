@@ -5,10 +5,24 @@
 <div class="container">
     <title>create new post</title>
     <form method="POST">
+        {% if error_message %}
+            {% csrf_token %}
+            <p style="color:red">{{ error_message }}</p>
+        {% endif %}
         {% csrf_token %}
-        {{ form|crispy }}
-        <input class="btn btn-outline-info" type="submit" value="Add Post" />
+        {{ post_form|crispy }}
+        <div>
+            <input class="btn btn-link" name="add_file" type="submit" value="add file" />
+            {% if file_form %}
+                {% csrf_token %}
+                {{ file_form|crispy }}
+            {% endif %}
+        </div>
+        <br>
+        <div>
+            <input class="btn btn-outline-info" name="add_post" type="submit" value="Add Post" />
+        </div>
     </form>
-    <input class="btn btn-outline-info" value="Add file" />
 </div>
+
 {% endblock content %}

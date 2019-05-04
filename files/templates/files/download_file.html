@@ -1,11 +1,42 @@
 {% extends "posts/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-
     <div class="content-section">
             <fieldset class="form-group mw-25">
                 <legend class="border-bottom mb-4">File Details</legend>
+                {% if file %}
+                    <table class="table table-borderless">
+                        <tr>
+                            <td><h5>File name:</h5></td>
+                            <td>{{ file.file_name }}</td>
+                        </tr>
+                        <tr>
+                            <td><h5>Category:</h5></td>
+                            <td>{{ file.category }}</td>
+                        </tr>
+                        <tr>
+                            <td><h5>Related degrees:</h5></td>
+                            <td>{{ file.get_str_of_related_degrees }}</td>
+                        </tr>
+                        <tr>
+                            <td><h5>Uploaded by:</h5></td>
+                            <td><a class="mr-2" href="/user/show-users/selected-user/{{ file.owner.id }}">{{ file.owner }}</a></td>
+                        </tr>
+                        <tr>
+                            <td><h5>Created at:</h5></td>
+                            <td>{{ file.create_at }}</td>
+                        </tr>
+                        <tr>
+                            <td><h5>File size:</h5></td>
+                            <td>{{ file.file_size }}</td>
+                        </tr>
+                        <tr>
+                            <td><h5>Uploaded at:</h5></td>
+                            <td>{{ file.upload_at }}</td>
+                        </tr>
+                    </table>
                     <a href="{{ file.file_url.url }}" target="_blank" class="glyphicon-download-alt">Download file</a>
+                {% endif %}
             </fieldset>
     </div>
 {% endblock content %}

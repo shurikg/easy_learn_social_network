@@ -3,6 +3,7 @@ from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse
 from users.models import Profile, Privacy, Course, Degree, UserCourses, UserDegrees
 from posts.models import Post
+from django.views.generic import ListView
 
 
 class TestViews(TestCase):
@@ -56,6 +57,10 @@ class TestViews(TestCase):
             user_id=self.profile,
             degree_id=self.degree
         )
+
+    def test_create_new_post_view(self):
+        response = self.client.post(reverse('posts:newPost'))
+        self.assertEqual(response.status_code, 200)
 
     def test_test_view(self):
         assert 1 == 1

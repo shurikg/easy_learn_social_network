@@ -1,9 +1,11 @@
+{% extends 'posts/base.html' %}
 
 {% load staticfiles %}
+{% block content1 %}
 
 <html lang="en">
 	<head>
-		<title>{% block title %} {% endblock %} | DjangoOMS</title>
+		<title>{% block title %} {% endblock %} | DatFiles</title>
 
 		<!-- BEGIN META -->
 		<meta charset="utf-8">
@@ -32,83 +34,12 @@
 	</head>
 	<body class="menubar-pin menubar-hoverable header-fixed "> <!--max sidemenu: menubar-pin -->
 
-		<!-- BEGIN HEADER-->
-		<header id="header" >
-			<div class="headerbar">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<div class="headerbar-left">
-					<ul class="header-nav header-nav-options">
-						<li class="header-nav-brand" >
-							<div class="brand-holder">
-								<a href="{% url 'home' %}">
-									<span class="text-lg text-light text-danger">INFORTECH</span><span class="text-lg text-bold text-primary"> SOLUTIONS</span>
-								</a>
-							</div>
-						</li>
-						<li>
-							<a class="btn btn-icon-toggle menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
-								<i class="fa fa-bars"></i>
-							</a>
-						</li>
-					</ul>
-				</div>
-				<!-- Collect the nav links, forms, and other content for toggling -->
-			</div>
-		</header>
-		<!-- END HEADER-->
-
 		<!-- BEGIN BASE-->
-		<div id="base">
-
-			<!-- BEGIN OFFCANVAS LEFT -->
-			<div class="offcanvas">
-			</div><!--end .offcanvas-->
-			<!-- END OFFCANVAS LEFT -->
+		<div class="col-md-12">
 
 			<!-- BEGIN CONTENT-->
-			<div id="content">
-
-            {% if messages %}
-                {% for message in messages %}
-                    <div {% if message.tags %} class="alert {{ message.tags }} text-center"{% endif %}>
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-
-                {% block body %}
-
-                {% endblock %}
-
-			</div><!--end #content-->
+                {% block body %} {% endblock %}
 			<!-- END CONTENT -->
-
-			<!-- BEGIN MENUBAR-->
-			<div id="menubar" class="menubar-inverse ">
-				<div class="menubar-fixed-panel">
-					<div>
-						<a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
-							<i class="fa fa-bars"></i>
-						</a>
-					</div>
-					<div class="expanded">
-						<a href="{% url 'home' %}">
-							<span class="text-lg text-bold text-primary ">MATERIAL&nbsp;ADMIN</span>
-						</a>
-					</div>
-				</div>
-				<div class="menubar-scroll-panel">
-
-
-					<div class="menubar-foot-panel">
-						<small class="no-linebreak hidden-folded">
-							<span class="opacity-75">Copyright &copy; {% now "Y" %}</span> <strong>INFTECH Solutions</strong>
-						</small>
-					</div>
-				</div><!--end .menubar-scroll-panel-->
-			</div><!--end #menubar-->
-			<!-- END MENUBAR -->
 
 		</div><!--end #base-->
 		<!-- END BASE -->
@@ -137,3 +68,4 @@
 
 	</body>
 </html>
+{% endblock %}
