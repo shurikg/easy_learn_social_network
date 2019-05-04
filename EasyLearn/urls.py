@@ -29,6 +29,7 @@ urlpatterns = [
     path('user/', include(('users.urls', 'users'), namespace='users')),
     path('post/', include(('posts.urls', 'posts'), namespace='posts')),
     path('file/', include(('files.urls', 'files'), namespace='files')),
+    path('chat/', include(('chat.urls', 'chat'), namespace='chat')),
 ]
 
 if settings.DEBUG:
