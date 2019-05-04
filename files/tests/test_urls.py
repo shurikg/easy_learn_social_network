@@ -1,11 +1,9 @@
-
 from coverage.annotate import os
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse, resolve
-
 from files.models import File
-from files.views import download_file, show_files
+from files.views import download_file, show_files, add_new_file
 from users.models import Course, Degree
 from users.views import User
 from django.utils import timezone
@@ -54,6 +52,10 @@ class TestUrls(TestCase):
         self.file1.save()
         self.file1.related_degrees.add(self.software_eng_degree)
         self.file1.related_degrees.add(self.social_worker_degree)
+
+    def test_add_file_url_is_resolved(self):
+        url = reverse('files:add_file')
+        self.assertEqual(resolve(url).func, add_new_file)
 
     def test_download_file_url_is_resolved(self):
         file_id = self.file1.id
