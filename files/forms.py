@@ -1,5 +1,4 @@
 from django import forms
-
 from files.models import File, EXTENSIONS_WHITELIST
 from users.models import Course, Degree
 from users.views import User
