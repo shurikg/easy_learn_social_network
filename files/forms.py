@@ -20,6 +20,11 @@ class CreateNewFileForm(forms.ModelForm):
                                                      error_messages={'required': 'You must select at least one degree.'})
     create_at = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}))
 
+    def add_prefix(self, field_name):
+        # look up field name; return original if not found
+        field_name = FIELD_NAME_MAPPING.get(field_name, field_name)
+        return super(CreateNewFileForm, self).add_prefix(field_name)
+
     class Meta:
         model = File
         fields = ('category', 'related_degrees', 'create_at', 'file_url',)
