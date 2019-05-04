@@ -95,6 +95,7 @@ def create_new_post(request):
                         file = file_form.save(commit=False)
                         file.owner = request.user
                         file.save()
+                        file_form.save_m2m()
                     else:
                         error_message = 'Error by trying to add file!'
                         post_form = NewPostForm
