@@ -81,3 +81,6 @@
                     </div><!--end .section-body -->
                 </section>
 {% endblock %}
+{% block sidebar %}
+    <a class="btn btn-link" href="{% url 'files:add_file' %}">add file</a>
+{% endblock %}
