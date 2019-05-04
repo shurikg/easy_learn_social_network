@@ -1,7 +1,17 @@
 {% extends "posts/base.html" %}
 {% load i18n %}
 
+{% block sidebar %}
+<ul class="subnavilist">
+    <li><a href="{% url 'chat:messages_inbox' %} ">&raquo;&nbsp;{% trans "Inbox" %}</a></li>
+    <li><a href="{% url 'chat:messages_outbox' %} ">&raquo;&nbsp;{% trans "Sent Messages" %}</a></li>
+    <li><a href="{% url 'chat:messages_compose' %} ">&raquo;&nbsp;{% trans "New Message" %}</a></li>
+</ul>
+{% endblock %}
+
 {% block content %}
+
+
 <h1>{% trans "View Message" %}</h1>
 <dl class="message-headers">
     <dt>{% trans "Subject" %}</dt>
