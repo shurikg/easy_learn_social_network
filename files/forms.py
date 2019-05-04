@@ -4,6 +4,10 @@ from files.models import File, EXTENSIONS_WHITELIST
 from users.models import Course, Degree
 from users.views import User
 
+FIELD_NAME_MAPPING = {
+    'category': 'file_type'
+}
+
 
 class DateInput(forms.DateInput):
     input_type = 'date'
