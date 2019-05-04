@@ -58,6 +58,10 @@ class TestUrls(TestCase):
         response = self.client.post(reverse('files:add_file'))
         self.assertEqual(response.status_code, 200)
 
+    def test_list_files_view(self):
+        response = self.client.post(reverse('files:show_files'))
+        self.assertEqual(response.status_code, 200)
+
     def test_category_flow_view(self):
         category_name = self.category
         self.assertTrue(category_name, self.file1.category)
