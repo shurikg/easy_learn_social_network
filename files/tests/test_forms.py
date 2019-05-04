@@ -1,15 +1,15 @@
 
 from django.test import TestCase, Client
-from files.forms import filterFilesForm
+from files.forms import FilterFilesForm
 
 
 class MyTests(TestCase):
     def setUp(self):
-        self.form = filterFilesForm({'1': '2'})
+        self.form = FilterFilesForm({'1': '2'})
 
     def test_filterFilesForm_forms(self):
         form_data = {'something': 'something'}
-        form = filterFilesForm(data=form_data)
+        form = FilterFilesForm(data=form_data)
         self.assertTrue(form.is_valid())
 
     def test_form(self):
