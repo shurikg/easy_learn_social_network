@@ -82,4 +82,3 @@ def create_new_post(request):
             return redirect('posts:feed')
     form = NewPost
     return render(request, 'posts/new_post.html', {"form": form})
-
