@@ -39,7 +39,7 @@ class CreateNewFileForm(forms.ModelForm):
         return file
 
 
-class filterFilesForm(forms.ModelForm):
+class FilterFilesForm(forms.ModelForm):
     category = forms.ModelChoiceField(queryset=Course.objects.all(), required=False)
     degree = forms.ModelChoiceField(queryset=Degree.objects.all(), required=False)
     user = forms.ModelChoiceField(queryset=User.objects.all(), required=False)
