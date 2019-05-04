@@ -84,7 +84,7 @@ def create_new_post(request):
             FLAGS['want_add_file'] = True
             file_form = CreateNewFileForm
             return render(request, 'posts/new_post.html', {"post_form": post_form, "file_form": file_form})
-        else:    #if 'add_post' in request.POST:
+        else:
             if post_form.is_valid():
                 post = post_form.save(commit=False)
                 post.author = request.user
@@ -95,7 +95,17 @@ def create_new_post(request):
                         file = file_form.save(commit=False)
                         file.owner = request.user
                         file.save()
-            return redirect('posts:feed')
+                    else:
+                        error_message = 'Error by trying to add file!'
+                        post_form = NewPostForm
+                        return render(request, 'posts/new_post.html',
+                                      {"post_form": post_form, "error_message": error_message})
+                return redirect('posts:feed')
+            else:
+                error_message = 'Error by trying to write post!'
+                post_form = NewPostForm
+                return render(request, 'posts/new_post.html', {"post_form": post_form, "error_message": error_message})
+
     else:
         post_form = NewPostForm
         return render(request, 'posts/new_post.html', {"post_form": post_form})
