@@ -252,13 +252,10 @@ def show_users(request):
 def show_selected_user(request):
     user_id = request.GET.get('user_id')
     user = User.objects.get(id=user_id)
-
     profile_obj = Profile.objects.get(user=user)
     privacy_obj = Privacy.objects.get(user=user)
-
     extra_form = ExtraProfileForm(instance=profile_obj, privacy_obj=privacy_obj)
     profile_form = ProfileForm(instance=user, privacy_obj=privacy_obj)
-
     context = {
         'extra_form': extra_form,
         'profile_form': profile_form,
@@ -299,23 +296,18 @@ def show_selected_user(request, id):
 def show_selected_user(request, slug):
     user_id = request.GET.get('user_name')
     user = User.objects.get(id=user_id)
-
     profile_obj = Profile.objects.get(user=user)
     privacy_obj = Privacy.objects.get(user=user)
-
     extra_form = ExtraProfileForm(instance=profile_obj, privacy_obj=privacy_obj)
     profile_form = ProfileForm(instance=request.user, privacy_obj=privacy_obj)
-
     other_profile = Profile.objects.filter(slug=slug).first()
     u = other_profile.user
     sent_friend_request = FriendRequest.objects.filter(from_user=other_profile.user)
-
     button_status = 'none'
     if other_profile not in request.user.profile.friends.all():
         button_status = 'not_friend'
         if len(FriendRequest.objects.filter(from_user = request.user).filter(to_user=other_profile.user)) == 1:
             button_status = 'friend_request_sent'
-
     context = {
         'extra_form': extra_form,
         'profile_form': profile_form,
@@ -440,4 +432,3 @@ def web_rules(request):
      'rules_text': Rules.objects.all()
     }
     return render(request, 'Rules.html', context)
-
