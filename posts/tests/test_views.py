@@ -3,7 +3,6 @@ from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse
 from users.models import Profile, Privacy, Course, Degree, UserCourses, UserDegrees
 from posts.models import Post
-from django.views.generic import ListView
 
 
 class TestViews(TestCase):

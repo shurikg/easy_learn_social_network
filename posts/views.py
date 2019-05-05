@@ -3,8 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Post, Comments
 from django.views.generic import ListView, DetailView
-from .forms import NewPost, Comment, OTHER_CATEGORY
+from .forms import NewPostForm, Comment, OTHER_CATEGORY
 from users.models import Profile, UserCourses
+from files.forms import CreateNewFileForm
 from django.contrib.auth.models import User
 
 
@@ -15,6 +16,10 @@ from django.contrib.auth.models import User
 #         'posts': Post.objects.all(), 'study_posts': Post.objects.filter(category="other")
 #     }
 #     return render(request, 'posts/Feed.html', context)
+
+FLAGS = {
+    'want_add_file': False
+}
 
 
 class PostListView(ListView):
@@ -74,11 +79,35 @@ class PostDetailView(DetailView):
 @login_required
 def create_new_post(request):
     if request.method == 'POST':
-        form = NewPost(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('posts:feed')
-    form = NewPost
-    return render(request, 'posts/new_post.html', {"form": form})
+        post_form = NewPostForm(request.POST)
+        if 'add_file' in request.POST:
+            FLAGS['want_add_file'] = True
+            file_form = CreateNewFileForm
+            return render(request, 'posts/new_post.html', {"post_form": post_form, "file_form": file_form})
+        else:
+            if post_form.is_valid():
+                post = post_form.save(commit=False)
+                post.author = request.user
+                post.save()
+                if FLAGS['want_add_file'] is True:
+                    file_form = CreateNewFileForm(request.POST, request.FILES)
+                    if file_form.is_valid():
+                        file = file_form.save(commit=False)
+                        file.owner = request.user
+                        file.save()
+                        file_form.save_m2m()
+                    else:
+                        error_message = 'Error by trying to add file!'
+                        post_form = NewPostForm
+                        return render(request, 'posts/new_post.html',
+                                      {"post_form": post_form, "error_message": error_message})
+                return redirect('posts:feed')
+            else:
+                error_message = 'Error by trying to write post!'
+                post_form = NewPostForm
+                return render(request, 'posts/new_post.html', {"post_form": post_form, "error_message": error_message})
+
+    else:
+        post_form = NewPostForm
+        return render(request, 'posts/new_post.html', {"post_form": post_form})
+

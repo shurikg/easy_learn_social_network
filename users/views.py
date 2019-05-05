@@ -429,6 +429,6 @@ def list_of_friends(request, user_id):
 
 def web_rules(request):
     context = {
-     'rules_text': Rules.objects.get(id=1)
+     'rules_text': Rules.objects.all()
     }
     return render(request, 'Rules.html', context)
