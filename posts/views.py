@@ -6,16 +6,6 @@ from django.views.generic import ListView, DetailView
 from .forms import NewPostForm, Comment, OTHER_CATEGORY
 from users.models import Profile, UserCourses
 from files.forms import CreateNewFileForm
-from django.contrib.auth.models import User
-
-
-# def home_posts(request):
-#     other_posts = Post.objects.filter(category="other")
-#     user = Profile.objects.get(user=request.user)
-#     context = {
-#         'posts': Post.objects.all(), 'study_posts': Post.objects.filter(category="other")
-#     }
-#     return render(request, 'posts/Feed.html', context)
 
 FLAGS = {
     'want_add_file': False
@@ -97,7 +87,7 @@ def create_new_post(request):
                         file.save()
                         file_form.save_m2m()
                     else:
-                        error_message = 'Error by trying to add file!'
+                        error_message = file_form.errors  #'Error by trying to add file!'
                         post_form = NewPostForm
                         return render(request, 'posts/new_post.html',
                                       {"post_form": post_form, "error_message": error_message})
