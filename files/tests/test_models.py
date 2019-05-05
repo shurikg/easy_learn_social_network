@@ -40,18 +40,25 @@ class TestModels(TestCase):
         )
 
         # upload legal file
-        legal = SimpleUploadedFile('test.pdf', b'test context')
+        self.legal = SimpleUploadedFile('test.pdf', b'test context')
 
         # create file model object
         self.legal_file = File(
             category=self.category,
             create_at=timezone.now(),
-            file_url=legal,
+            file_url=self.legal,
             owner=self.user,
         )
         self.legal_file.save()
         self.legal_file.related_degrees.add(self.software_eng_degree)
         self.legal_file.related_degrees.add(self.social_worker_degree)
+
+    def test_create_file_successfully(self):
+        self.assertEqual(str(self.legal_file.category), 'OOP')
+        self.assertEqual(self.legal_file.create_at.date(), timezone.now().date())
+        self.assertEqual(self.legal_file.file_url, 'files/1_testuser_OOP.pdf')
+        self.assertEqual(self.legal_file.owner, self.user)
+        #self.assertEqual(self.legal_file.related_degrees.attname, str(self.social_worker_degree))
 
     def test_file_extension(self):
         self.assertEqual(self.legal_file.file_type, 'pdf')
