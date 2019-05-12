@@ -58,7 +58,6 @@ class TestModels(TestCase):
         self.assertEqual(self.legal_file.create_at.date(), timezone.now().date())
         self.assertEqual(self.legal_file.file_url, 'files/1_testuser_OOP.pdf')
         self.assertEqual(self.legal_file.owner, self.user)
-        #self.assertEqual(self.legal_file.related_degrees.attname, str(self.social_worker_degree))
 
     def test_file_extension(self):
         self.assertEqual(self.legal_file.file_type, 'pdf')
