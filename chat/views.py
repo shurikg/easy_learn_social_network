@@ -140,14 +140,23 @@ def compose(request, recipient=None, form_class=ComposeForm,
         ``template_name``: the template to use
         ``success_url``: where to redirect after successfull submission
     """
-    friends_list = request.user.profile.friends.all()
-    users_list = []
-    for friend in friends_list:
-        users_list.append(friend.user)
+    is_staff = request.user.is_staff
+    users = User.objects.all()
+    users_list = ''
+    for u in users:
+        users_list += u.username
+        users_list += ','
+    users_list[:-1]
+
+    if not is_staff:
+        friends_list = request.user.profile.friends.all()
+        users_list = []
+        for friend in friends_list:
+            users_list.append(friend.user)
 
     if request.method == "POST":
         sender = request.user
-        form = form_class(request.POST, friends_list=users_list, recipient_filter=recipient_filter, is_reply=False)
+        form = form_class(request.POST, friends_list=users_list, recipient_filter=recipient_filter, is_staff=is_staff)
         #form = form_class(request.POST, '')
         if form.is_valid():
             form.save(sender=request.user)
@@ -158,7 +167,7 @@ def compose(request, recipient=None, form_class=ComposeForm,
                 success_url = request.GET['next']
             return HttpResponseRedirect(success_url)
     else:
-        form = form_class(friends_list=users_list)
+        form = form_class(friends_list=users_list, is_staff=is_staff)
         if recipient is not None:
             recipients = [u for u in User.objects.filter(**{'%s__in' % get_username_field(): [r.strip() for r in recipient.split('+')]})]
             form.fields['recipient'].initial = recipients
