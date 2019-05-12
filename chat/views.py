@@ -78,13 +78,13 @@ def view(request, message_id, form_class=ComposeForm, quote_helper=format_quote,
         message.save()
 
     context = {'message': message, 'reply_form': None}
-    if message.recipient == user:
-        form = form_class(initial={
-            'body': quote_helper(message.sender, message.body),
-            'subject': subject_template % {'subject': message.subject},
-            'recipient': [message.sender,]
-            })
-        context['reply_form'] = form
+    #if message.recipient == user:
+        #form = form_class(initial={
+            #'body': quote_helper(message.sender, message.body),
+            #'subject': subject_template % {'subject': message.subject},
+            #'recipient': [message.sender,]
+            #})
+        #context['reply_form'] = form
     return render(request, template_name, context)
 
 
@@ -107,6 +107,7 @@ def reply(request, message_id, form_class=ComposeForm,
     if request.method == "POST":
         sender = request.user
         form = form_class(request.POST, recipient_filter=recipient_filter)
+        #form = form_class(request.POST, recipient_filter=recipient_filter)
         if form.is_valid():
             form.save(sender=request.user, parent_msg=parent)
             messages.info(request, _(u"Message successfully sent."))
@@ -139,9 +140,15 @@ def compose(request, recipient=None, form_class=ComposeForm,
         ``template_name``: the template to use
         ``success_url``: where to redirect after successfull submission
     """
+    friends_list = request.user.profile.friends.all()
+    users_list = []
+    for friend in friends_list:
+        users_list.append(friend.user)
+
     if request.method == "POST":
         sender = request.user
-        form = form_class(request.POST, recipient_filter=recipient_filter)
+        form = form_class(request.POST, friends_list=users_list, recipient_filter=recipient_filter, is_reply=False)
+        #form = form_class(request.POST, '')
         if form.is_valid():
             form.save(sender=request.user)
             messages.info(request, _(u"Message successfully sent."))
@@ -151,9 +158,8 @@ def compose(request, recipient=None, form_class=ComposeForm,
                 success_url = request.GET['next']
             return HttpResponseRedirect(success_url)
     else:
-        form = form_class()
+        form = form_class(friends_list=users_list)
         if recipient is not None:
             recipients = [u for u in User.objects.filter(**{'%s__in' % get_username_field(): [r.strip() for r in recipient.split('+')]})]
             form.fields['recipient'].initial = recipients
     return render(request, template_name, {'form': form,})
-
