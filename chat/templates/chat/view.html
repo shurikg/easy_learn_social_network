@@ -24,10 +24,10 @@
     <dd>{{ message.recipient }}</dd>
 </dl>
 {{ message.body|linebreaksbr }}<br /><br />
-
+<!--
 {% ifequal message.recipient.pk user.pk %}
 <a href="{% url 'chat:messages_reply' message.id %}">{% trans "Reply" %}</a>
-{% endifequal %}
+{% endifequal %}-->
 
 
 {% comment %}Example reply_form integration
