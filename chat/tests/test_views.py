@@ -11,7 +11,7 @@ class TestViews(TestCase):
         self.client = Client()
 
         self.outbox_url = reverse('chat:messages_outbox')
-        self.compose_url = reverse('chat:messages_compose')
+        self.inbox_url = reverse('chat:messages_inbox')
 
         # create sender
         recipient_username = 'sender'
@@ -44,7 +44,12 @@ class TestViews(TestCase):
     def test_test_view(self):
         assert 1 == 1
 
-    def test_inbox_view(self):
+    def test_outbox_view(self):
         response = self.client.post(self.outbox_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'chat/outbox.html')
+
+    def test_inbox_view(self):
+        response = self.client.post(self.inbox_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'chat/inbox.html')
