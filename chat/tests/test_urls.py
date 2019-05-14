@@ -41,4 +41,8 @@ class TestUrls(TestCase):
         url = reverse('chat:messages_inbox')
         self.assertEqual(resolve(url).func, inbox)
 
+    def test_message_compose_url_is_resolved(self):
+        url = reverse('chat:messages_compose')
+        self.assertEqual(resolve(url).func, compose)
+
 
