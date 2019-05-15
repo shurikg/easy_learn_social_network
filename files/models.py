@@ -5,7 +5,11 @@ from EasyLearn import settings
 from users.models import Course, Degree
 import os
 from django.core.exceptions import ValidationError
-
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
+from django.dispatch import receiver
+import uuid
+from django.utils.translation import ugettext_lazy as _
 
 EXTENSIONS_WHITELIST = ('pdf', 'docx', 'doc', 'jpg', 'png', 'jpeg', 'txt', 'zip', 'rar')
 UPLOAD_TO_DIR = 'files/'
@@ -61,3 +65,25 @@ class File(models.Model):
         os.rename(initial_path, new_path)
         self.file_url.name = os.path.join(UPLOAD_TO_DIR, self.file_name)
         super(File, self).save(**kwargs)
+
+
+    #@receiver(models.signals.post_delete, sender=File)
+    #def auto_delete_file_on_delete(sender, instance, **kwargs):
+        """
+        Deletes file from filesystem
+        when corresponding `MediaFile` object is deleted.
+        """
+        #if instance.file_url:
+            #if os.path.isfile(instance.file_url.path):
+
+                #os.remove(instance.file_url.path)
+
+    #@receiver(pre_delete, sender=File)
+    #def mymodel_delete(sender, instance, **kwargs):
+        #'''Pass false so FileField doesn't save the model.'''
+        #instance.file.delete(False)
+
+    #def delete(self, using=None, keep_parents=False):
+        #os.remove(self.legal_file.file_url.path)
+        #super(File, self).delete(self)
+
