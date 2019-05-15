@@ -103,5 +103,8 @@ class TestModels(TestCase):
     def test_file_size(self):
         self.assertEqual(self.legal_file.file_size, '12 B')
 
+    def test_admin(self):
+        self.assertEqual(self.legal_file.owner, self.user)
+
     def tearDown(self):
         os.remove(self.legal_file.file_url.path)
