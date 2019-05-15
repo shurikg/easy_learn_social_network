@@ -1,6 +1,10 @@
 from django.test import TestCase
 from posts.models import Post, Comments
 from django.contrib.auth.models import User
+from users.models import Degree, Course
+from files.models import File
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.utils import timezone
 
 
 class TestModels(TestCase):
@@ -17,17 +21,56 @@ class TestModels(TestCase):
         login = self.client.login(username=self.username, password=self.password)
         self.assertEqual(login, True)
 
+        # create category
+        self.category = Course.objects.create(
+            course_id='1',
+            course_name='OOP'
+        )
+
+        # create degree
+        self.software_eng_degree = Degree.objects.create(
+            degree_id='1',
+            degree_name='Software Engineering'
+        )
+
+        self.social_worker_degree = Degree.objects.create(
+            degree_id='2',
+            degree_name='Social Worker'
+        )
+
+        # upload legal file
+        self.legal = SimpleUploadedFile('test.pdf', b'test context')
+
+        # create file model object
+        self.legal_file = File(
+            category=self.category,
+            create_at=timezone.now(),
+            file_url=self.legal,
+            owner=self.user,
+        )
+        self.legal_file.save()
+        self.legal_file.related_degrees.add(self.software_eng_degree)
+        self.legal_file.related_degrees.add(self.social_worker_degree)
+
         # create post
         self.post1 = Post.objects.create(
             category='other',
             body='test1',
-            author=self.user
+            author=self.user,
         )
 
         self.post2 = Post.objects.create(
             category='OOP',
             body='test2',
             author=self.user
+        )
+
+        # create post with file
+        self.post3 = Post.objects.create(
+            category='other',
+            body='test3',
+            author=self.user,
+            file=self.legal_file
         )
 
         self.comment1 = Comments.objects.create(
@@ -41,6 +84,14 @@ class TestModels(TestCase):
             postId=self.post2,
             author=self.user
         )
+
+    def test_post_with_file_exist(self):
+        self.assertEqual(self.post3.category, 'other')
+        self.assertEqual(self.post3.body, 'test3')
+        self.assertEqual(str(self.post3.file.category), 'OOP')
+        self.assertEqual(self.post3.file.create_at.date(), timezone.now().date())
+        self.assertEqual(self.post3.file.file_url, 'files/1_testuser_OOP.pdf')
+        self.assertEqual(self.post3.file.owner, self.user)
 
     def test_post_Other_exist(self):
         self.assertEqual(self.post1.category, 'other')
