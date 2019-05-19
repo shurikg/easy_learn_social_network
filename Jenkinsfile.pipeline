@@ -60,28 +60,7 @@ pipeline {
             def spotbugs = scanForIssues tool: [$class: 'SpotBugs'], pattern: '**/target/spotbugsXml.xml'
             publishIssues issues:[spotbugs]
     }
-        stage('Static Code Analysis') {
-          parallel {
-            stage('Backend') {
-              agent {
-                label "node"
-              }
-              steps {
-                sh "ls -al"
-                }
-              }
-            }
-            stage('Frontend') {
-              agent {
-                label "node"
-              }
-              steps {
-                  sh "ls -al"
-                }
-              }
-            }
-          }
-          
+
         // post {
         //    failure {
         //        mail bcc: '', body: 'The last build failed, check it!', cc: 'mayhagbi@gmail.com, shlomitofahi@gmail.com', from: '', replyTo: '', subject: 'Jenkins Build Failure', to: 'jonbir2@gmail.com'
