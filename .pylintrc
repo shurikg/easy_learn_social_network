@@ -1,0 +1,5 @@
+[MESSAGES CONTROL]
+disable=disable=I0011
+
+[MASTER]
+ignore=migrations,tests
