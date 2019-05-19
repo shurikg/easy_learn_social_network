@@ -45,14 +45,6 @@ INSTALLED_APPS = [
     'formtools',
     'django_jenkins',
     'test_pep8',
-    'django_nose',
-]
-
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-NOSE_ARGS = [
-    '--with-coverage',
-    '--cover-package=files,posts,chat,users',
 ]
 
 MIDDLEWARE = [

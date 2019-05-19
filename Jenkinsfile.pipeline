@@ -32,11 +32,26 @@ pipeline {
             }
 
         }
+
+
+        stage('Code Coverage') {
+            steps{
+                withEnv(["HOME=${env.WORKSPACE}"]) {
+                    withCredentials([string(credentialsId: 'SECRET_KEY', variable: 'EASY_LEARN_PROJECT_SK')]) {
+                        echo 'Test All...'
+                        sh """
+                            python3 manage.py test
+                        """
+                       }
+                }
+            }
+        }
         stage('Results') {
             steps{
                 echo 'Printing users test results...'
                 junit 'reports/junit.xml'
                 publishCoverage adapters: [coberturaAdapter('reports/coverage.xml')], sourceFileResolver: sourceFiles('NEVER_STORE')
+                recordIssues(tools: [pep8(pattern: 'reports/pep8.reports')])
             }
         }
 
@@ -51,18 +66,6 @@ pipeline {
             //}
         //}
 
-        stage('Code Coverage') {
-            steps{
-                withEnv(["HOME=${env.WORKSPACE}"]) {
-                    withCredentials([string(credentialsId: 'SECRET_KEY', variable: 'EASY_LEARN_PROJECT_SK')]) {
-                        echo 'Test All...'
-                        sh """
-                            python3 manage.py test
-                        """
-                       }
-                }
-            }
-        }
           
         // post {
         //    failure {
