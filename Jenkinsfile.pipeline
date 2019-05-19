@@ -32,27 +32,29 @@ pipeline {
             }
 
         }
-
-
-        //stage('Code Coverage') {
-        //    steps{
-        //        withEnv(["HOME=${env.WORKSPACE}"]) {
-         //           withCredentials([string(credentialsId: 'SECRET_KEY', variable: 'EASY_LEARN_PROJECT_SK')]) {
-         //               echo 'Test All...'
-         //               sh """
-          //                  python3 manage.py test
-          //              """
-          //             }
-          //      }
-          //  }
-        //}
-        stage('Results') {
+        stage('Test Results') {
             steps{
                 echo 'Printing users test results...'
                 junit 'reports/junit.xml'
+            }
+        }
+        stage('Code Coverage Results') {
+            steps{
                 publishCoverage adapters: [coberturaAdapter('reports/coverage.xml')], sourceFileResolver: sourceFiles('NEVER_STORE')
+            }
+        }
+        stage('Pep8 Results') {
+            steps{
                 recordIssues(tools: [pep8(pattern: 'reports/pep8.report')])
+            }
+        }
+        stage('Pylint Results') {
+            steps{
                 recordIssues(tools: [pyLint(pattern: 'reports/pylint.report')])
+            }
+        }
+        stage('Pyflakes Results') {
+            steps{
                 recordIssues(tools: [flake8(pattern: 'reports/pyflakes.report')])
             }
         }
