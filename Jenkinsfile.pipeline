@@ -50,7 +50,7 @@ pipeline {
         }
         stage('Pylint Results') {
             steps{
-                recordIssues(tools: [pyLint(pattern: '**/pylint.report')])
+                recordIssues(tools: [pyLint(pattern: 'reports/pylint.report')])
             }
         }
         stage('Pyflakes Results') {
