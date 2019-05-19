@@ -35,10 +35,10 @@ SECRET_KEY = os.environ.get('EASY_LEARN_PROJECT_SK')
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-PROJECT_DIR = os.path.dirname(__file__)
-TEST_PEP8_DIRS = [os.path.dirname(PROJECT_DIR), ]
-PYLINT_RCFILE = os.path.join(BASE_DIR, ".pylintrc")
+#
+# PROJECT_DIR = os.path.dirname(__file__)
+# TEST_PEP8_DIRS = [os.path.dirname(PROJECT_DIR), ]
+# PYLINT_RCFILE = os.path.join(BASE_DIR, ".pylintrc")
 
 # Application definition
 
@@ -158,6 +158,7 @@ PROJECT_APPS = [
 ]
 
 JENKINS_TASKS = (
+    'django_jenkins.tasks.run_pep8',
     'django_jenkins.tasks.run_pylint',
     'django_jenkins.tasks.run_pyflakes',
 )
