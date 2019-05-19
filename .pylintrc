@@ -3,3 +3,5 @@ disable=disable=I0011
 
 [MASTER]
 ignore=migrations,tests
+
+msg-template={path}:{module}:{line}: [{msg_id}({symbol}), {obj}] {msg}
