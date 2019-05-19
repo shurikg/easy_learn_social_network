@@ -38,6 +38,7 @@ ALLOWED_HOSTS = []
 
 PROJECT_DIR = os.path.dirname(__file__)
 TEST_PEP8_DIRS = [os.path.dirname(PROJECT_DIR), ]
+PYLINT_RCFILE = os.path.join(BASE_DIR, ".pylintrc")
 
 # Application definition
 
