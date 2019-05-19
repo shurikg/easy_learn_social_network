@@ -52,6 +52,7 @@ pipeline {
                 junit 'reports/junit.xml'
                 publishCoverage adapters: [coberturaAdapter('reports/coverage.xml')], sourceFileResolver: sourceFiles('NEVER_STORE')
                 recordIssues(tools: [pep8(pattern: 'reports/pep8.report')])
+                recordIssues(tools: [pyLint(pattern: 'reports/pylint.report')])
             }
         }
 
