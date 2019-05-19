@@ -10,6 +10,17 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 from django.contrib.messages import constants as messages
 
+from django_jenkins.tasks import run_pylint
+
+
+class Lint:
+    class Run(run_pylint.lint.Run):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, do_exit=kwargs.pop("exit"), **kwargs)
+
+
+run_pylint.lint = Lint
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -44,7 +55,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'formtools',
     'django_jenkins',
-    'test_pep8',
 ]
 
 MIDDLEWARE = [
@@ -147,9 +157,9 @@ PROJECT_APPS = [
 ]
 
 JENKINS_TASKS = (
-    'django_jenkins.tasks.run_pylint',
     'django_jenkins.tasks.run_pep8',
     'django_jenkins.tasks.run_pyflakes',
+    'django_jenkins.tasks.run_pylint',
 )
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
