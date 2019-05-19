@@ -55,7 +55,7 @@ pipeline {
         }
         stage('Pyflakes Results') {
             steps{
-                recordIssues(tools: [flake8(pattern: 'reports/pyflakes.report')])
+                recordIssues(tools: [flake8(pattern: '**/pyflakes.report')])
             }
         }
 
