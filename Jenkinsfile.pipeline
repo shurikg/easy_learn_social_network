@@ -58,23 +58,11 @@ pipeline {
                 recordIssues(tools: [flake8(pattern: 'reports/pyflakes.report')])
             }
         }
-
-        //stage('Code Style') {
-         //   steps{
-           //     withEnv(["HOME=${env.WORKSPACE}"]) {
-           //             echo 'Test pep8...'
-            //            sh """
-            //                python3 manage.py test test_pep8
-            //            """
-             //   }
-            //}
-        //}
-
           
-        // post {
-        //    failure {
-        //        mail bcc: '', body: 'The last build failed, check it!', cc: 'mayhagbi@gmail.com, shlomitofahi@gmail.com', from: '', replyTo: '', subject: 'Jenkins Build Failure', to: 'jonbir2@gmail.com'
-        //    }
-        //}
+        post {
+            failure {
+                mail bcc: '', body: 'The last build failed, check it!', cc: 'mayhagbi@gmail.com, shlomitofahi@gmail.com', from: 'jonbir2@gmail.com', replyTo: '', subject: 'Jenkins Build Failure', to: 'jonbir2@gmail.com'
+            }
+        }
     }
 }
