@@ -62,7 +62,7 @@ pipeline {
     post {
         always {
             echo 'One way or another, I have finished'
-            git 'https://github.com/jonbir3/easy_learn_social_network.git'
+            // git 'https://github.com/jonbir3/easy_learn_social_network.git'
         }
         failure {
             withEnv(["HOME=${env.WORKSPACE}"]) {
