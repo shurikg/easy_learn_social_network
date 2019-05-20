@@ -66,7 +66,7 @@ pipeline {
         }
         failure {
             withEnv(["HOME=${env.WORKSPACE}"]) {
-                echo "${HOME} AAAAAAAAAAAAAAAAA"
+                echo "ls ${HOME}"
                 sh 'python3 send_mail.py "Jenkins Build Failed" "The last build failed, check it!"'
                 //sh 'python3 send_mail.py "Jenkins Build ${currentBuild.fullDisplayName} Failed" "The last build failed, check it! ${env.BUILD_URL}"'
             }
