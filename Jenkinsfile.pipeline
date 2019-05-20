@@ -61,7 +61,8 @@ pipeline {
     }
     post {
         failure {
-            mail bcc: '', body: 'The last build failed, check it!', cc: 'mayhagbi@gmail.com, shlomitofahi@gmail.com', from: 'jonbir2@gmail.com', replyTo: '', subject: 'Jenkins Build Failure', to: 'jonbir2@gmail.com'
+            sh 'python3 "Jenkins Build Failure" "The last build failed, check it!"
+            //mail bcc: '', body: 'The last build failed, check it!', cc: 'mayhagbi@gmail.com, shlomitofahi@gmail.com', from: 'jonbir2@gmail.com', replyTo: '', subject: 'Jenkins Build Failure', to: 'jonbir2@gmail.com'
         }
     }
 }
