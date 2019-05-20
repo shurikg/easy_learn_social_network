@@ -8,4 +8,5 @@ mixer
 django-jenkins
 coverage
 pep8
+pyflakes
 pylint
