@@ -19,7 +19,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'SECRET_KEY', variable: 'EASY_LEARN_PROJECT_SK')]) {
                         echo 'Testing...'
                         sh """
-                            python3 manage.py makemigrations users
+                            python3 manage.py makemigrations user
                             python3 manage.py makemigrations posts
                             python3 manage.py makemigrations chat
                             python3 manage.py makemigrations files
