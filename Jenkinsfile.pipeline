@@ -64,7 +64,7 @@ pipeline {
             withEnv(["HOME=${env.WORKSPACE}"]) {
                 sh "ls ${HOME}"
                 withCredentials([string(credentialsId: 'MAIL_PASS', variable: 'PASS_ONLY')]) {
-                    echo ${MAIL_PASS}
+                    echo '${MAIL_PASS}'
                     sh 'python3 send_mail.py "Jenkins Build Failed" "The last build failed, check it!"'
                     //sh 'python3 send_mail.py "Jenkins Build ${currentBuild.fullDisplayName} Failed" "The last build failed, check it! ${env.BUILD_URL}"'
                 }
