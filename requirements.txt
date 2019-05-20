@@ -6,7 +6,3 @@ pytest-django
 pytest-cov
 mixer
 django-jenkins
-coverage
-pep8
-pyflakes
-pylint
