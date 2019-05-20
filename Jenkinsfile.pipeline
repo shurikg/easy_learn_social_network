@@ -38,7 +38,11 @@ pipeline {
                 junit 'reports/junit.xml'
             }
         }
-
+        stage('Code Coverage Results') {
+            steps{
+                publishCoverage adapters: [coberturaAdapter('reports/coverage.xml')], sourceFileResolver: sourceFiles('NEVER_STORE')
+            }
+        }
     }
     post {
         always {
