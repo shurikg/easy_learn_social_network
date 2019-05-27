@@ -147,9 +147,6 @@ def compose(request, recipient=None, form_class=ComposeForm,
     """
     is_staff = request.user.is_staff
     friends_list = request.user.profile.friends.all()
-    users_list = []
-    #for friend in friends_list:
-        #users_list.append(friend.user)
     users_list = tuple([(friend.user, friend.user.first_name+' '+friend.user.last_name) for friend in friends_list])
 
     if request.method == "POST":
