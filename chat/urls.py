@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^inbox/$', inbox, name='messages_inbox'),
     url(r'^outbox/$', outbox, name='messages_outbox'),
     url(r'^compose/$', compose, name='messages_compose'),
+    url(r'^admin_message/$', compose_admin_message, name='messages_admin_compose'),
     #url(r'^compose/(?P<id>[\d]+)/$', compose, name='messages_compose'),
     url(r'^compose/(?P<recipient>[\w.@+-]+)/$', compose, name='messages_compose_to'),
     url(r'^reply/(?P<message_id>[\d]+)/$', reply, name='messages_reply'),

@@ -180,18 +180,14 @@ class ComposeForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         recipient_filter = kwargs.pop('recipient_filter', None)
-        friends_list = kwargs.pop('friends_list', None)
-        is_staff = kwargs.pop('is_staff', None)
+        self.friends_list = kwargs.pop('friends_list', None)
+        #self.is_staff = kwargs.pop('is_staff', None)
         #is_reply = kwargs.pop('is_reply', None)
         if recipient_filter is not None:
             self.fields['recipient']._recipient_filter = recipient_filter
         super(ComposeForm, self).__init__(*args, **kwargs)
-        if not is_staff:
-            self.fields['recipient'] = CommaSeparatedUserField(choices=tuple([(name, name) for name in friends_list]))
-            self.fields['subject'] = forms.CharField(label=_(u"Subject"), max_length=140)
-        else:
-            self.fields['recipient'] = AdminUsersForm(label=_(u"Recipient"), initial=friends_list)
-            self.fields['subject'] = forms.CharField(label=_(u"Subject"), max_length=140, initial='Admin message')
+        self.fields['recipient'] = CommaSeparatedUserField(choices=tuple([(name, name) for name in self.friends_list]))
+        self.fields['subject'] = forms.CharField(label=_(u"Subject"), max_length=140)
         self.fields['body'] = forms.CharField(label=_(u"Body"), widget=forms.Textarea(attrs={'rows': '12', 'cols': '55'}))
 
     def save(self, sender, parent_msg=None):
@@ -200,8 +196,6 @@ class ComposeForm(forms.Form):
         body = self.cleaned_data['body']
         message_list = []
         for r in recipients:
-            print(r)
-            print(type(r))
             msg = Message(
                 sender=sender,
                 recipient=r,
@@ -226,3 +220,45 @@ class ComposeForm(forms.Form):
     class Meta:
         model = Message
         fields = ('recipient', 'subject', 'body')
+
+class ComposeAdminForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        recipient_filter = kwargs.pop('recipient_filter', None)
+        self.friends_list = kwargs.pop('friends_list', None)
+        if recipient_filter is not None:
+            self.fields['recipient']._recipient_filter = recipient_filter
+        super(ComposeAdminForm, self).__init__(*args, **kwargs)
+        self.fields['subject'] = forms.CharField(label=_(u"Subject"), max_length=140, initial='Admin Message')
+        self.fields['body'] = forms.CharField(label=_(u"Body"), widget=forms.Textarea(attrs={'rows': '12', 'cols': '55'}))
+
+    def save(self, sender, parent_msg=None):
+        recipients = self.friends_list
+        subject = self.cleaned_data['subject']
+        body = self.cleaned_data['body']
+        message_list = []
+        for r in recipients:
+            msg = Message(
+                sender=sender,
+                recipient=r,
+                subject=subject,
+                body=body,
+            )
+            if parent_msg is not None:
+                msg.parent_msg = parent_msg
+                parent_msg.replied_at = timezone.now()
+                parent_msg.save()
+            msg.save()
+            message_list.append(msg)
+            if notification:
+                if parent_msg is not None:
+                    notification.send([sender], "messages_replied", {'message': msg})
+                    notification.send([r], "messages_reply_received", {'message': msg})
+                else:
+                    notification.send([sender], "messages_sent", {'message': msg})
+                    notification.send([r], "messages_received", {'message': msg})
+        return message_list
+
+    class Meta:
+        model = Message
+        fields = ('subject', 'body')

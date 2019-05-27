@@ -3,7 +3,7 @@ from chat.models import Message
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404, HttpResponseRedirect
 from django.utils import timezone
-from chat.forms import ComposeForm, get_user_model, get_username_field
+from chat.forms import ComposeForm, ComposeAdminForm, get_user_model, get_username_field
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.utils.text import wrap
 from django.contrib import messages
@@ -36,8 +36,10 @@ def inbox(request, template_name='chat/inbox.html'):
         ``template_name``: name of the template to use.
     """
     message_list = Message.objects.inbox_for(request.user)
+    is_staff = request.user.is_staff
     return render(request, template_name, {
         'message_list': message_list,
+        'is_staff': is_staff,
     })
 
 
@@ -49,8 +51,10 @@ def outbox(request, template_name='chat/outbox.html'):
         ``template_name``: name of the template to use.
     """
     message_list = Message.objects.outbox_for(request.user)
+    is_staff = request.user.is_staff
     return render(request, template_name, {
         'message_list': message_list,
+        'is_staff': is_staff,
     })
 
 
@@ -76,8 +80,8 @@ def view(request, message_id, form_class=ComposeForm, quote_helper=format_quote,
     if message.read_at is None and message.recipient == user:
         message.read_at = now
         message.save()
-
-    context = {'message': message, 'reply_form': None}
+    is_staff = request.user.is_staff
+    context = {'message': message, 'reply_form': None, 'is_staff': is_staff}
     #if message.recipient == user:
         #form = form_class(initial={
             #'body': quote_helper(message.sender, message.body),
@@ -85,6 +89,7 @@ def view(request, message_id, form_class=ComposeForm, quote_helper=format_quote,
             #'recipient': [message.sender,]
             #})
         #context['reply_form'] = form
+
     return render(request, template_name, context)
 
 
@@ -141,25 +146,24 @@ def compose(request, recipient=None, form_class=ComposeForm,
         ``success_url``: where to redirect after successfull submission
     """
     is_staff = request.user.is_staff
-    users = User.objects.all()
-    users_list = ''
-    for u in users:
-        users_list += u.username
-        users_list += ','
-    users_list[:-1]
-
-    if not is_staff:
-        friends_list = request.user.profile.friends.all()
-        users_list = []
-        for friend in friends_list:
-            users_list.append(friend.user)
+    #if is_staff:
+        #users_list = list(User.objects.all())
+    #users_list = ''
+    #for u in users:
+        #users_list += u.username
+        #users_list += ','
+    #users_list[:-1]
+    #else:
+    friends_list = request.user.profile.friends.all()
+    users_list = []
+    for friend in friends_list:
+        users_list.append(friend.user)
 
     if request.method == "POST":
         sender = request.user
-        form = form_class(request.POST, friends_list=users_list, recipient_filter=recipient_filter, is_staff=is_staff)
-        #form = form_class(request.POST, '')
+        form = form_class(request.POST, friends_list=users_list, recipient_filter=recipient_filter)
         if form.is_valid():
-            form.save(sender=request.user)
+            form.save(sender=sender)
             messages.info(request, _(u"Message successfully sent."))
             if success_url is None:
                 success_url = reverse('chat:messages_inbox')
@@ -167,8 +171,33 @@ def compose(request, recipient=None, form_class=ComposeForm,
                 success_url = request.GET['next']
             return HttpResponseRedirect(success_url)
     else:
-        form = form_class(friends_list=users_list, is_staff=is_staff)
+        form = form_class(friends_list=users_list)
         if recipient is not None:
             recipients = [u for u in User.objects.filter(**{'%s__in' % get_username_field(): [r.strip() for r in recipient.split('+')]})]
             form.fields['recipient'].initial = recipients
-    return render(request, template_name, {'form': form,})
+    return render(request, template_name, {'form': form, 'is_staff': is_staff})
+
+@login_required
+def compose_admin_message(request, recipient=None, form_class=ComposeAdminForm,
+            template_name='chat/compose.html', success_url=None,
+            recipient_filter=None):
+
+    users_list = list(User.objects.all())
+    is_staff = request.user.is_staff
+    if request.method == "POST":
+        sender = request.user
+        form = form_class(request.POST, friends_list=users_list, recipient_filter=recipient_filter)
+        if form.is_valid():
+            form.save(sender=sender)
+            messages.info(request, _(u"Message successfully sent."))
+            if success_url is None:
+                success_url = reverse('chat:messages_inbox')
+            if 'next' in request.GET:
+                success_url = request.GET['next']
+            return HttpResponseRedirect(success_url)
+    else:
+        form = form_class(friends_list=users_list)
+        if recipient is not None:
+            recipients = [u for u in User.objects.filter(**{'%s__in' % get_username_field(): [r.strip() for r in recipient.split('+')]})]
+            form.fields['recipient'].initial = recipients
+    return render(request, template_name, {'form': form, 'is_staff': is_staff})
