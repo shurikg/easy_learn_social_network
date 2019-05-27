@@ -173,6 +173,7 @@ def compose_admin_message(request, recipient=None, form_class=ComposeAdminForm,
             recipient_filter=None):
 
     users_list = list(User.objects.all())
+    users_list.remove(request.user)
     is_staff = request.user.is_staff
     if request.method == "POST":
         sender = request.user
