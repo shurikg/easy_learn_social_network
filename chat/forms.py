@@ -186,7 +186,8 @@ class ComposeForm(forms.Form):
         if recipient_filter is not None:
             self.fields['recipient']._recipient_filter = recipient_filter
         super(ComposeForm, self).__init__(*args, **kwargs)
-        self.fields['recipient'] = CommaSeparatedUserField(choices=tuple([(name, name) for name in self.friends_list]))
+        #self.fields['recipient'] = CommaSeparatedUserField(choices=tuple([(name, name) for name in self.friends_list]))
+        self.fields['recipient'] = CommaSeparatedUserField(choices=self.friends_list)
         self.fields['subject'] = forms.CharField(label=_(u"Subject"), max_length=140)
         self.fields['body'] = forms.CharField(label=_(u"Body"), widget=forms.Textarea(attrs={'rows': '12', 'cols': '55'}))
 

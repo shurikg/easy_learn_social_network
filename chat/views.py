@@ -146,18 +146,11 @@ def compose(request, recipient=None, form_class=ComposeForm,
         ``success_url``: where to redirect after successfull submission
     """
     is_staff = request.user.is_staff
-    #if is_staff:
-        #users_list = list(User.objects.all())
-    #users_list = ''
-    #for u in users:
-        #users_list += u.username
-        #users_list += ','
-    #users_list[:-1]
-    #else:
     friends_list = request.user.profile.friends.all()
     users_list = []
-    for friend in friends_list:
-        users_list.append(friend.user)
+    #for friend in friends_list:
+        #users_list.append(friend.user)
+    users_list = tuple([(friend.user, friend.user.first_name+' '+friend.user.last_name) for friend in friends_list])
 
     if request.method == "POST":
         sender = request.user
