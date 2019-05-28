@@ -22,7 +22,7 @@ class PostListView(ListView):
     def get_queryset(self):
         profile_obj = Profile.objects.get(user=self.request.user)
         friends_list = tuple(friend.user.username for friend in profile_obj.friends.all())
-        all_posts = Post.objects.all()
+        all_posts = Post.objects.all().order_by('-date')
         user_courses = tuple(course.course_id.course_name for course in UserCourses.objects.filter(user_id=profile_obj))
         posts_to_show = []
         for post in all_posts:
