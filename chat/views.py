@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from chat.models import Message
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404, HttpResponseRedirect
 from django.utils import timezone
 from chat.forms import ComposeForm, ComposeAdminForm, get_user_model, get_username_field
@@ -114,7 +114,7 @@ def reply(request, message_id, form_class=ComposeForm,
         form = form_class(request.POST, recipient_filter=recipient_filter)
         #form = form_class(request.POST, recipient_filter=recipient_filter)
         if form.is_valid():
-            form.save(sender=request.user, parent_msg=parent)
+            form.save(sender=sender, parent_msg=parent)
             messages.info(request, _(u"Message successfully sent."))
             if success_url is None:
                 success_url = reverse('chat:messages_inbox')
@@ -169,8 +169,9 @@ def compose(request, recipient=None, form_class=ComposeForm,
 
 @login_required
 def compose_admin_message(request, recipient=None, form_class=ComposeAdminForm,
-            template_name='chat/compose.html', success_url=None,
+            template_name='chat/admin_message.html', success_url=None,
             recipient_filter=None):
+
 
     users_list = list(User.objects.all())
     users_list.remove(request.user)
@@ -192,3 +193,15 @@ def compose_admin_message(request, recipient=None, form_class=ComposeAdminForm,
             recipients = [u for u in User.objects.filter(**{'%s__in' % get_username_field(): [r.strip() for r in recipient.split('+')]})]
             form.fields['recipient'].initial = recipients
     return render(request, template_name, {'form': form, 'is_staff': is_staff})
+
+@login_required
+def delete_inbox(request, message_id):
+    message = get_object_or_404(Message, id=message_id)
+    message.delete()
+    return redirect('chat:messages_inbox')
+
+@login_required
+def delete_outbox(request, message_id):
+    message = get_object_or_404(Message, id=message_id)
+    message.delete()
+    return redirect('chat:messages_outbox')

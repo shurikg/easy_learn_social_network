@@ -22,11 +22,12 @@
     <tbody>
 {% for message in message_list %}
     <tr>
-        <td>{{ message.recipient.first_name }}{{' '}}{{ message.recipient.last_name }}</td>
+        <td><a href="/user/show-users/selected-user/{{ message.sender.id }}">{{message.recipient.first_name}} {{message.recipient.last_name}}</a></td>
         <td>
         <a href="/chat/view/{{ message.id }}">{{ message.subject }}</a>
         </td>
         <td>{{ message.sent_at|date:_("DATETIME_FORMAT") }}</td>
+        <td><a href="{% url 'chat:message_delete_outbox' message.id %}" class="btn btn-outline-info">Delete</a></td>
     </tr>
 {% endfor %}
     </tbody>

@@ -23,7 +23,7 @@
     <tbody>
 {% for message in message_list %}
     <tr>
-        <td>{{ message.sender.first_name }}{{' '}}{{ message.sender.last_name }}</td>
+        <td><a href="/user/show-users/selected-user/{{ message.sender.id }}">{{message.sender.first_name}} {{message.sender.last_name}}</a></td>
         <td>
             {% if message.new %}<strong>{% endif %}
             {% if message.replied %}<em>{% endif %}
@@ -31,6 +31,7 @@
             {% if message.replied %}</em>{% endif %}
             {% if message.new %}</strong>{% endif %}</td>
         <td>{{ message.sent_at|date:_("DATETIME_FORMAT") }}</td>
+        <td><a href="{% url 'chat:message_delete_inbox' message.id %}" class="btn btn-outline-info">Delete</a></td>
     </tr>
 {% endfor %}
     </tbody>

@@ -13,7 +13,8 @@ urlpatterns = [
     url(r'^compose/(?P<recipient>[\w.@+-]+)/$', compose, name='messages_compose_to'),
     url(r'^reply/(?P<message_id>[\d]+)/$', reply, name='messages_reply'),
     url(r'^view/(?P<message_id>[\d]+)/$', view, name='messages_detail'),
-    #url(r'^delete/(?P<message_id>[\d]+)/$', delete, name='messages_delete'),
+    url(r'^delete_inbox/(?P<message_id>[\d]+)/$', delete_inbox, name='message_delete_inbox'),
+    url(r'^delete_outbox/(?P<message_id>[\d]+)/$', delete_outbox, name='message_delete_outbox'),
     #url(r'^undelete/(?P<message_id>[\d]+)/$', undelete, name='messages_undelete'),
     #url(r'^trash/$', trash, name='messages_trash'),
 ]
