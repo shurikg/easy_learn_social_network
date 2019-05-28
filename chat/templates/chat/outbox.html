@@ -2,14 +2,22 @@
 {% load i18n %}
 
 {% block sidebar %}
-<ul class="subnavilist">
+<div class="btn-group-vertical">
+    <a href="{% url 'chat:messages_inbox' %}" class="btn btn-outline-info">inbox</a>
+    <a href="{% url 'chat:messages_outbox' %}" class="btn btn-outline-info">Sent Messages</a>
+    <a href="{% url 'chat:messages_compose' %}" class="btn btn-outline-info">New Message</a>
+    {% if is_staff %}
+    <a href="{% url 'chat:messages_admin_compose' %}" class="btn btn-outline-info">Admin Message</a>
+    {% endif %}
+</div>
+<!--<ul class="subnavilist">
     <li><a href="{% url 'chat:messages_inbox' %} ">&raquo;&nbsp;{% trans "Inbox" %}</a></li>
     <li><a href="{% url 'chat:messages_outbox' %} ">&raquo;&nbsp;{% trans "Sent Messages" %}</a></li>
     <li><a href="{% url 'chat:messages_compose' %} ">&raquo;&nbsp;{% trans "New Message" %}</a></li>
     {% if is_staff %}
     <li><a href="{% url 'chat:messages_admin_compose' %} ">&raquo;&nbsp;{% trans "Admin Message" %}</a></li>
     {% endif %}
-</ul>
+</ul>-->
 {% endblock %}
 
 {% block content %}
@@ -22,7 +30,7 @@
     <tbody>
 {% for message in message_list %}
     <tr>
-        <td><a href="/user/show-users/selected-user/{{ message.sender.id }}">{{message.recipient.first_name}} {{message.recipient.last_name}}</a></td>
+        <td><a href="/user/show-users/selected-user/{{ message.recipient.id }}">{{message.recipient.first_name}} {{message.recipient.last_name}}</a></td>
         <td>
         <a href="/chat/view/{{ message.id }}">{{ message.subject }}</a>
         </td>
