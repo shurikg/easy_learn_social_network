@@ -139,7 +139,7 @@ class ComposeForm(forms.Form):
         super(ComposeForm, self).__init__(*args, **kwargs)
         self.fields['recipient'] = CommaSeparatedUserField(choices=self.friends_list)
         self.fields['subject'] = forms.CharField(label=_(u"Subject"), max_length=140)
-        self.fields['body'] = forms.CharField(label=_(u"Body"), widget=forms.Textarea(attrs={'rows': '12', 'cols': '55'}))
+        self.fields['body'] = forms.CharField(label=_(u"Body"), widget=forms.Textarea(attrs={'rows': '8', 'cols': '40'}))
 
     def save(self, sender, parent_msg=None):
         recipients = self.cleaned_data['recipient']
