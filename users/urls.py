@@ -19,5 +19,7 @@ urlpatterns = [
     url(r'^friend-request/accept/(?P<id>[\w-]+)/$', views.accept_friend_request, name='accept_friend_request'),
     url(r'^friend-request/delete/(?P<id>[\w-]+)/$', views.delete_friend_request, name='delete_friend_request'),
     path('friends/<int:user_id>', views.list_of_friends, name='list_of_friends'),
+    path('show-users/delete-user/<int:user_id>', views.delete_friend, name='delete_friend'),
+
     path('rules/', views.web_rules, name='rules'),
 ]

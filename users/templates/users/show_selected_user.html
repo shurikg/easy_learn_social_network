@@ -47,14 +47,20 @@
         {% elif button_status == 'friend_request_sent' %}
             <small><a class="btn btn-warning" href="/user/friend-request/cancel/{{ user.id }}">Cancel Request</a></small>
         {% elif button_status == 'friends' %}
-            <small><a class="btn btn-outline-info mb-4" onclick="pop_it_up('{% url 'users:list_of_friends' user.id %}')">Show List of Friends</a></small>
+        <table>
+            <tr>
+                <th> <small><a class="btn btn-outline-info mb-4" onclick="pop_it_up('{% url 'users:list_of_friends' user.id %}')">Show List of Friends</a></small> </th>
+            <tr>
+                <th> <small><a class="btn btn-outline-danger mb-4" href="{% url 'users:delete_friend' user.id %}">Delete Friend</a></small> </th>
+            </tr>
+        </table>
         {% endif %}
     </div>
-
     <script language="javascript" type="text/javascript">
         function pop_it_up(url) {
             new_window = window.open(url,'{{ title }}', 'height=600, width=400');
             if (window.focus) {new_window.focus()}
         }
     </script>
+
 {% endblock sidebar %}
