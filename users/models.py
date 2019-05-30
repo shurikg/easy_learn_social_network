@@ -1,11 +1,25 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+UPLOAD_TO_DIR = 'profilepics/'
+FILE_SIZE = 1048576
+FILE_TYPE = '.jpg'
+
 
 class Profile(models.Model):
+
+    def validate_file_type(value):
+        if not value.name.endswith(FILE_TYPE):
+            raise ValidationError(u'picture must be jpg file')
+
+    def validate_file_size(value):
+        if value.size > FILE_SIZE:
+            raise ValidationError(u'picture must be size')
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     birth_date = models.DateField(default='')
     gender = models.CharField(max_length=10)
@@ -13,9 +27,13 @@ class Profile(models.Model):
     year_of_study = models.PositiveIntegerField(validators=[MaxValueValidator(10)])
     about_me = models.TextField(max_length=250, null=True, blank=True, default='')
     friends = models.ManyToManyField("profile", blank=True)
+    profile_pic = models.ImageField(upload_to=UPLOAD_TO_DIR, default='', validators=[validate_file_type, validate_file_size])
 
     def __str__(self):
         return str(self.user)
+
+    # def save(self, **kwargs):
+
 
 '''
 def post_save_user_model_receiver(sender, instance, created, *args, **kwargs):
