@@ -104,3 +104,10 @@ def create_new_post(request):
     else:
         post_form = NewPostForm
         return render(request, 'posts/new_post.html', {"post_form": post_form})
+
+
+@login_required
+def delete_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    post.delete()
+    return redirect('posts:feed')
