@@ -13,11 +13,13 @@ class DateInput(forms.DateInput):
 
 
 class CreateNewFileForm(forms.ModelForm):
+    file_create_at_help_text = 'Please specify the date you created the file for people to know if its relevant'
+
     category = forms.ModelChoiceField(queryset=Course.objects.all())
     related_degrees = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                                      queryset=Degree.objects.all(),
                                                      error_messages={'required': 'You must select at least one degree.'})
-    create_at = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}))
+    file_create_at = forms.DateField(help_text=file_create_at_help_text, widget=forms.widgets.DateInput(attrs={'type': 'date'}))
 
     def add_prefix(self, field_name):
         # look up field name; return original if not found
@@ -26,7 +28,7 @@ class CreateNewFileForm(forms.ModelForm):
 
     class Meta:
         model = File
-        fields = ('category', 'related_degrees', 'create_at', 'file_url',)
+        fields = ('category', 'related_degrees', 'file_create_at', 'file_url',)
 
     def clean_file_url(self):
         file = self.cleaned_data.get('file_url')
