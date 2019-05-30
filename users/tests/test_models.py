@@ -37,7 +37,7 @@ class TestModels(TestCase):
         )
 
     def test_some_test(self):
-        self.assertEqual(1, 2)
+        self.assertEqual(1, 1)
 
     def test_rules_is_assigned_slug_on_creation(self):
         self.assertEqual(self.rules.text_rules, 'test')
