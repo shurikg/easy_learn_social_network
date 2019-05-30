@@ -266,6 +266,7 @@ def show_selected_user(request):
 
 @login_required
 def show_selected_user(request, id):
+    #print("hiiiiii")
     user = get_object_or_404(User, id=id)
 
     profile_obj = Profile.objects.get(user=user)
@@ -424,8 +425,18 @@ def list_of_friends(request, user_id):
     paginator_friends_list = paginator.get_page(page)
     context = {'user': user_obj,
                'friends_list': paginator_friends_list}
-    return render(request, 'users/list_of_friends.html', context)
+    return render(request, 'users/selected_user.html', context)
 
+@login_required
+def delete_friend(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    Profile.objects.get(user=user).friends.remove(
+         Profile.objects.get(user=request.user))
+
+    Profile.objects.get(user=request.user).friends.remove(
+        Profile.objects.get(user=user))
+
+    return show_selected_user(request, user_id)
 
 def web_rules(request):
     context = {
