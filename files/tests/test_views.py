@@ -50,7 +50,10 @@ class TestUrls(TestCase):
             file_url=f,
             owner=self.user,
         )
-        self.file1.save()
+        try:
+            self.file1.save()
+        except FileExistsError as e:
+            print(e)
         self.file1.related_degrees.add(self.software_eng_degree)
         self.file1.related_degrees.add(self.social_worker_degree)
 
@@ -84,5 +87,7 @@ class TestUrls(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def tearDown(self):
-        os.remove(self.file1.file_url.path)
-
+        try:
+            os.remove(self.file1.file_url.path)
+        except FileNotFoundError as e:
+            print(e)
