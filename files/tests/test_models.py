@@ -49,7 +49,10 @@ class TestModels(TestCase):
             file_url=self.legal,
             owner=self.user,
         )
-        self.legal_file.save()
+        try:
+            self.legal_file.save()
+        except FileExistsError as e:
+            print(e)
         self.legal_file.related_degrees.add(self.software_eng_degree)
         self.legal_file.related_degrees.add(self.social_worker_degree)
 
@@ -107,4 +110,7 @@ class TestModels(TestCase):
         self.assertEqual(self.legal_file.owner, self.user)
 
     def tearDown(self):
-        os.remove(self.legal_file.file_url.path)
+        try:
+            os.remove(self.legal_file.file_url.path)
+        except FileNotFoundError as e:
+            print(e)

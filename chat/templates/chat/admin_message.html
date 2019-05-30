@@ -1,8 +1,8 @@
 {% extends "chat/base.html" %}
+{% load crispy_forms_tags %}
 {% load i18n %}
 
 {% block sidebar %}
-
 <div class="btn-group-vertical">
     <a href="{% url 'chat:messages_inbox' %}" class="btn btn-outline-info">inbox</a>
     <a href="{% url 'chat:messages_outbox' %}" class="btn btn-outline-info">Sent Messages</a>
@@ -18,34 +18,17 @@
     {% if is_staff %}
     <li><a href="{% url 'chat:messages_admin_compose' %} ">&raquo;&nbsp;{% trans "Admin Message" %}</a></li>
     {% endif %}
-
 </ul>-->
 {% endblock %}
 
 {% block content %}
-<h1>{% trans "Inbox" %}</h1>
-{% if message_list %}
-<table  class="table order-column hover">
-    <thead>
-        <tr><th>{% trans "Sender" %}</th><th>{% trans "Subject" %}</th><th>{% trans "Received" %}</th><th>{% trans "Action" %}</th></tr>
-    </thead>
-    <tbody>
-{% for message in message_list %}
-    <tr>
-        <td><a href="/user/show-users/selected-user/{{ message.sender.id }}">{{message.sender.first_name}} {{message.sender.last_name}}</a></td>
-        <td>
-            {% if message.new %}<strong>{% endif %}
-            {% if message.replied %}<em>{% endif %}
-            <a href="/chat/view/{{ message.id }}">{{ message.subject }}</a>
-            {% if message.replied %}</em>{% endif %}
-            {% if message.new %}</strong>{% endif %}</td>
-        <td>{{ message.sent_at|date:_("DATETIME_FORMAT") }}</td>
-        <td><a href="{% url 'chat:message_delete_inbox' message.id %}" class="btn btn-outline-info">Delete</a></td>
-    </tr>
-{% endfor %}
-    </tbody>
+<h1>{% trans "Compose Admin Message"%}</h1>
+<form action="" method="post">
+{% csrf_token %}
+<table>
+    {{ form|crispy }}
 </table>
-{% else %}
-<p>{% trans "No messages." %}</p>
-{% endif %}
+<br><button class="btn btn-outline-info" type="submit">Send</button>
+</form>
+
 {% endblock %}

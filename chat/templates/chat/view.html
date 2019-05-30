@@ -2,28 +2,48 @@
 {% load i18n %}
 
 {% block sidebar %}
-<ul class="subnavilist">
+<div class="btn-group-vertical">
+    <a href="{% url 'chat:messages_inbox' %}" class="btn btn-outline-info">inbox</a>
+    <a href="{% url 'chat:messages_outbox' %}" class="btn btn-outline-info">Sent Messages</a>
+    <a href="{% url 'chat:messages_compose' %}" class="btn btn-outline-info">New Message</a>
+    {% if is_staff %}
+    <a href="{% url 'chat:messages_admin_compose' %}" class="btn btn-outline-info">Admin Message</a>
+    {% endif %}
+</div>
+<!--<ul class="subnavilist">
     <li><a href="{% url 'chat:messages_inbox' %} ">&raquo;&nbsp;{% trans "Inbox" %}</a></li>
     <li><a href="{% url 'chat:messages_outbox' %} ">&raquo;&nbsp;{% trans "Sent Messages" %}</a></li>
     <li><a href="{% url 'chat:messages_compose' %} ">&raquo;&nbsp;{% trans "New Message" %}</a></li>
-</ul>
+    {% if is_staff %}
+    <li><a href="{% url 'chat:messages_admin_compose' %} ">&raquo;&nbsp;{% trans "Admin Message" %}</a></li>
+    {% endif %}
+</ul>-->
 {% endblock %}
 
 {% block content %}
+<article class="content-section" >
+          <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="/user/show-users/selected-user/{{ message.sender.id }}">{{message.sender.first_name}} {{message.sender.last_name}}</a>
+              <small class="text-muted">{{ message.sent_at|date:"F d, Y" }}</small>
+            </div>
+            <div>
+                <h3><a class="article-title" >{{ message.subject }}</a></h3>
+                <p class="article-content">{{ message.body }}</p>
+            </div>
+          </div>
+        </article>
 
-
-<h1>{% trans "View Message" %}</h1>
+<!--<h1>{% trans "View Message" %}</h1>
 <dl class="message-headers">
     <dt>{% trans "Subject" %}</dt>
     <dd><strong>{{ message.subject }}</strong></dd>
     <dt>{% trans "Sender" %}</dt>
-    <dd>{{ message.sender }}</dd>
+    <p><a href="/user/show-users/selected-user/{{ message.sender.id }}">{{message.sender.first_name}} {{message.sender.last_name}}</a></p>
     <dt>{% trans "Date" %} </dt>
     <dd>{{ message.sent_at|date:_("DATETIME_FORMAT")}}</dd>
-    <dt>{% trans "Recipient" %}</dt>
-    <dd>{{ message.recipient }}</dd>
 </dl>
-{{ message.body|linebreaksbr }}<br /><br />
+{{ message.body|linebreaksbr }}<br /><br />-->
 <!--
 {% ifequal message.recipient.pk user.pk %}
 <a href="{% url 'chat:messages_reply' message.id %}">{% trans "Reply" %}</a>

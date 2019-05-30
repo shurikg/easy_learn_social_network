@@ -3,11 +3,22 @@
 {% load i18n %}
 
 {% block sidebar %}
-<ul class="subnavilist">
+<div class="btn-group-vertical">
+    <a href="{% url 'chat:messages_inbox' %}" class="btn btn-outline-info">inbox</a>
+    <a href="{% url 'chat:messages_outbox' %}" class="btn btn-outline-info">Sent Messages</a>
+    <a href="{% url 'chat:messages_compose' %}" class="btn btn-outline-info">New Message</a>
+    {% if is_staff %}
+    <a href="{% url 'chat:messages_admin_compose' %}" class="btn btn-outline-info">Admin Message</a>
+    {% endif %}
+</div>
+<!--<ul class="subnavilist">
     <li><a href="{% url 'chat:messages_inbox' %} ">&raquo;&nbsp;{% trans "Inbox" %}</a></li>
     <li><a href="{% url 'chat:messages_outbox' %} ">&raquo;&nbsp;{% trans "Sent Messages" %}</a></li>
     <li><a href="{% url 'chat:messages_compose' %} ">&raquo;&nbsp;{% trans "New Message" %}</a></li>
-</ul>
+    {% if is_staff %}
+    <li><a href="{% url 'chat:messages_admin_compose' %} ">&raquo;&nbsp;{% trans "Admin Message" %}</a></li>
+    {% endif %}
+</ul>-->
 {% endblock %}
 
 {% block content %}
@@ -17,7 +28,7 @@
 <table>
     {{ form|crispy }}
 </table>
-<input type="submit" value="{% trans "Send" %} &raquo;"/>
+<br><button class="btn btn-outline-info" type="submit">Send</button>
 </form>
 
 {% endblock %}
