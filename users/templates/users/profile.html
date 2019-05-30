@@ -21,7 +21,8 @@
     </div>
 <div class="container">
     <div class="well">
-    <legend class="border-bottom mb-4">Profile</legend>
+    <legend class="border-bottom mb-4">Profile        <a href="{% url 'users:edit_profile' %}" class="btn btn-default" >edit</a>
+</legend>
         <p>Username: {{ user }}</p>
         <p>First name: {{ user.first_name }}</p>
         <p>Last name: {{ user.last_name }}</p>
@@ -32,16 +33,10 @@
         <p>year of study: {{ profile.year_of_study }}</p>
         <p>about me: {{ profile.about_me }}</p>
 
-        <a href="{% url 'users:edit_profile' %}" class="btn btn-default" >Edit profile</a>
     </div>
 </div>
 
 <div class="container">
-{% for r_request in friend_requests %}
-			<p><a href="{{ r_request.from_user.profile.get_absolute_url }}">{{ r_request.from_user.username }}</a></p>
-			<small><a class='btn btn-primary' href="/user/friend-request/accept/{{ r_request.from_user.id }}">Accept</a></small>
-			<small><a class='btn btn-warning' href="/user/friend-request/delete/{{ r_request.from_user.id }}">Ignore</a></small>
-		{% endfor %}
 </div>
 </div>
 
@@ -51,3 +46,15 @@
 <!--</div>-->
 
 {% endblock content %}
+
+{% block sidebar %}
+{% for r_request in friend_requests %}
+    <div class="content-section">
+
+			<p>You have request from <a href="{{ r_request.from_user.profile.get_absolute_url }}">{{ r_request.from_user.username }}</a></p>
+            <small><a class='btn btn-primary' href="/user/friend-request/accept/{{ r_request.from_user.id }}">Accept</a></small>
+			<small><a class='btn btn-warning' href="/user/friend-request/delete/{{ r_request.from_user.id }}">Ignore</a></small>
+            </div>
+
+		{% endfor %}
+{% endblock %}

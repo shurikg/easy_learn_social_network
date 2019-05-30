@@ -9,10 +9,7 @@ pipeline {
         stage('Requirements'){
             steps{
                 withEnv(["HOME=${env.WORKSPACE}"]) {
-                    sh """
-                        pip3 install --user -r requirements.txt
-                        pip3 install -U Pillow
-                    """
+                    sh 'pip3 install --user -r requirements.txt'
                 }
             }
         }
