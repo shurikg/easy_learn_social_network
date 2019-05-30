@@ -24,7 +24,13 @@
 <article class="content-section" >
           <div class="media-body">
             <div class="article-metadata">
+                {% if from_inbox %}
+                <a class="mr-2" >Message From:</a>
                 <a class="mr-2" href="/user/show-users/selected-user/{{ message.sender.id }}">{{message.sender.first_name}} {{message.sender.last_name}}</a>
+                {% else %}
+                <a class="mr-2" >Message To:</a>
+                <a class="mr-2" href="/user/show-users/selected-user/{{ message.recipient.id }}">{{message.recipient.first_name}} {{message.recipient.last_name}}</a>
+                {% endif %}
               <small class="text-muted">{{ message.sent_at|date:"F d, Y" }}</small>
             </div>
             <div>

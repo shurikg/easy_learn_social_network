@@ -81,7 +81,10 @@ def view(request, message_id, form_class=ComposeForm, quote_helper=format_quote,
         message.read_at = now
         message.save()
     is_staff = request.user.is_staff
-    context = {'message': message, 'reply_form': None, 'is_staff': is_staff}
+    from_inbox = False
+    if request.user == message.recipient:
+        from_inbox = True
+    context = {'message': message, 'reply_form': None, 'is_staff': is_staff, 'from_inbox': from_inbox}
     #if message.recipient == user:
         #form = form_class(initial={
             #'body': quote_helper(message.sender, message.body),
