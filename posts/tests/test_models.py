@@ -5,6 +5,7 @@ from users.models import Degree, Course
 from files.models import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
+import os
 
 
 class TestModels(TestCase):
@@ -48,7 +49,10 @@ class TestModels(TestCase):
             file_url=self.legal,
             owner=self.user,
         )
-        self.legal_file.save()
+        try:
+            self.legal_file.save()
+        except FileExistsError as e:
+            print(e)
         self.legal_file.related_degrees.add(self.software_eng_degree)
         self.legal_file.related_degrees.add(self.social_worker_degree)
 
@@ -112,3 +116,9 @@ class TestModels(TestCase):
         comments = Comments.objects.filter(postId=self.post1)
         for comment in comments:
             self.assertEqual(comment.postId.id, self.post1.id)
+
+    def tearDown(self):
+        try:
+            os.remove(self.legal_file.file_url.path)
+        except FileNotFoundError as e:
+            print(e)
