@@ -267,7 +267,12 @@ def show_selected_user(request):
 
 @login_required
 def show_selected_user(request, id):
-    #print("hiiiiii")
+    try:
+        if request.user.id == int(id):
+            return view_profile(request)
+    except ValueError as e:
+        print(e)
+
     user = get_object_or_404(User, id=id)
 
     profile_obj = Profile.objects.get(user=user)
