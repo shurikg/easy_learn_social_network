@@ -11,6 +11,9 @@
             <div>
                 <h3><a class="article-title" href="{% url 'posts:post-detail' post.id %}">{{ post.category }}</a></h3>
                 <p class="article-content">{{ post.body }}</p>
+                {% if post.file %}
+                    <a class="article-content" href="{% url 'files:download_file' post.file.id %}">{{ post.file }}</a>
+                {% endif %}
             </div>
           </div>
         </article>

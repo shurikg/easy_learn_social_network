@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Post, Comments
 from django.views.generic import ListView, DetailView
-from .forms import NewPostForm, Comment, OTHER_CATEGORY
+from .forms import NewPostForm, Comment, PRIVATE_CATEGORY
 from users.models import Profile, UserCourses
 from files.forms import CreateNewFileForm
 
@@ -26,7 +26,7 @@ class PostListView(ListView):
         user_courses = tuple(course.course_id.course_name for course in UserCourses.objects.filter(user_id=profile_obj))
         posts_to_show = []
         for post in all_posts:
-            if post.category == OTHER_CATEGORY and post.author.username in (friends_list + (self.request.user.username,)):
+            if post.category == PRIVATE_CATEGORY and post.author.username in (friends_list + (self.request.user.username,)):
                 posts_to_show.append(post)
             elif post.category in user_courses:
                 posts_to_show.append(post)
@@ -104,3 +104,10 @@ def create_new_post(request):
     else:
         post_form = NewPostForm
         return render(request, 'posts/new_post.html', {"post_form": post_form})
+
+
+@login_required
+def delete_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    post.delete()
+    return redirect('posts:feed')

@@ -2,7 +2,7 @@ from django import forms
 from posts.models import Post, Comments
 from users.models import Course
 
-OTHER_CATEGORY = 'other'
+PRIVATE_CATEGORY = 'private'
 FIELD_NAME_MAPPING = {
     'category': 'post_type'
 }
@@ -10,7 +10,7 @@ FIELD_NAME_MAPPING = {
 
 class NewPostForm(forms.ModelForm):
     CATEGORY_CHOICES = (
-        (OTHER_CATEGORY, 'Other'),
+        (PRIVATE_CATEGORY, 'private'),
     )
     COURSES = ()
     try:
