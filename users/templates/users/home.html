@@ -1,33 +1,55 @@
 {% extends "posts/base.html" %}
+{% block title %}Home{% endblock title %}
 {% block content %}
-<html>
-    <title>Easy Learn</title>
-    <style>
-        .Summary {
-        border: 1px solid black;
-        width: 300px;
-        padding: 30px;
-        text-align: center;
-        position: absolute;
-        top: 275%;
-        left: 73%;
-        transform: translate(-50%, -50%)
-        }
-        img {
-          display: block;
-          margin-left: 42%;
-          margin-right: 0%;
-        }
-    </style>
-</head>
-<body>
-    <div>
-        <img src="http://www.net-key.it/easylearn/logo.png" alt="Paris" style="width:65%">
-    </div>
-    <div class="Summary">
-        <p class="summaryText">Easy learn is a social network that designed to facilitate the sharing of
+    {# Hero Section #}
+    <div class="mkt-s1">
+        <div class="mkt-s1-body container ">
+            <div>
+                <img src="http://www.net-key.it/easylearn/logo.png" alt="Paris" style="width:80%">
+            </div>
+            <div>
+                <br/>
+                <br/>
+                <br/>
+            </div>
+            <div class="row">
+                <h1 class="col-md-8">Welcome to Easy Learn -</h1>
+                <h3 class="col-md-8">Educational Social Network</h3>
+            </div>
+            <br/>
+            <div class="row">
+                <p class="col-md-8">Easy learn is a social network that designed to facilitate the sharing of
             educational material between students from all educational institutions.</p>
+            </div>
+            <div class="row">
+            </div>
+        </div>
     </div>
-</body>
-</html>
+
 {% endblock content %}
+
+{% block sidebar %}
+    <div>
+        <h3>Create a new account</h3>
+        <p>It's free and always will be.</p>
+        <br/>
+        <font size="1">By clicking Sign Up, you agree to our Terms and Data Policy.</font>
+        <a href="{% url 'register-wizard' %}"
+           class="sign-up btn btn-success">Sign Up Now!
+        </a>
+    </div>
+    <div>
+        <br/>
+        <br/>
+        <hr>
+        <br/>
+        <br/>
+    </div>
+    <div>
+        <h3>You have an already account?</h3>
+        <br/>
+        <a href="{% url 'login' %}"
+           class="sign-in btn btn-success">Sign In
+        </a>
+    </div>
+{% endblock %}
