@@ -32,17 +32,43 @@ pipeline {
             }
 
         }
-        stage('Results') {
+        stage('Test Results') {
             steps{
                 echo 'Printing users test results...'
                 junit 'reports/junit.xml'
+            }
+        }
+        stage('Code Coverage Results') {
+            steps{
                 publishCoverage adapters: [coberturaAdapter('reports/coverage.xml')], sourceFileResolver: sourceFiles('NEVER_STORE')
             }
         }
-        // post {
-        //    failure {
-        //        mail bcc: '', body: 'The last build failed, check it!', cc: 'mayhagbi@gmail.com, shlomitofahi@gmail.com', from: '', replyTo: '', subject: 'Jenkins Build Failure', to: 'jonbir2@gmail.com'
-        //    }
-        //}
+        stage('Pep8 Results') {
+            steps{
+                recordIssues(tools: [pep8(pattern: 'reports/pep8.report')])
+            }
+        }
+        stage('Pylint Results') {
+            steps{
+                recordIssues(tools: [pyLint(pattern: 'reports/pylint.report')])
+            }
+        }
+        stage('Pyflakes Results') {
+            steps{
+                recordIssues(tools: [flake8(pattern: 'reports/pyflakes.report')])
+            }
+        }
+    }
+    post {
+        failure {
+            withEnv(["HOME=${env.WORKSPACE}"]) {
+                withCredentials([string(credentialsId: 'MAIL_PASS', variable: 'PASS_ONLY')]) {
+		    echo "${currentBuild.fullDisplayName} AAAA ${currentBuild.result} BBBB ${env.BUILD_URL}"
+                    //sh 'python3 send_mail.py "Jenkins Build ${currentBuild.fullDisplayName} ${currentBuild.result}" "The last build failed, check it! url: ${env.BUILD_URL}"'
+                    sh 'python3 send_mail.py "Jenkins Build Failed" "The last build failed, check it!"'
+		}
+            }
+            //mail bcc: '', body: 'The last build failed, check it!', cc: 'mayhagbi@gmail.com, shlomitofahi@gmail.com', from: 'jonbir2@gmail.com', replyTo: '', subject: 'Jenkins Build Failure', to: 'jonbir2@gmail.com'
+        }
     }
 }
