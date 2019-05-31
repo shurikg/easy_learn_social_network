@@ -18,12 +18,15 @@ GENDER_CHOICES = (
 class Profile(models.Model):
 
     def validate_file_type(value):
-        if not value.name.endswith(FILE_TYPE):
-            raise ValidationError(u'picture must be jpg file')
+        import os
+        ext = os.path.splitext(value.name)[1]
+        valid_extensions = ['.jpg', '.JPG']
+        if not ext in valid_extensions:
+            raise ValidationError(u'Image type must be jpg file!')
 
     def validate_file_size(value):
         if value.size > FILE_SIZE:
-            raise ValidationError(u'picture must be size')
+            raise ValidationError(u'Image size should not exceed 5 MB!')
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     birth_date = models.DateField(default='')

@@ -39,31 +39,34 @@ body  {
 </body>
 {% endblock content %}
 
-{% block sidebar %}
-    <br/>
-    <br/>
-    <div>
-        <h3 style="color:black">Create a new account</h3>
-        <p style="color:black">It's free and always will be.</p>
-        <br/>
-        <br/>
-        <font style="color:black" size="1">By clicking Sign Up, you agree to our Terms and Data Policy.</font>
-        <a href="{% url 'register-wizard' %}"
-           class="sign-up btn btn-success">Sign Up Now!
-        </a>
-    </div>
-    <div>
-        <br/>
-        <hr style="height:1px;border:none;color:#333;background-color:#333;">
-        <br/>
-        <br/>
-        <br/>
-    </div>
-    <div>
-        <h3 style="color:black">You have an already account?</h3>
-        <br/>
-        <a href="{% url 'login' %}"
-           class="sign-in btn btn-success">Sign In
-        </a>
-    </div>
-{% endblock %}
+    {% block sidebar %}
+        {% if user.is_authenticated %}
+        {% else %}
+            <br/>
+            <br/>
+            <div>
+                <h3 style="color:black">Create a new account</h3>
+                <p style="color:black">It's free and always will be.</p>
+                <br/>
+                <br/>
+                <font style="color:black" size="1">By clicking Sign Up, you agree to our Terms and Data Policy.</font>
+                <a href="{% url 'register-wizard' %}"
+                   class="sign-up btn btn-success">Sign Up Now!
+                </a>
+            </div>
+            <div>
+                <br/>
+                <hr style="height:1px;border:none;color:#333;background-color:#333;">
+                <br/>
+                <br/>
+                <br/>
+            </div>
+            <div>
+                <h3 style="color:black">You have an already account?</h3>
+                <br/>
+                <a href="{% url 'login' %}"
+                   class="sign-in btn btn-success">Sign In
+                </a>
+            </div>
+        {% endif %}
+    {% endblock %}
