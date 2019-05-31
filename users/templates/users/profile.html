@@ -48,6 +48,7 @@
 {% endblock content %}
 
 {% block sidebar %}
+    <a href="{% url 'files:delete_files' %}" class="btn btn-danger">Delete Files</a>
 {% for r_request in friend_requests %}
     <div class="content-section">
 

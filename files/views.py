@@ -1,11 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
 from django.shortcuts import render, redirect
 from files.forms import CreateNewFileForm, FilterFilesForm
-
-# Create your views here.
+import os
+from EasyLearn.settings import MEDIA_ROOT
 from files.models import File
-from users.views import User
 
 
 @login_required
@@ -61,3 +59,22 @@ def download_file(request, file_id):
     args = {'file': file, }
     return render(request, 'files/download_file.html', args)
 
+
+@login_required
+def delete_files(request):
+    list_of_files = File.objects.filter(owner=request.user)
+    if len(list_of_files) == 0:
+        list_of_files = None
+    return render(request, 'files/delete_files.html', {'files': list_of_files})
+
+
+@login_required
+def delete_one_file(request, file_id):
+    try:
+        file = File.objects.get(id=file_id)
+        file_path = '{0}/{1}'.format(MEDIA_ROOT, file.file_url)
+        os.remove(file_path)
+        file.delete()
+    except (FileNotFoundError, File.DoesNotExist) as e:
+        print(e)
+    return delete_files(request)

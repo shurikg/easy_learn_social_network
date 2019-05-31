@@ -1,0 +1,35 @@
+{% extends "posts/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% if not files %}
+        <div class="alert alert-info">
+            <strong>Oops!</strong> It looks like you have not uploaded any files.
+            <br/>
+            You can share your knowledge <a href="{% url 'files:add_file' %}">here</a>
+        </div>
+    {%else%}
+        <div class="content-section">
+                <fieldset class="form-group mw-25">
+                    <legend class="border-bottom mb-4">List of Your Files</legend>
+                            <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">File Name</th>
+                                            <th scope="col">Uploaded At</th>
+                                        </tr>
+                                      </thead>
+                                    <tbody>
+                                            {% for file in files %}
+                                                <tr>
+                                                    <td><a href="{% url 'files:delete_one_file' file.id %}" class="btn">delete</a></td>
+                                                    <td>{{ file.file_name }}</td>
+                                                    <td>{{ file.upload_at.date }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                    </tbody>
+                            </table>
+                </fieldset>
+        </div>
+    {%endif%}
+{% endblock content %}
