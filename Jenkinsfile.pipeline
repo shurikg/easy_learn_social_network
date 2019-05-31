@@ -20,6 +20,8 @@ pipeline {
                     withCredentials([string(credentialsId: 'SECRET_KEY', variable: 'EASY_LEARN_PROJECT_SK')]) {
                         echo 'Testing...'
                         sh """
+                            rm -r **/migrations/
+                            rm db.sqlite3
                             python3 manage.py makemigrations users
                             python3 manage.py makemigrations posts
                             python3 manage.py makemigrations chat
