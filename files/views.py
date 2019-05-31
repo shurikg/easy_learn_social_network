@@ -54,6 +54,7 @@ def add_new_file(request):
     return render(request, 'files/new_file.html', {"form": form})
 
 
+@login_required
 def download_file(request, file_id):
     file = File.objects.get(id=file_id)
     args = {'file': file, }

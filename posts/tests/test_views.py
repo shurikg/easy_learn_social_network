@@ -49,9 +49,9 @@ class TestViews(TestCase):
             degree_name='Software Engineering'
         )
         self.userCourses = UserCourses.objects.create(
-            user_id=self.profile,
-            course_id=self.course
+            user_id=self.profile
         )
+        self.userCourses.course_id.add(self.course)
         self.userDegrees = UserDegrees.objects.create(
             user_id=self.profile,
             degree_id=self.degree

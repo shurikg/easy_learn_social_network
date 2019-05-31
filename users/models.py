@@ -8,6 +8,11 @@ from django.dispatch import receiver
 UPLOAD_TO_DIR = 'profilepics/'
 FILE_SIZE = 1048576
 FILE_TYPE = '.jpg'
+GENDER_CHOICES = (
+    ('male', 'Male'),
+    ('female', 'Female'),
+    ('other', 'Other'),
+)
 
 
 class Profile(models.Model):
@@ -22,9 +27,10 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     birth_date = models.DateField(default='')
-    gender = models.CharField(max_length=10)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     college_name = models.CharField(max_length=50)
-    year_of_study = models.PositiveIntegerField(validators=[MaxValueValidator(10)])
+    year_of_study = models.PositiveIntegerField(validators=[MaxValueValidator(10)],
+                                                choices=[(x, x) for x in range(1, 8)])
     about_me = models.TextField(max_length=250, null=True, blank=True, default='')
     friends = models.ManyToManyField("profile", blank=True)
     profile_pic = models.ImageField(upload_to=UPLOAD_TO_DIR, default='', validators=[validate_file_type, validate_file_size])
@@ -65,25 +71,25 @@ class Degree(models.Model):
 
 
 class UserCourses(models.Model):
-    user_id = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    user_id = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    course_id = models.ManyToManyField(Course)
 
     def __str__(self):
-        return '{0}, {1}'.format(str(self.user_id), str(self.course_id))
+        return '{0} courses'.format(str(self.user_id))
 
-    class Meta:
-        unique_together = ('user_id', 'course_id',)
+    # class Meta:
+    #     unique_together = ('user_id', 'course_id',)
 
 
 class UserDegrees(models.Model):
-    user_id = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    user_id = models.OneToOneField(Profile, on_delete=models.CASCADE)
     degree_id = models.ForeignKey(Degree, on_delete=models.CASCADE)
 
     def __str__(self):
         return '{0}, {1}'.format(str(self.user_id), str(self.degree_id))
 
-    class Meta:
-        unique_together = ('user_id', 'degree_id',)
+    # class Meta:
+    #     unique_together = ('user_id', 'degree_id',)
 
 
 class Privacy(models.Model):

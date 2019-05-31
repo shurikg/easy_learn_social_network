@@ -53,9 +53,10 @@ class TestViews(TestCase):
             degree_name='text_degree'
         )
         self.userCourses = UserCourses.objects.create(
-            user_id=self.profile,
-            course_id=self.course
+            user_id=self.profile
         )
+        self.userCourses.course_id.add(self.course)
+
         self.userDegrees = UserDegrees.objects.create(
             user_id=self.profile,
             degree_id=self.degree
@@ -92,6 +93,7 @@ class TestViews(TestCase):
         self.assertNotEqual(self.course.course_id, '2')
         self.assertNotEqual(self.degree.degree_id, '2')
         self.assertEqual(self.userCourses.user_id, self.profile)
-        self.assertEqual(self.userCourses.course_id, self.course)
+        self.assertEqual(self.userCourses.course_id.get(course_id=self.course.course_id).course_id,
+                         int(self.course.course_id))
         self.assertEqual(self.userDegrees.user_id, self.profile)
         self.assertEqual(self.userDegrees.degree_id, self.degree)

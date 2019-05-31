@@ -1,18 +1,18 @@
-#from django.contrib.gis.gdal.prototypes.srs import from_user_input
-from django.core import serializers
+from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .forms import UserRegisterForm, NewUserProfileForm, NewUserDegreeForm, NewUserCourseForm, LoginForm, ProfileForm
+from .forms import UserRegisterForm, NewUserProfileForm, NewUserDegreeForm, NewUserCourseForm, ProfileForm
 from formtools.wizard.views import SessionWizardView
-from django.contrib.auth.models import User
-from .models import Profile, UserDegrees, UserCourses, Course, Degree, Privacy, FriendRequest, Rules
+from .models import Profile, Privacy, FriendRequest, Rules
 from django.urls import reverse
 from django.contrib.auth import authenticate, update_session_auth_hash, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.db.models import Q
+import os
+from EasyLearn.settings import MEDIA_ROOT
 from .forms import (
     EditProfileForm,
     PasswordAuthenticationForm,
@@ -39,42 +39,85 @@ User = get_user_model()
 #         registration_form = UserRegisterForm()
 #     return render(request, 'users/register.html', {'registration_form': registration_form, })
 
+TEMP_PICTURES_FOLDER = 'temp_pictures'
+
 
 class RegisterFormWizard(SessionWizardView):
     template_name = "users/register_wizard.html"
     form_list = [UserRegisterForm, NewUserProfileForm, NewUserDegreeForm, NewUserCourseForm]
-    # form_list = [UserDegreeForm]
+    file_storage = FileSystemStorage(location=os.path.join(MEDIA_ROOT, TEMP_PICTURES_FOLDER))
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_anonymous:
+            messages.warning(request, f'You already signed in!')
+            return home_page(request)
+        return super(RegisterFormWizard, self).get(request, *args, **kwargs)
+
+    # def post(self, request, *args, **kwargs):
+    #     form = self.get_form()
+    #     if not form.is_valid():
+    #         messages.error(request, form.errors)
+    #     return super(RegisterFormWizard, self).post(request, *args, **kwargs)
 
     def done(self, form_list, **kwargs):
         forms_dict = {}
         for form in form_list:
             forms_dict[type(form)] = form
 
-        user = forms_dict[UserRegisterForm].save()
+        user_saved = False
+        profile_saved = False
+        degree_saved = False
+        courses_saved = False
+        privacy_saved = False
 
-        profile = forms_dict[NewUserProfileForm].save(commit=False)
-        profile.user = user
-        profile.save()
+        try:
+            user = forms_dict[UserRegisterForm].save(commit=False)
+            user.username = str(user.username).lower()
+            user.save()
+            user_saved = True
 
-        user_degree = forms_dict[NewUserDegreeForm].save(commit=False)
-        user_degree.user_id = profile
-        form_degree_name = forms_dict[NewUserDegreeForm].cleaned_data.get('degree')
-        degree = Degree.objects.get(degree_name=form_degree_name)
-        user_degree.degree_id = degree
-        user_degree.save()
+            profile_form = NewUserProfileForm(self.request.POST, self.request.FILES)
+            profile = forms_dict[NewUserProfileForm].save(commit=False)
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.save()
+            profile_saved = True
 
-        user_course = forms_dict[NewUserCourseForm].save(commit=False)
-        user_course.user_id = profile
-        form_course_name = forms_dict[NewUserCourseForm].cleaned_data.get('course')
-        course = Course.objects.get(course_name=form_course_name)
-        user_course.course_id = course
-        user_course.save()
+            user_degree = forms_dict[NewUserDegreeForm].save(commit=False)
+            user_degree.user_id = profile
+            form_degree = forms_dict[NewUserDegreeForm].cleaned_data.get('degree')
+            user_degree.degree_id = form_degree
+            user_degree.save()
+            degree_saved = True
 
-        privacy = Privacy()
-        privacy.save()
+            user_course = forms_dict[NewUserCourseForm].save(commit=False)
+            user_course.user_id = profile
+            form_courses = forms_dict[NewUserCourseForm].cleaned_data.get('course')
+            user_course.save()
+            user_course.course_id.set(form_courses)
+            forms_dict[NewUserCourseForm].save_m2m()
+            courses_saved = True
+            privacy = Privacy()
+            privacy.user = user
+            privacy.save()
+            privacy_saved = True
 
-        messages.success(self.request, f'Registration successful!')
-        return redirect(reverse('home'))
+            messages.success(self.request, f'Registration successful!')
+            return redirect(reverse('home'))
+        except Exception as e:
+            print(e)
+            if privacy_saved:
+                privacy.delete()
+            if courses_saved:
+                user_course.delete()
+            if degree_saved:
+                user_degree.delete()
+            if profile_saved:
+                profile.delete()
+            if user_saved:
+                user.delete()
+            messages.error(self.request, e)
+            return home_page(self.request)
 
 # def login_page(request):
 #     if request.method == 'POST':
@@ -433,6 +476,7 @@ def list_of_friends(request, user_id):
                'friends_list': paginator_friends_list}
     return render(request, 'users/selected_user.html', context)
 
+
 @login_required
 def delete_friend(request, user_id):
     user = get_object_or_404(User, id=user_id)
@@ -443,6 +487,7 @@ def delete_friend(request, user_id):
         Profile.objects.get(user=user))
 
     return show_selected_user(request, user_id)
+
 
 def web_rules(request):
     context = {

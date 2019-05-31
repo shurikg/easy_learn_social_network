@@ -1,12 +1,11 @@
-from typing import Tuple
-
 from coverage.files import os
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from users.models import Profile, UserCourses, UserDegrees, Privacy
 from django.contrib.auth.forms import AuthenticationForm, UsernameField
 from EasyLearn.settings import MEDIA_ROOT
+from .models import GENDER_CHOICES, Degree, Course
 
 
 class UserRegisterForm(UserCreationForm):
@@ -20,25 +19,31 @@ class UserRegisterForm(UserCreationForm):
 
 
 class NewUserProfileForm(forms.ModelForm):
-    GENDER_CHOICES = (
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('other', 'Other'),
-    )
-    birth_date = forms.DateField(help_text='Enter date in format mm/dd/yyyy.')
+    birth_date = forms.DateField(help_text='Enter date in format mm/dd/yyyy.',
+                                 widget=forms.widgets.DateInput(attrs={'type': 'date'}),)
     gender = forms.ChoiceField(help_text='Select your gender', choices=GENDER_CHOICES)
     college_name = forms.CharField(max_length=50, help_text='Enter your collage name.')
-    year_of_study = forms.ChoiceField(choices=[(x, x) for x in range(1, 7)])
-    about_me = forms.CharField(max_length=250, help_text='Tell something about you (max 250 characters).')
+    year_of_study = forms.ChoiceField(choices=[(x, x) for x in range(1, 8)])
+    about_me = forms.CharField(max_length=250, help_text='Tell something about you (max 250 characters).',
+                               required=False)
+    profile_pic = forms.ImageField(required=True, widget=forms.FileInput)
 
     class Meta:
         model = Profile
-        fields = {'birth_date', 'gender', 'college_name', 'year_of_study', 'about_me'}
+        fields = {'birth_date', 'gender', 'college_name', 'year_of_study', 'about_me', 'profile_pic'}
+
+    def save(self, commit=True):
+        instance = super(NewUserProfileForm, self).save(commit=False)
+        new_pic_name = '{0}_profile_pic.jpg'.format(instance.user.username)
+        instance.profile_pic.name = new_pic_name
+        if commit:
+            instance.save()
+        return instance
 
 
 class NewUserDegreeForm(forms.ModelForm):
-    degree = forms.CharField(max_length=20,
-                             help_text='If your degree is not listed, you can ask the administrator to add it')
+    degree = forms.ModelChoiceField(queryset=Degree.objects.all()
+                                    , help_text='If your degree is not listed, you can ask the administrator to add it')
 
     class Meta:
         model = UserDegrees
@@ -46,8 +51,11 @@ class NewUserDegreeForm(forms.ModelForm):
 
 
 class NewUserCourseForm(forms.ModelForm):
-    course = forms.CharField(max_length=20,
-                             help_text='If your course is not listed, you can ask the administrator to add it')
+    course = forms.ModelMultipleChoiceField(queryset=Course.objects.all(),
+                                            help_text='You can select many corses by clicking on ctrl key and select '
+                                                      'the course with the mouse.\n'
+                                                      'If your course is not listed, you can ask the '
+                                                      'administrator to add it',)
 
     class Meta:
         model = UserCourses
