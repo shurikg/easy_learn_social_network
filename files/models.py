@@ -13,12 +13,18 @@ from django.utils.translation import ugettext_lazy as _
 
 EXTENSIONS_WHITELIST = ('pdf', 'docx', 'doc', 'jpg', 'png', 'jpeg', 'txt', 'zip', 'rar')
 UPLOAD_TO_DIR = 'files/'
+MAX_FILE_SIZE = 26214400  # 25MB
 
 
 class File(models.Model):
+
+    def validate_file_size(value):
+        if value.size > MAX_FILE_SIZE:
+            raise ValidationError(u'Max size of uploaded file is {0} MB.'.format(MAX_FILE_SIZE / 2**20))
+
     file_name = models.CharField(max_length=30, null=True, blank=True)
     file_type = models.CharField(max_length=10, null=True, blank=True)
-    file_url = models.FileField(upload_to=UPLOAD_TO_DIR, default='')
+    file_url = models.FileField(upload_to=UPLOAD_TO_DIR, default='', validators=[validate_file_size])
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     create_at = models.DateField(null=True)
     upload_at = models.DateTimeField(auto_now_add=True)
