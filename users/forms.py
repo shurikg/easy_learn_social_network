@@ -114,9 +114,10 @@ class EditMoreInfoForm(forms.ModelForm):
 
         instance.profile_pic.name = old_pic_name
 
-        if self.cleaned_data.get('remove_photo'):
+        if self.cleaned_data.get('remove_profile_picture'):
             try:
-                os.unlink(instance.profile_pic.path)
+                if instance.profile_pic:
+                    os.unlink(instance.profile_pic.path)
             except OSError:
                 pass
             instance.profile_pic = None
