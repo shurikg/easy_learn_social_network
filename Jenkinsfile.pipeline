@@ -1,5 +1,6 @@
 pipeline {
-    agent { docker { image 'python:3-alpine' } }
+    //agent { docker { image 'python:3-alpine' } }
+    agent { dockerfile true }
     stages {
         stage('Git') {
             steps{
