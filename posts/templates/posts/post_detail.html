@@ -28,6 +28,9 @@
                 <footer class="blockquote-footer">
                     By <a class="mr-2" href="/user/show-users/selected-user/{{ comment.author.id }}">{{ comment.author|capfirst }}</a>,
                     {{ comment.publish_date|date:"d F Y, h:m" }}
+                    {% if user == comment.author %}
+                        <a href="{% url 'posts:delete_comment' comment.id %}" class="btn">delete</a>
+                    {% endif %}
                 </footer>
             </blockquote>
         {% endfor %}

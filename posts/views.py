@@ -111,3 +111,18 @@ def delete_post(request, post_id):
     post = Post.objects.get(id=post_id)
     post.delete()
     return redirect('posts:feed')
+
+
+@login_required
+def delete_comment(request, comment_id):
+    try:
+        comment = Comments.objects.get(id=comment_id)
+        post_id = comment.postId.id
+        if request.user != comment.author:
+            messages.error(request, 'You cannot delete comment of other user!')
+            return PostDetailView.as_view()(request, pk=post_id)
+        comment.delete()
+        return PostDetailView.as_view()(request, pk=post_id)
+    except Comments.DoesNotExist as e:
+        print(e)
+        return redirect('posts:feed')
