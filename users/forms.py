@@ -1,10 +1,12 @@
 from typing import Tuple
 
+from coverage.files import os
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from users.models import Profile, UserCourses, UserDegrees, Privacy
 from django.contrib.auth.forms import AuthenticationForm, UsernameField
+from EasyLearn.settings import MEDIA_ROOT
 
 
 class UserRegisterForm(UserCreationForm):
@@ -93,11 +95,34 @@ class EditPersonalInfoForm(forms.ModelForm):
 class EditMoreInfoForm(forms.ModelForm):
     college_name = forms.CharField(max_length=50, help_text='Enter your collage name.')
     year_of_study = forms.ChoiceField(choices=[(x, x) for x in range(1, 7)])
-    about_me = forms.CharField(max_length=250, help_text='Tell something about you (max 250 characters).', widget=forms.Textarea)
+    about_me = forms.CharField(max_length=250, help_text='Tell something about you (max 250 characters).',
+                               widget=forms.Textarea)
+    profile_pic = forms.ImageField(required=False, widget=forms.FileInput)
+    remove_profile_picture = forms.BooleanField(required=False)
 
     class Meta:
         model = Profile
-        fields = ('college_name', 'year_of_study', 'about_me',)
+        fields = ('college_name', 'year_of_study', 'about_me', 'profile_pic')
+
+    def save(self, commit=True):
+        old_pic_name = '{0}_profile_pic.jpg'.format(self.instance.user.username)
+        try:
+            os.remove('{0}/profilepics/{1}'.format(MEDIA_ROOT, old_pic_name))
+        except FileNotFoundError as e:
+            print(e)
+        instance = super(EditMoreInfoForm, self).save(commit=False)
+
+        instance.profile_pic.name = old_pic_name
+
+        if self.cleaned_data.get('remove_photo'):
+            try:
+                os.unlink(instance.profile_pic.path)
+            except OSError:
+                pass
+            instance.profile_pic = None
+        if commit:
+            instance.save()
+        return instance
 
 
 class PasswordAuthenticationForm(AuthenticationForm):
@@ -119,7 +144,6 @@ class EditPrivacyForm(forms.ModelForm):
     privacy_about_me = forms.BooleanField(label='about me', required=False)
 
     class Meta:
-
         model = Privacy
         fields = (
             'privacy_first_name',
@@ -166,7 +190,7 @@ class ProfileForm(forms.ModelForm):
             self.fields['last_name'] = forms.CharField()
         if self.privacy_obj.privacy_email:
             self.fields['email'] = forms.CharField()
-                 
+
     class Meta:
         model = User
         fields = ()

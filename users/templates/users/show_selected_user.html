@@ -51,7 +51,7 @@
             <tr>
                 <th> <small><a class="btn btn-outline-info mb-4" onclick="pop_it_up('{% url 'users:list_of_friends' user.id %}')">Show List of Friends</a></small> </th>
             <tr>
-                <th> <small><a class="btn btn-outline-danger mb-4" href="{% url 'users:delete_friend' user.id %}">Delete Friend</a></small> </th>
+                <th> <small><a class="btn btn-outline-danger mb-4" href="{% url 'users:delete_friend' user.id %}">Remove Friend</a></small> </th>
             </tr>
         </table>
         {% endif %}

@@ -25,6 +25,7 @@
             {% else %}
                 <a class="navbar-brand mr-4" href="{% url 'home' %}">Easy Learn</a>
                 <div class="navbar-nav mr-auto">
+                  <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
                   <a class="nav-item nav-link" href="{% url 'users:rules' %}">Site Rules</a>
                 </div>
             {% endif %}
@@ -38,11 +39,13 @@
                     <a class="nav-item nav-link" href="{% url 'files:show_files' %}">Search files</a>
                     <a class="nav-item nav-link" href="{% url 'chat:messages_inbox' %}">Messages</a>
                     <a class="nav-item nav-link" href="{% url 'users:search' %}">Find Friends</a>
-                    <a class="nav-item nav-link" href="{% url 'users:rules' %}">Site Rules</a>
                     <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                 </div>
                   {% else %}
+                    <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                    <a class="nav-item nav-link" href="{% url 'register-wizard' %}">Register</a>
                   {% endif %}
+                </div>
               </div>
             </div>
           </nav>

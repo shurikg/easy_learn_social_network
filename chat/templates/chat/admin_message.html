@@ -4,7 +4,7 @@
 
 {% block sidebar %}
 <div class="btn-group-vertical">
-    <a href="{% url 'chat:messages_inbox' %}" class="btn btn-outline-info">inbox</a>
+    <a href="{% url 'chat:messages_inbox' %}" class="btn btn-outline-info">Inbox</a>
     <a href="{% url 'chat:messages_outbox' %}" class="btn btn-outline-info">Sent Messages</a>
     <a href="{% url 'chat:messages_compose' %}" class="btn btn-outline-info">New Message</a>
     {% if is_staff %}
