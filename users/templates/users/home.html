@@ -1,52 +1,68 @@
 {% extends "posts/base.html" %}
 {% block title %}Home{% endblock title %}
 {% block content %}
+{% load static %}
+<style>
+body  {
+  background-image: url("https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80");
+  background-color: #cccccc;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 1280px 610px;
+}
+</style>
+<body>
     {# Hero Section #}
     <div class="mkt-s1">
         <div class="mkt-s1-body container ">
             <div>
-                <img src="http://www.net-key.it/easylearn/logo.png" alt="Paris" style="width:80%">
+                <br/>
+            </div>
+            <div>
+                <img src="https://www.swissmadesoftware.org/.imaging/w500-png/dam/6b2c61f7-42a3-401e-bb3d-506ff0797d16/easylearn-Logo-RGB.png" alt="" style="width:23%">
             </div>
             <div>
                 <br/>
                 <br/>
-                <br/>
             </div>
             <div class="row">
-                <h1 class="col-md-8">Welcome to Easy Learn -</h1>
-                <h3 class="col-md-8">Educational Social Network</h3>
+                <h1 class="col-md-8" style="color:black">Welcome to Easy Learn -</h1>
+                <h3 class="col-md-8" style="color:black">Educational Social Network</h3>
             </div>
             <br/>
             <div class="row">
-                <p class="col-md-8">Easy learn is a social network that designed to facilitate the sharing of
+                <p class="col-md-8" style="color:black">Easy learn is a social network that designed to facilitate the sharing of
             educational material between students from all educational institutions.</p>
             </div>
             <div class="row">
             </div>
         </div>
     </div>
-
+</body>
 {% endblock content %}
 
 {% block sidebar %}
+    <br/>
+    <br/>
     <div>
-        <h3>Create a new account</h3>
-        <p>It's free and always will be.</p>
+        <h3 style="color:black">Create a new account</h3>
+        <p style="color:black">It's free and always will be.</p>
         <br/>
-        <font size="1">By clicking Sign Up, you agree to our Terms and Data Policy.</font>
+        <br/>
+        <font style="color:black" size="1">By clicking Sign Up, you agree to our Terms and Data Policy.</font>
         <a href="{% url 'register-wizard' %}"
            class="sign-up btn btn-success">Sign Up Now!
         </a>
     </div>
     <div>
         <br/>
+        <hr style="height:1px;border:none;color:#333;background-color:#333;">
         <br/>
-        <hr>
         <br/>
         <br/>
     </div>
     <div>
-        <h3>You have an already account?</h3>
+        <h3 style="color:black">You have an already account?</h3>
         <br/>
         <a href="{% url 'login' %}"
            class="sign-in btn btn-success">Sign In
