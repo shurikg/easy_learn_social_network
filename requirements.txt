@@ -9,4 +9,4 @@ django-jenkins
 coverage
 pep8
 pyflakes
-Pillow==2.6.1
+Pillow
