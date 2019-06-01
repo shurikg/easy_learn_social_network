@@ -367,41 +367,41 @@ VALUES ('Education Systems');
 INSERT INTO users_course(course_name)
 VALUES ('Regenerative agriculture');
 
-INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study)
-VALUES (1, '1992-01-01', 'M', 'SCE', 3);
+INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study, about_me)
+VALUES (1, '1992-01-01', 'M', 'SCE', 3, '');
 
-INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study)
-VALUES (2, '1992-01-01', 'M', 'SCE', 3);
+INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study, about_me)
+VALUES (2, '1992-01-01', 'M', 'SCE', 3, '');
 
-INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study)
-VALUES (3, '1992-01-01', 'F', 'SCE', 3);
+INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study, about_me)
+VALUES (3, '1992-01-01', 'F', 'SCE', 3, '');
 
-INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study)
-VALUES (4, '1990-01-01', 'M', 'SCE', 3);
+INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study, about_me)
+VALUES (4, '1990-01-01', 'M', 'SCE', 3, '');
 
-INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study)
-VALUES (5, '1993-01-01', 'F', 'Sapir', 3);
+INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study, about_me)
+VALUES (5, '1993-01-01', 'F', 'Sapir', 3, '');
 
-INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study)
-VALUES (6, '1990-01-01', 'M', 'SCE', 3);
+INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study, about_me)
+VALUES (6, '1990-01-01', 'M', 'SCE', 3, '');
 
-INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study)
-VALUES (7, '1994-01-01', 'F', 'Ben Gurion', 1);
+INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study, about_me)
+VALUES (7, '1994-01-01', 'F', 'Ben Gurion', 1, '');
 
-INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study)
-VALUES (8, '1991-01-01', 'F', 'Hebrew University', 2);
+INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study, about_me)
+VALUES (8, '1991-01-01', 'F', 'Hebrew University', 2, '');
 
-INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study)
-VALUES (9, '1996-01-01', 'M', 'Azrieli', 1);
+INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study, about_me)
+VALUES (9, '1996-01-01', 'M', 'Azrieli', 1, '');
 
-INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study)
-VALUES (10, '1985-01-01', 'M', 'Afeka', 4);
+INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study, about_me)
+VALUES (10, '1985-01-01', 'M', 'Afeka', 4, '');
 
-INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study)
-VALUES (11, '1990-01-01', 'F', 'Ben Gurion', 5);
+INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study, about_me)
+VALUES (11, '1990-01-01', 'F', 'Ben Gurion', 5, '');
 
-INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study)
-VALUES (12, '1982-01-01', 'F', 'Ben Gurion', 7);
+INSERT INTO users_profile(user_id, birth_date, gender, college_name, year_of_study, about_me)
+VALUES (12, '1982-01-01', 'F', 'Ben Gurion', 7, '');
 
 INSERT INTO users_userdegrees(degree_id_id, user_id_id)
 VALUES (1, 1);
