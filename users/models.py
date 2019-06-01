@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 UPLOAD_TO_DIR = 'profilepics/'
-FILE_SIZE = 1048576
+FILE_SIZE = 5242880  # 5MB
 FILE_TYPE = '.jpg'
 GENDER_CHOICES = (
     ('male', 'Male'),
