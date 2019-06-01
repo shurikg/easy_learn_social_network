@@ -391,7 +391,8 @@ def show_selected_user(request, id):
         'profile_form': profile_form,
         'user': user,
         'sent_friend_request': sent_friend_request,
-        'button_status': friend_status
+        'button_status': friend_status,
+        'profile': profile_obj
     }
     return render(request, 'users/show_selected_user.html', context)
 
