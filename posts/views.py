@@ -23,7 +23,12 @@ class PostListView(ListView):
         profile_obj = Profile.objects.get(user=self.request.user)
         friends_list = tuple(friend.user.username for friend in profile_obj.friends.all())
         all_posts = Post.objects.all().order_by('-date')
-        user_courses = tuple(course.course_id.course_name for course in UserCourses.objects.filter(user_id=profile_obj))
+        user_courses = ()
+        try:
+            user_courses = tuple(course.course_name for course in tuple([c.course_id.all() for c in
+                                                                UserCourses.objects.filter(user_id=profile_obj)][0]))
+        except IndexError as e:
+            print(e)
         posts_to_show = []
         for post in all_posts:
             if post.category == PRIVATE_CATEGORY and post.author.username in (friends_list + (self.request.user.username,)):

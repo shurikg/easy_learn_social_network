@@ -36,7 +36,9 @@ class Profile(models.Model):
                                                 choices=[(x, x) for x in range(1, 8)])
     about_me = models.TextField(max_length=250, null=True, blank=True, default='')
     friends = models.ManyToManyField("profile", blank=True)
-    profile_pic = models.ImageField(upload_to=UPLOAD_TO_DIR, default='', validators=[validate_file_type, validate_file_size])
+    profile_pic = models.ImageField(upload_to=UPLOAD_TO_DIR, default='',
+                                    validators=[validate_file_type, validate_file_size],
+                                    null=True)
 
     def __str__(self):
         return str(self.user)

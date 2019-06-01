@@ -26,19 +26,18 @@ class NewUserProfileForm(forms.ModelForm):
     year_of_study = forms.ChoiceField(choices=[(x, x) for x in range(1, 8)])
     about_me = forms.CharField(max_length=250, help_text='Tell something about you (max 250 characters).',
                                required=False)
-    profile_pic = forms.ImageField(required=True, widget=forms.FileInput)
 
     class Meta:
         model = Profile
-        fields = {'birth_date', 'gender', 'college_name', 'year_of_study', 'about_me', 'profile_pic'}
+        fields = {'birth_date', 'gender', 'college_name', 'year_of_study', 'about_me'}
 
-    def save(self, commit=True):
-        instance = super(NewUserProfileForm, self).save(commit=False)
-        new_pic_name = '{0}_profile_pic.jpg'.format(instance.user.username)
-        instance.profile_pic.name = new_pic_name
-        if commit:
-            instance.save()
-        return instance
+    # def save(self, commit=True):
+    #     instance = super(NewUserProfileForm, self).save(commit=False)
+    #     new_pic_name = '{0}_profile_pic.jpg'.format(instance.user.username)
+    #     instance.profile_pic.name = new_pic_name
+    #     if commit:
+    #         instance.save()
+    #     return instance
 
 
 class NewUserDegreeForm(forms.ModelForm):
@@ -104,7 +103,7 @@ class EditMoreInfoForm(forms.ModelForm):
     college_name = forms.CharField(max_length=50, help_text='Enter your collage name.')
     year_of_study = forms.ChoiceField(choices=[(x, x) for x in range(1, 7)])
     about_me = forms.CharField(max_length=250, help_text='Tell something about you (max 250 characters).',
-                               widget=forms.Textarea)
+                               widget=forms.Textarea, required=False)
     profile_pic = forms.ImageField(required=False, widget=forms.FileInput)
     remove_profile_picture = forms.BooleanField(required=False)
 
