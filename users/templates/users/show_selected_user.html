@@ -12,7 +12,11 @@
 {% block content %}
     <div class="content-section">
         <div class="imageProfile">
+       {% if profile.profile_pic %}
+            <img src={{ profile.profile_pic.url }} alt="Paris" style="width:13%">
+        {% else %}
             <img src="https://i.stack.imgur.com/l60Hf.png" alt="Paris" style="width:13%">
+       {% endif %}
         </div>
         <div class="container">
             <div class="well">

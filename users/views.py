@@ -272,8 +272,8 @@ def edit_educational_info(request):
     user_degree = UserDegrees.objects.get(user_id=profile_obj)
     print(user_degree)
     if request.method == 'POST':
-        courseForm = EditUserCourseForm(request.POST, request.FILES, instance=user_course)
-        degreeForm = EditUserDegreeForm(request.POST, request.FILES, instance=user_degree)
+        courseForm = EditUserCourseForm(request.POST, instance=user_course)
+        degreeForm = EditUserDegreeForm(request.POST, instance=user_degree)
 
         if courseForm.is_valid() and degreeForm.is_valid():
             # profile = form.save(commit=False)
@@ -305,8 +305,8 @@ def edit_educational_info(request):
 
 
     else:
-        courseForm = EditUserCourseForm(request.FILES, instance=user_course)
-        degreeForm = EditUserDegreeForm(request.FILES, instance=user_degree)
+        courseForm = EditUserCourseForm(instance=user_course)
+        degreeForm = EditUserDegreeForm(instance=user_degree)
     context = {
         'c_form': courseForm, 'd_form': degreeForm
     }
