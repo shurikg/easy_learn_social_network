@@ -1,7 +1,6 @@
 {% extends "posts/base.html" %}
 {% block title %}Home{% endblock title %}
 {% block content %}
-
 <style>
 body  {
   background: url("https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80") center center fixed;
@@ -9,9 +8,8 @@ body  {
   background-size: cover
 }
 </style>
-
     {# Hero Section #}
-    {% load static %}
+    <!--{% load static %}-->
     <div class="mkt-s1">
         <div class="mkt-s1-body container ">
             <div>
@@ -37,34 +35,34 @@ body  {
     </div>
 {% endblock content %}
 
-    {% block sidebar %}
-        {% if user.is_authenticated %}
-        {% else %}
+{% block sidebar %}
+    {% if user.is_authenticated %}
+    {% else %}
+        <br/>
+        <br/>
+        <div>
+            <h3 style="color:black">Create a new account</h3>
+            <p style="color:black">It's free and always will be.</p>
             <br/>
             <br/>
-            <div>
-                <h3 style="color:black">Create a new account</h3>
-                <p style="color:black">It's free and always will be.</p>
-                <br/>
-                <br/>
-                <font style="color:black" size="1">By clicking Sign Up, you agree to our Terms and Data Policy.</font>
-                <a href="{% url 'register-wizard' %}"
-                   class="sign-up btn btn-success">Sign Up Now!
-                </a>
-            </div>
-            <div>
-                <br/>
-                <hr style="height:1px;border:none;color:#333;background-color:#333;">
-                <br/>
-                <br/>
-                <br/>
-            </div>
-            <div>
-                <h3 style="color:black">You have an already account?</h3>
-                <br/>
-                <a href="{% url 'login' %}"
-                   class="sign-in btn btn-success">Sign In
-                </a>
-            </div>
-        {% endif %}
-    {% endblock %}
+            <font style="color:black" size="1">By clicking Sign Up, you agree to our Terms and Data Policy.</font>
+            <a href="{% url 'register-wizard' %}"
+               class="sign-up btn btn-success">Sign Up Now!
+            </a>
+        </div>
+        <div>
+            <br/>
+            <hr style="height:1px;border:none;color:#333;background-color:#333;">
+            <br/>
+            <br/>
+            <br/>
+        </div>
+        <div>
+            <h3 style="color:black">You have an already account?</h3>
+            <br/>
+            <a href="{% url 'login' %}"
+               class="sign-in btn btn-success">Sign In
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
