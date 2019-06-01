@@ -108,7 +108,7 @@ class EditMoreInfoForm(forms.ModelForm):
     college_name = forms.CharField(max_length=50, help_text='Enter your collage name.')
     year_of_study = forms.ChoiceField(choices=[(x, x) for x in range(1, 7)])
     about_me = forms.CharField(max_length=250, help_text='Tell something about you (max 250 characters).',
-                               widget=forms.Textarea)
+                               widget=forms.Textarea, required=False)
     profile_pic = forms.ImageField(label="Profile picture", required=False, widget=MyClearableFileInput)
     remove_profile_picture = forms.BooleanField(required=False)
 
