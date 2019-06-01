@@ -87,11 +87,6 @@ class EditProfileForm(forms.ModelForm):
 
 
 class EditPersonalInfoForm(forms.ModelForm):
-    GENDER_CHOICES = (
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('other', 'Other'),
-    )
     birth_date = forms.DateField(help_text='Enter date in format mm/dd/yyyy.')
     gender = forms.ChoiceField(help_text='Select your gender', choices=GENDER_CHOICES)
 
@@ -105,7 +100,7 @@ class EditMoreInfoForm(forms.ModelForm):
     year_of_study = forms.ChoiceField(choices=[(x, x) for x in range(1, 7)])
     about_me = forms.CharField(max_length=250, help_text='Tell something about you (max 250 characters).',
                                widget=forms.Textarea)
-    profile_pic = forms.ImageField(required=False, widget=forms.FileInput)
+    profile_pic = forms.ImageField(required=False)
     remove_profile_picture = forms.BooleanField(required=False)
 
     class Meta:
@@ -132,6 +127,27 @@ class EditMoreInfoForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+
+class EditUserDegreeForm(forms.ModelForm):
+    degree = forms.ModelChoiceField(queryset=Degree.objects.all()
+                                    , help_text='If your degree is not listed, you can ask the administrator to add it')
+
+    class Meta:
+        model = UserDegrees
+        fields = {'degree'}
+
+
+class EditUserCourseForm(forms.ModelForm):
+    course = forms.ModelMultipleChoiceField(queryset=Course.objects.all(),
+                                            help_text='You can select many corses by clicking on ctrl key and select '
+                                                      'the course with the mouse.\n'
+                                                      'If your course is not listed, you can ask the '
+                                                      'administrator to add it',)
+
+    class Meta:
+        model = UserCourses
+        fields = {'course'}
 
 
 class PasswordAuthenticationForm(AuthenticationForm):

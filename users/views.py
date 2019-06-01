@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import UserRegisterForm, NewUserProfileForm, NewUserDegreeForm, NewUserCourseForm, ProfileForm
 from formtools.wizard.views import SessionWizardView
-from .models import Profile, Privacy, FriendRequest, Rules
+from .models import Profile, Privacy, FriendRequest, Rules, Course, Degree, UserCourses, UserDegrees
 from django.urls import reverse
 from django.contrib.auth import authenticate, update_session_auth_hash, get_user_model
 from django.contrib.auth.decorators import login_required
@@ -19,7 +19,9 @@ from .forms import (
     EditPersonalInfoForm,
     EditMoreInfoForm,
     ExtraProfileForm,
-    EditPrivacyForm
+    EditPrivacyForm,
+    EditUserDegreeForm,
+    EditUserCourseForm
 )
 from django.core.paginator import Paginator
 
@@ -165,10 +167,17 @@ def view_profile(request):
 def view_profile(request):
     user_obj = request.user
     profile_obj = Profile.objects.get(user=user_obj)
+    user_course = UserCourses.objects.filter(user_id=profile_obj)
+    #user_courses = tuple(course.course_id.course_name for course in UserCourses.objects.filter(user_id=profile_obj))
+
+    print(user_course)
+    user_degree = UserDegrees.objects.get(user_id=profile_obj)
     friend_requests_obj = FriendRequest.objects.filter(to_user=request.user)
     args = {'user': user_obj,
             'profile': profile_obj,
-            'friend_requests': friend_requests_obj}
+            'friend_requests': friend_requests_obj,
+            'user_degree': user_degree
+            }
     return render(request, 'users/profile.html', args)
 
 
@@ -257,6 +266,53 @@ def edit_more_info(request):
         'form': form,
     }
     return render(request, 'users/edit_more_info.html', context)
+
+@login_required
+def edit_educational_info(request):
+    profile_obj = Profile.objects.get(user=request.user)
+    user_course = UserCourses.objects.get(user_id=profile_obj)
+    user_degree = UserDegrees.objects.get(user_id=profile_obj)
+    print(user_degree)
+    if request.method == 'POST':
+        courseForm = EditUserCourseForm(request.POST, request.FILES, instance=user_course)
+        degreeForm = EditUserDegreeForm(request.POST, request.FILES, instance=user_degree)
+
+        if courseForm.is_valid() and degreeForm.is_valid():
+            # profile = form.save(commit=False)
+            # profile.user = request.user
+            # profile.save()
+
+            degree = degreeForm.cleaned_data.get('degree')
+            print(degree)
+            # collageName = form.cleaned_data.get('collageName')
+            # yearOfStudy = form.cleaned_data.get('yearOfStudy')
+            # aboutMe = form.cleaned_data.get('aboutMe')
+
+            # user = Profile.objects.get(id=request.user.id)
+            # user.id = id  # change field
+            # user.collageName = collageName  # change field
+            # user.yearOfStudy = yearOfStudy  # change field
+            # user.aboutMe = aboutMe  # change field
+
+            # user.save()  # this will update only
+            courseForm.save()
+            degreeForm.save()
+
+            messages.success(request, f'Your account has been updated!')
+            return redirect('users:view_profile')
+        else:
+            messages.error(request, f'Invalid fields, your account has not been updated!')
+            messages.error(request, courseForm.errors)
+            messages.error(request, degreeForm.errors)
+
+
+    else:
+        courseForm = EditUserCourseForm(request.FILES, instance=user_course)
+        degreeForm = EditUserDegreeForm(request.FILES, instance=user_degree)
+    context = {
+        'c_form': courseForm, 'd_form': degreeForm
+    }
+    return render(request, 'users/edit_educational_info.html', context)
 
 
 @login_required

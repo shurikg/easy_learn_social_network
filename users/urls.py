@@ -7,6 +7,8 @@ urlpatterns = [
     path('profile/edit/', views.edit_profile, name='edit_profile'),
     path('profile/edit/personal-info/', views.edit_personal_info, name='edit_personal_info'),
     path('profile/edit/more-info/', views.edit_more_info, name='edit_more_info'),
+    path('profile/edit/educational-info/', views.edit_educational_info, name='edit_educational_info'),
+
     path('profile/edit/privacy', views.edit_privacy, name='edit_privacy'),
     path('profile/edit/change-password/', views.change_password, name='change_password'),
     path('show-users/', views.show_users, name='show_users'),
