@@ -78,9 +78,7 @@ class RegisterFormWizard(SessionWizardView):
             user.save()
             user_saved = True
 
-            profile_form = NewUserProfileForm(self.request.POST, self.request.FILES)
             profile = forms_dict[NewUserProfileForm].save(commit=False)
-            profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
             profile_saved = True
@@ -530,7 +528,7 @@ def list_of_friends(request, user_id):
     paginator_friends_list = paginator.get_page(page)
     context = {'user': user_obj,
                'friends_list': paginator_friends_list}
-    return render(request, 'users/selected_user.html', context)
+    return render(request, 'users/list_of_friends.html', context)
 
 
 @login_required

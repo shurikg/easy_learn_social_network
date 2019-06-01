@@ -52,7 +52,7 @@
 {% for r_request in friend_requests %}
     <div class="content-section">
 
-			<p>You have request from <a href="{{ r_request.from_user.profile.get_absolute_url }}">{{ r_request.from_user.username }}</a></p>
+			<p>You have request from <a href="/user/show-users/selected-user/{{ r_request.from_user.id }}">{{ r_request.from_user.username }}</a></p>
             <small><a class='btn btn-primary' href="/user/friend-request/accept/{{ r_request.from_user.id }}">Accept</a></small>
 			<small><a class='btn btn-warning' href="/user/friend-request/delete/{{ r_request.from_user.id }}">Ignore</a></small>
             </div>
