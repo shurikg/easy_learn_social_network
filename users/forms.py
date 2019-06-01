@@ -2,6 +2,8 @@ from coverage.files import os
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.forms import ClearableFileInput
+
 from users.models import Profile, UserCourses, UserDegrees, Privacy
 from django.contrib.auth.forms import AuthenticationForm, UsernameField
 from EasyLearn.settings import MEDIA_ROOT
@@ -95,12 +97,19 @@ class EditPersonalInfoForm(forms.ModelForm):
         fields = ('gender', 'birth_date',)
 
 
+class MyClearableFileInput(ClearableFileInput):
+
+    initial_text = 'currently'
+    input_text = 'change'
+    clear_checkbox_label = ''
+
+
 class EditMoreInfoForm(forms.ModelForm):
     college_name = forms.CharField(max_length=50, help_text='Enter your collage name.')
     year_of_study = forms.ChoiceField(choices=[(x, x) for x in range(1, 7)])
     about_me = forms.CharField(max_length=250, help_text='Tell something about you (max 250 characters).',
                                widget=forms.Textarea)
-    profile_pic = forms.ImageField(required=False)
+    profile_pic = forms.ImageField(label="Profile picture", required=False, widget=MyClearableFileInput)
     remove_profile_picture = forms.BooleanField(required=False)
 
     class Meta:

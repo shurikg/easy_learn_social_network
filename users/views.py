@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import UserRegisterForm, NewUserProfileForm, NewUserDegreeForm, NewUserCourseForm, ProfileForm
 from formtools.wizard.views import SessionWizardView
-from .models import Profile, Privacy, FriendRequest, Rules, Course, Degree, UserCourses, UserDegrees
+from .models import Profile, Privacy, FriendRequest, Rules, UserCourses, UserDegrees
 from django.urls import reverse
 from django.contrib.auth import authenticate, update_session_auth_hash, get_user_model
 from django.contrib.auth.decorators import login_required
@@ -27,19 +27,6 @@ from django.core.paginator import Paginator
 
 User = get_user_model()
 
-# def register(request):
-#     if request.method == 'POST':
-#         registration_form = UserRegisterForm(request.POST)
-#         if registration_form.is_valid():
-#             registration_form.save()
-#             username = registration_form.cleaned_data.get('username')
-#             messages.success(request, f'Account created for {username}!')
-#             return redirect('users.view.add_profile_detail')
-#         else:
-#             messages.error(request, 'Please correct the error below.')
-#     else:
-#         registration_form = UserRegisterForm()
-#     return render(request, 'users/register.html', {'registration_form': registration_form, })
 
 TEMP_PICTURES_FOLDER = 'temp_pictures'
 
@@ -54,12 +41,6 @@ class RegisterFormWizard(SessionWizardView):
             messages.warning(request, f'You already signed in!')
             return home_page(request)
         return super(RegisterFormWizard, self).get(request, *args, **kwargs)
-
-    # def post(self, request, *args, **kwargs):
-    #     form = self.get_form()
-    #     if not form.is_valid():
-    #         messages.error(request, form.errors)
-    #     return super(RegisterFormWizard, self).post(request, *args, **kwargs)
 
     def done(self, form_list, **kwargs):
         forms_dict = {}
@@ -119,62 +100,35 @@ class RegisterFormWizard(SessionWizardView):
             messages.error(self.request, e)
             return home_page(self.request)
 
-# def login_page(request):
-#     if request.method == 'POST':
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data.get('username')
-#             return render(request, 'users/profile.html', {"user": username})
-#         else:
-#             messages.error(request, 'Invalid user name or password!')
-#     else:
-#         form = LoginForm()
-#     return render(request, 'users/login.html', {"form": form})
-
 
 def home_page(request):
     return render(request, 'users/home.html')
 
 
-# def test(request):
-#     x = Degree.objects.values()
-#     x = [(entry['degree_id'], entry['degree_name']) for entry in x]
-#
-#     x = Degree.objects.values()
-#     x = [(entry['degree_id'], entry['degree_name']) for entry in x]
-#     x = Degree.objects.all()
-#     x = serializers.serialize('json', x)
-#     print(x)
-#
-#     x = Degree.objects.all()
-#     x = serializers.serialize('json', x)
-#     print(x)
-#     return render(request, 'users/test.html')
-
-'''
 @login_required
 def view_profile(request):
     user_obj = request.user
     profile_obj = Profile.objects.get(user=user_obj)
-    args = {'user': user_obj, 'profile': profile_obj}
-    return render(request, 'users/profile.html', args)
-'''
-
-
-@login_required
-def view_profile(request):
-    user_obj = request.user
-    profile_obj = Profile.objects.get(user=user_obj)
-    user_course = UserCourses.objects.filter(user_id=profile_obj)
-    #user_courses = tuple(course.course_id.course_name for course in UserCourses.objects.filter(user_id=profile_obj))
-
-    print(user_course)
+    user_courses = ()
+    try:
+        user_courses = tuple(course.course_name for course in tuple([c.course_id.all() for c in
+                                                                     UserCourses.objects.filter(user_id=profile_obj)][
+                                                                        0]))
+    except IndexError as e:
+        print(e)
+    str_of_courses = ''
+    for c in user_courses:
+        str_of_courses += '{0}, '.format(str(c))
+    if len(str_of_courses) > 0:
+        str_of_courses = str_of_courses[:-2]
     user_degree = UserDegrees.objects.get(user_id=profile_obj)
     friend_requests_obj = FriendRequest.objects.filter(to_user=request.user)
     args = {'user': user_obj,
             'profile': profile_obj,
             'friend_requests': friend_requests_obj,
-            'user_degree': user_degree
+            'user_degree': user_degree,
+            'user_courses': str_of_courses
+
             }
     return render(request, 'users/profile.html', args)
 
@@ -192,19 +146,6 @@ def edit_personal_info(request):
                 password = chk_pass.cleaned_data.get('password')
                 user = authenticate(username=username, password=password)
                 if user is not None:
-                    # profile = u_form.save(commit=False)
-                    # profile.user = user
-                    # profile.save()
-                    # birthday = u_form.cleaned_data.get('birth_date')
-                    # gender = u_form.cleaned_data.get('gender')
-
-                    # user = Profile.objects.get(user_id=1)
-                    # user.birth_date = birthday  # change field
-                    # user.gender = gender  # change field
-                    # user.save()  # this will update only
-                    # p_form.save()
-                    # u_form.save()
-
                     p_form.save()
                     u_form.save()
 
@@ -235,22 +176,6 @@ def edit_more_info(request):
         form = EditMoreInfoForm(request.POST,request.FILES, instance=profile_obj)
 
         if form.is_valid():
-            # profile = form.save(commit=False)
-            # profile.user = request.user
-            # profile.save()
-
-            # id = form.cleaned_data.get('id')
-            # collageName = form.cleaned_data.get('collageName')
-            # yearOfStudy = form.cleaned_data.get('yearOfStudy')
-            # aboutMe = form.cleaned_data.get('aboutMe')
-
-            # user = Profile.objects.get(id=request.user.id)
-            # user.id = id  # change field
-            # user.collageName = collageName  # change field
-            # user.yearOfStudy = yearOfStudy  # change field
-            # user.aboutMe = aboutMe  # change field
-
-            # user.save()  # this will update only
             form.save()
             messages.success(request, f'Your account has been updated!')
             return redirect('users:view_profile')
@@ -265,45 +190,35 @@ def edit_more_info(request):
     }
     return render(request, 'users/edit_more_info.html', context)
 
+
 @login_required
 def edit_educational_info(request):
     profile_obj = Profile.objects.get(user=request.user)
     user_course = UserCourses.objects.get(user_id=profile_obj)
     user_degree = UserDegrees.objects.get(user_id=profile_obj)
-    print(user_degree)
     if request.method == 'POST':
-        courseForm = EditUserCourseForm(request.POST, instance=user_course)
-        degreeForm = EditUserDegreeForm(request.POST, instance=user_degree)
-
+        courseForm = EditUserCourseForm(data=request.POST, instance=user_course)
+        degreeForm = EditUserDegreeForm(data=request.POST, instance=user_degree)
         if courseForm.is_valid() and degreeForm.is_valid():
-            # profile = form.save(commit=False)
-            # profile.user = request.user
-            # profile.save()
-
             degree = degreeForm.cleaned_data.get('degree')
-            print(degree)
-            # collageName = form.cleaned_data.get('collageName')
-            # yearOfStudy = form.cleaned_data.get('yearOfStudy')
-            # aboutMe = form.cleaned_data.get('aboutMe')
+            user_degree.degree_id = degree
+            user_degree.save()
 
-            # user = Profile.objects.get(id=request.user.id)
-            # user.id = id  # change field
-            # user.collageName = collageName  # change field
-            # user.yearOfStudy = yearOfStudy  # change field
-            # user.aboutMe = aboutMe  # change field
-
-            # user.save()  # this will update only
-            courseForm.save()
-            degreeForm.save()
-
+            courses = tuple(courseForm.cleaned_data.get('course'))
+            UserCourses.objects.get(user_id=profile_obj).delete()
+            new_courses = UserCourses(user_id=profile_obj)
+            new_courses.save()
+            for c in courses:
+                new_courses.course_id.add(c)
+            new_courses.save()
+            # courseForm.save()
+            # degreeForm.save()
             messages.success(request, f'Your account has been updated!')
             return redirect('users:view_profile')
         else:
             messages.error(request, f'Invalid fields, your account has not been updated!')
             messages.error(request, courseForm.errors)
             messages.error(request, degreeForm.errors)
-
-
     else:
         courseForm = EditUserCourseForm(instance=user_course)
         degreeForm = EditUserDegreeForm(instance=user_degree)
@@ -346,21 +261,6 @@ def show_users(request):
     args = {'users': users}
     return render(request, 'users/search_users.html', args)
 
-'''
-def show_selected_user(request):
-    user_id = request.GET.get('user_id')
-    user = User.objects.get(id=user_id)
-    profile_obj = Profile.objects.get(user=user)
-    privacy_obj = Privacy.objects.get(user=user)
-    extra_form = ExtraProfileForm(instance=profile_obj, privacy_obj=privacy_obj)
-    profile_form = ProfileForm(instance=user, privacy_obj=privacy_obj)
-    context = {
-        'extra_form': extra_form,
-        'profile_form': profile_form,
-    }
-    return render(request, 'users/show_selected_user.html', context)
-'''
-
 
 @login_required
 def show_selected_user(request, id):
@@ -397,34 +297,6 @@ def show_selected_user(request, id):
     return render(request, 'users/show_selected_user.html', context)
 
 
-'''
-def show_selected_user(request, slug):
-    user_id = request.GET.get('user_name')
-    user = User.objects.get(id=user_id)
-    profile_obj = Profile.objects.get(user=user)
-    privacy_obj = Privacy.objects.get(user=user)
-    extra_form = ExtraProfileForm(instance=profile_obj, privacy_obj=privacy_obj)
-    profile_form = ProfileForm(instance=request.user, privacy_obj=privacy_obj)
-    other_profile = Profile.objects.filter(slug=slug).first()
-    u = other_profile.user
-    sent_friend_request = FriendRequest.objects.filter(from_user=other_profile.user)
-    button_status = 'none'
-    if other_profile not in request.user.profile.friends.all():
-        button_status = 'not_friend'
-        if len(FriendRequest.objects.filter(from_user = request.user).filter(to_user=other_profile.user)) == 1:
-            button_status = 'friend_request_sent'
-    context = {
-        'extra_form': extra_form,
-        'profile_form': profile_form,
-        'u': u,
-        'sent_friend_request': sent_friend_request,
-        'button_status': button_status
-    }
-    #return render(request, 'users/show_selected_user.html/{}'.format(request.user.profile.slug), context)
-    return render(request, 'users/show_selected_user.html', context)
-'''
-
-
 @login_required
 def search_result(request):
     query = request.GET.get('q')
@@ -458,29 +330,8 @@ def edit_privacy(request):
     return render(request, 'users/edit_privacy.html', context)
 
 
-# @login_required
-# def test1(request):
-#     #user_id = request.GET.get('user_name')
-#     #user = User.objects.get(id=user_id)
-#
-#     profile_obj = Profile.objects.get(user=request.user)
-#     privacy_obj = Privacy.objects.get(user=request.user)
-#
-#     #profile_obj = Profile.objects.get(user=request.user)
-#     extra_form = ExtraProfileForm(instance=profile_obj, profile_obj=profile_obj, privacy_obj=privacy_obj)
-#     profile_form = EditProfileForm(instance=request.user)
-#
-#     context = {
-#         'extra_form': extra_form,
-#         'profile_form': profile_form,
-#     }
-#
-#     return render(request, 'users/test1.html', context)
-
-
 @login_required
 def send_friend_request(request, id):
-    #if request.user.is_authenticated():
     user = get_object_or_404(User, id=id)
     frequest, created = FriendRequest.objects.get_or_create(
         from_user=request.user,
@@ -490,7 +341,6 @@ def send_friend_request(request, id):
 
 @login_required
 def cancel_friend_request(request, id):
-    #if request.user.is_authenticated():
     user = get_object_or_404(User, id=id)
     frequest = FriendRequest.objects.filter(
         from_user=request.user,
