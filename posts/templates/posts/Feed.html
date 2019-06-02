@@ -2,18 +2,23 @@
 {% load crispy_forms_tags %}
 {% block content %}
     <img src="https://www.swissmadesoftware.org/.imaging/w500-png/dam/6b2c61f7-42a3-401e-bb3d-506ff0797d16/easylearn-Logo-RGB.png" alt="" style="width:23%">
-    {% for post in posts %}
+    {% for p in all_posts %}
         <article class="content-section" >
+           {% if p.profile.profile_pic %}
+                <img class="rounded-circle article-img" src="{{ p.profile.profile_pic.url }}">
+            {% else %}
+                <img class="rounded-circle article-img" src="https://i.stack.imgur.com/l60Hf.png">
+           {% endif %}
           <div class="media-body">
             <div class="article-metadata">
-                <a class="mr-2" href="/user/show-users/selected-user/{{ post.author.id }}">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date|date:"F d, Y" }}</small>
+                <a class="mr-2" href="/user/show-users/selected-user/{{ p.post.author.id }}">{{ p.post.author }}</a>
+              <small class="text-muted">{{ p.post.date|date:"F d, Y" }}</small>
             </div>
             <div>
-                <h3><a class="article-title" href="{% url 'posts:post-detail' post.id %}">{{ post.category }}</a></h3>
-                <p class="article-content">{{ post.body }}</p>
-                {% if post.file %}
-                    <a class="article-content" href="{% url 'files:download_file' post.file.id %}">{{ post.file }}</a>
+                <h3><a class="article-title" href="{% url 'posts:post-detail' p.post.id %}">{{ p.post.category }}</a></h3>
+                <p class="article-content">{{ p.post.body }}</p>
+                {% if p.post.file %}
+                    <a class="article-content" href="{% url 'files:download_file' p.post.file.id %}">{{ p.post.file }}</a>
                 {% endif %}
             </div>
           </div>

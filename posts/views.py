@@ -19,6 +19,19 @@ class PostListView(ListView):
     ordering = ['-date']
     paginate_by = 5
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(PostListView, self).get_context_data(**kwargs)
+        posts_list = self.get_queryset()
+        posts = []
+        for post in posts_list:
+            profile = Profile.objects.get(user=post.author)
+            p = {'post': post, 'profile': profile}
+            posts.append(p)
+        context.update({
+            'all_posts': posts,
+        })
+        return context
+
     def get_queryset(self):
         profile_obj = Profile.objects.get(user=self.request.user)
         friends_list = tuple(friend.user.username for friend in profile_obj.friends.all())
