@@ -18,8 +18,14 @@
                         </div>
                      </th>
                         <th>
-                            <a class="btn btn-outline-info" href="{% url 'files:add_file' %}">add file</a>
-                        </div>
+                            <div>
+                                <a class="btn btn-outline-info" href="{% url 'files:add_file' %}">Add File</a>
+                            </div>
+                        </th>
+                     <th>
+                         <div>
+                                <a href="{% url 'files:delete_files' %}" class="btn btn-danger">Delete Files</a>
+                         </div>
                      </th>
                  </tr>
              </thead>
